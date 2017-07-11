@@ -4,11 +4,13 @@
 //int resetPin = 4;       
 //int irqPin = 3;   
 Packet lastReceivedPacket;
+Packet oldPacket;
 int myAddress;
 //lastReceivedPacket = Packet();
 void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
     myAddress = _myAddress;
     lastReceivedPacket = Packet();
+	oldPacket = Packet();
     LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
 
     if (!LoRa.begin(915E6)) {             // initialize ratio at 915 MHz
@@ -37,8 +39,28 @@ int sendPacket(Packet packet){
     LoRa.write(packet.packetLenght);        // add payload length
 	for (int a = 0; a < packet.packetLenght; a++)
 		LoRa.write(packet.body[a]);
-    return LoRa.endPacket();                     // finish packet and send it
-    //Serial.println("Packet sent");
+    return LoRa.endPacket();        
+}
+
+int sendPacketAck(Packet packet) {
+	return sendPacketAck(packet, 0);
+}
+
+int sendPacketAck(Packet packet, int retries){
+	sendPacket(packet);
+	activateReceiveMode();
+	while (!hasReceivedPacket() || !lastReceivedPacket.isAck());
+	LoRa.idle();
+	if (lastReceivedPacket.sender == packet.dest && lastReceivedPacket.packetNumber == packet.packetNumber) {
+		return SUCCESFUL_RESPONSE;
+	}
+	if(retries < 3)
+		sendPacketAck(packet);
+	return ERROR_RESPONSE;
+}
+
+bool hasReceivedPacket() {
+	return lastReceivedPacket != oldPacket;
 }
 
 void activateReceiveMode(){
@@ -49,6 +71,7 @@ void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
 
   // read packet header bytes:
+  oldPacket = lastReceivedPacket;
   lastReceivedPacket = Packet();
   byte buffer[4];
   LoRa.readBytes(buffer, 4);
@@ -81,6 +104,14 @@ void receivePacket(int packetSize) {
   Serial.println("Message length: " + String(lastReceivedPacket.packetLenght));
   Serial.println("Message: " + String(lastReceivedPacket.body));
   Serial.println();
+
+  if (lastReceivedPacket.requestsAck()) {
+	  Packet ackPacket = Packet(lastReceivedPacket.sender, myAddress, PACKET_TYPE_ACK, lastReceivedPacket.packetNumber, "", 0);
+	  sendPacket(ackPacket);
+  }
+
+  //TODO: test ack packets
+
 }
 
 uint32_t read32bitInt(byte byte1, byte byte2, byte byte3, byte byte4){

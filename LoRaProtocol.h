@@ -5,6 +5,12 @@
 #define PACKET_TYPE_ACK 0
 #define PACKET_TYPE_NORM 1
 
+#define QOS_REQUEST_ACK 1
+
+#define SUCCESFUL_RESPONSE 1
+#define ERROR_RESPONSE 2
+
+
 class Packet{
     public:
      uint32_t dest;
@@ -35,6 +41,14 @@ class Packet{
 
             return dest == rhs.dest && sender == rhs.sender && type == rhs.type && packetNumber == rhs.packetNumber;
     }
+
+	bool isAck() {
+		return (type & 128) == PACKET_TYPE_ACK;
+	}
+
+	bool requestsAck() {
+		return (type & 3) == QOS_REQUEST_ACK;
+	}
 
     bool operator != (const Packet& rhs){return !(*this == rhs);}
 };
