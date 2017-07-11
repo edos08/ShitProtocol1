@@ -44,7 +44,7 @@ extern Packet lastReceivedPacket;
 void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin);
 void activateReceiveMode();
 
-void sendPacket(Packet packet);
+int sendPacket(Packet packet);
 void receivePacket(int packetSize);
 
 

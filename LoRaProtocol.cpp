@@ -20,15 +20,25 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
   Serial.println("LoRa init succeeded.");
 }
 
-void sendPacket(Packet packet){
-    LoRa.beginPacket();                   // start packet
-    LoRa.print(packet.dest);              // add destination address
-    LoRa.print(packet.sender);             // add sender address
+int sendPacket(Packet packet){
+
+	Serial.println("Sent to: 0x" + String(packet.dest, HEX));
+    LoRa.beginPacket();                         // start packet
+    LoRa.write(packet.dest & 0xFF000000);       //
+	LoRa.write(packet.dest & 0x00FF0000);       // Destination
+	LoRa.write(packet.dest & 0x0000FF00);       //
+	LoRa.write(packet.dest & 0x000000FF);       //
+
+	LoRa.write(packet.sender & 0xFF00000000);   //
+	LoRa.write(packet.sender & 0x00FF000000);   // SENDER
+	LoRa.write(packet.sender & 0x000000FF00);   //
+	LoRa.write(packet.sender & 0x00000000FF);   //
+
     LoRa.write(packet.type);                 // add message ID
     LoRa.write(packet.packetLenght);        // add payload length
     LoRa.print(packet.body);                 // add payload
-    LoRa.endPacket();                     // finish packet and send it
-    Serial.println("Packet sent");
+    return LoRa.endPacket();                     // finish packet and send it
+    //Serial.println("Packet sent");
 }
 
 void activateReceiveMode(){
@@ -37,19 +47,23 @@ void activateReceiveMode(){
 
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
+
+  Serial.println("Packet size " +  String(packetSize));
   // read packet header bytes:
-  lastReceivedPacket.dest = read32bitInt(LoRa.read(),LoRa.read(), LoRa.read(), LoRa.read());
+  lastReceivedPacket = Packet();
+  byte buffer[4];
+  LoRa.readBytes(buffer, 4);
+  lastReceivedPacket.dest = read32bitInt(buffer[0], buffer[1], buffer[2], buffer[3]);
   lastReceivedPacket.sender = read32bitInt(LoRa.read(), LoRa.read(),LoRa.read(),LoRa.read());
   lastReceivedPacket.type = LoRa.read();
   lastReceivedPacket.packetNumber = LoRa.read();
   lastReceivedPacket.packetLenght = LoRa.read(); 
 
-  
+
   Serial.println("Sent to: 0x" + String(lastReceivedPacket.dest, HEX));
-  
   if (myAddress != lastReceivedPacket.dest && lastReceivedPacket.dest != 0x00000000) {
     Serial.println("This message is not for me.");
-    return;
+    //return;
   }
                                         
   int position = 0;
@@ -60,7 +74,7 @@ void receivePacket(int packetSize) {
   
   if(lastReceivedPacket.packetLenght != position){
       Serial.println("Attenzione, pacchetto corrotto");
-      return;
+      //return;
   }
 
   // if message is for this device, or broadcast, print details:
@@ -72,7 +86,8 @@ void receivePacket(int packetSize) {
   Serial.println();
 }
 
-uint32_t read32bitInt(uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4){
+uint32_t read32bitInt(byte byte1, byte byte2, byte byte3, byte byte4){
+	Serial.println("readint 0x" + String(byte1, HEX) + String(byte2, HEX) + String(byte3, HEX) + String(byte4, HEX));
     uint32_t result = 0;
     result |= (byte1 << 24);
     result |= (byte2 << 16);
