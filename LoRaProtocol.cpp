@@ -36,7 +36,7 @@ int sendPacket(Packet packet){
 
     LoRa.write(packet.type);                 // add message ID
     LoRa.write(packet.packetLenght);        // add payload length
-    LoRa.print(packet.body);                 // add payload
+    LoRa.print(String(packet.body));                 // add payload
     return LoRa.endPacket();                     // finish packet and send it
     //Serial.println("Packet sent");
 }
@@ -59,11 +59,9 @@ void receivePacket(int packetSize) {
   lastReceivedPacket.packetNumber = LoRa.read();
   lastReceivedPacket.packetLenght = LoRa.read(); 
 
-
-  Serial.println("Sent to: 0x" + String(lastReceivedPacket.dest, HEX));
   if (myAddress != lastReceivedPacket.dest && lastReceivedPacket.dest != 0x00000000) {
     Serial.println("This message is not for me.");
-    //return;
+    return;
   }
                                         
   int position = 0;
@@ -72,9 +70,9 @@ void receivePacket(int packetSize) {
     position++;
   }
   
-  if(lastReceivedPacket.packetLenght != position){
+  if((lastReceivedPacket.packetLenght -10) != position){
       Serial.println("Attenzione, pacchetto corrotto");
-      //return;
+      return;
   }
 
   // if message is for this device, or broadcast, print details:
@@ -87,7 +85,6 @@ void receivePacket(int packetSize) {
 }
 
 uint32_t read32bitInt(byte byte1, byte byte2, byte byte3, byte byte4){
-	Serial.println("readint 0x" + String(byte1, HEX) + String(byte2, HEX) + String(byte3, HEX) + String(byte4, HEX));
     uint32_t result = 0;
     result |= (byte1 << 24);
     result |= (byte2 << 16);
