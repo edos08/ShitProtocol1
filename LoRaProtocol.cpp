@@ -37,7 +37,8 @@ int sendPacket(Packet packet){
     LoRa.write(packet.type);                 // add message ID
 	LoRa.write(packet.packetNumber);
     LoRa.write(packet.packetLenght);        // add payload length
-    LoRa.print(String(packet.body));                 // add payload
+	for (int a = 0; a < packet.packetLenght; a++)
+		LoRa.write(packet.body[a]);
     return LoRa.endPacket();                     // finish packet and send it
     //Serial.println("Packet sent");
 }
@@ -69,9 +70,6 @@ void receivePacket(int packetSize) {
     lastReceivedPacket.body[position] = (char)LoRa.read();      // add bytes one by one
     position++;
   }
-
-  Serial.println("Position " + String(position));
-
   
   if((lastReceivedPacket.packetLenght) != position){
       Serial.println("Attenzione, pacchetto corrotto");
@@ -83,7 +81,7 @@ void receivePacket(int packetSize) {
   Serial.println("Sent to: 0x" + String(lastReceivedPacket.dest, HEX));
   Serial.println("Message ID: " + String(lastReceivedPacket.packetNumber));
   Serial.println("Message length: " + String(lastReceivedPacket.packetLenght));
-  Serial.println("Message: " + lastReceivedPacket.body[position]);
+  Serial.println("Message: " + String(lastReceivedPacket.body));
   Serial.println();
 }
 
