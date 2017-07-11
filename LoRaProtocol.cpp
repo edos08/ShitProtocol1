@@ -35,6 +35,7 @@ int sendPacket(Packet packet){
 	LoRa.write(packet.sender & 0x00000000FF);   //
 
     LoRa.write(packet.type);                 // add message ID
+	LoRa.write(packet.packetNumber);
     LoRa.write(packet.packetLenght);        // add payload length
     LoRa.print(String(packet.body));                 // add payload
     return LoRa.endPacket();                     // finish packet and send it
@@ -48,7 +49,6 @@ void activateReceiveMode(){
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
 
-  Serial.println("Packet size " +  String(packetSize));
   // read packet header bytes:
   lastReceivedPacket = Packet();
   byte buffer[4];
@@ -69,8 +69,11 @@ void receivePacket(int packetSize) {
     lastReceivedPacket.body[position] = (char)LoRa.read();      // add bytes one by one
     position++;
   }
+
+  Serial.println("Position " + String(position));
+
   
-  if((lastReceivedPacket.packetLenght -10) != position){
+  if((lastReceivedPacket.packetLenght) != position){
       Serial.println("Attenzione, pacchetto corrotto");
       return;
   }
