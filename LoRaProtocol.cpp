@@ -21,8 +21,6 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
 }
 
 int sendPacket(Packet packet){
-
-	Serial.println("Sent to: 0x" + String(packet.dest, HEX));
     LoRa.beginPacket();                         // start packet
     LoRa.write(packet.dest & 0xFF000000);       //
 	LoRa.write(packet.dest & 0x00FF0000);       // Destination
