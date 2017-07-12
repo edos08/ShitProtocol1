@@ -3,12 +3,15 @@
 #include <SPI.h>
 
 #define PACKET_TYPE_ACK 0
-#define PACKET_TYPE_NORM 1
+#define PACKET_TYPE_NORM 128
+#define PACKET_TYPE_REQUESTS_ACK 1 
 
 #define QOS_REQUEST_ACK 1
 
+#define PACKET_SENDING_ERROR 0
 #define SUCCESFUL_RESPONSE 1
-#define ERROR_RESPONSE 2
+#define HOST_UNREACHABLE_RESPONSE 2
+
 
 
 class Packet{
@@ -52,6 +55,26 @@ class Packet{
 
     bool operator != (const Packet& rhs){return !(*this == rhs);}
 };
+
+typedef struct Helpers {
+	static uint32_t read32bitInt(byte[] bytes) {
+		int shifter = 24;
+		uint32_t result = 0;
+		for (int a = 0; a < 4; a++) {
+			result |= (bytes[a] << shifter);
+			shifter -= 8;
+		}
+		return result;
+	}
+
+	static void write32bitIntToPacket(uint32_t value) {
+		LoRa.write(value & 0xFF000000);
+		LoRa.write(value & 0x00FF0000);
+		LoRa.write(value & 0x0000FF00);
+		LoRa.write(value & 0x000000FF);
+	}
+
+}Helpers;
 
 extern Packet lastReceivedPacket;
 

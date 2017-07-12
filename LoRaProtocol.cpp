@@ -13,7 +13,7 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
 	oldPacket = Packet();
     LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
 
-    if (!LoRa.begin(915E6)) {             // initialize ratio at 915 MHz
+    if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
         Serial.println("LoRa init failed. Check your connections.");
         while (true);                       // if failed, do nothing
     }
@@ -24,19 +24,11 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
 
 int sendPacket(Packet packet){
     LoRa.beginPacket();                         // start packet
-    LoRa.write(packet.dest & 0xFF000000);       //
-	LoRa.write(packet.dest & 0x00FF0000);       // Destination
-	LoRa.write(packet.dest & 0x0000FF00);       //
-	LoRa.write(packet.dest & 0x000000FF);       //
-
-	LoRa.write(packet.sender & 0xFF00000000);   //
-	LoRa.write(packet.sender & 0x00FF000000);   // SENDER
-	LoRa.write(packet.sender & 0x000000FF00);   //
-	LoRa.write(packet.sender & 0x00000000FF);   //
-
-    LoRa.write(packet.type);                 // add message ID
+	Helpers.write32bitIntToPacket(packet.dest);
+	Helpers.write32bitIntToPacket(packet.source);
+    LoRa.write(packet.type);                 
 	LoRa.write(packet.packetNumber);
-    LoRa.write(packet.packetLenght);        // add payload length
+    LoRa.write(packet.packetLenght);        
 	for (int a = 0; a < packet.packetLenght; a++)
 		LoRa.write(packet.body[a]);
     return LoRa.endPacket();        
@@ -56,7 +48,7 @@ int sendPacketAck(Packet packet, int retries){
 	}
 	if(retries < 3)
 		sendPacketAck(packet);
-	return ERROR_RESPONSE;
+	return HOST_UNREACHABLE_RESPONSE;
 }
 
 bool hasReceivedPacket() {
@@ -75,8 +67,9 @@ void receivePacket(int packetSize) {
   lastReceivedPacket = Packet();
   byte buffer[4];
   LoRa.readBytes(buffer, 4);
-  lastReceivedPacket.dest = read32bitInt(buffer[0], buffer[1], buffer[2], buffer[3]);
-  lastReceivedPacket.sender = read32bitInt(LoRa.read(), LoRa.read(),LoRa.read(),LoRa.read());
+  lastReceivedPacket.dest = Helpers.read32bitInt(buffer);
+  LoRa.readBytes(buffer, 4);
+  lastReceivedPacket.sender = Helpers.read32bitInt(buffer);
   lastReceivedPacket.type = LoRa.read();
   lastReceivedPacket.packetNumber = LoRa.read();
   lastReceivedPacket.packetLenght = LoRa.read(); 
@@ -114,11 +107,5 @@ void receivePacket(int packetSize) {
 
 }
 
-uint32_t read32bitInt(byte byte1, byte byte2, byte byte3, byte byte4){
-    uint32_t result = 0;
-    result |= (byte1 << 24);
-    result |= (byte2 << 16);
-    result |= (byte3 << 8);
-    result |= (byte4);
-    return result;
-}
+
+

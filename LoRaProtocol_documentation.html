@@ -1,0 +1,62 @@
+<h1 id="lora-protocol">LoRa protocol</h1>
+<p>Questo protocollo è stato creato per l'utilizzo all'interno di una rete LoRa per la comunicazione wireless tra vari dispositivi</p>
+<p>Legenda:</p>
+<p>I bit vengono considerati ordinati da sinistra a desta in questo modo:</p>
+<blockquote>
+<p>1 BYTE</p>
+</blockquote>
+<div style="white-space: pre-line;">1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+<p>Il bit 1 è il più significativo (128)</p>
+<hr />
+<h2 id="descrizione-del-formato-del-pacchetto">Descrizione del formato del pacchetto</h2>
+<p>Il pacchetto è diviso in due parti:</p>
+<ul>
+<li>Header</li>
+<li>Payload</li>
+</ul>
+<p>L'insieme di queste due parti non può superare i 255 byte.</p>
+<h3 id="header">Header</h3>
+<p>L'header di un pacchetto LoRa è formato da 11 bytes:</p>
+<ul>
+<li>4 bytes per l'indirizzo del destinatario</li>
+<li>4 bytes per l'indirizzo del mittente</li>
+<li>1 byte per il tipo di messaggio</li>
+<li>1 byte per il numero di sequenza del pacchetto</li>
+<li>1 byte per la lunghezza del payload (par avere un leggero controllo d'integrità, considerare l'uso di un crc16 o 32)</li>
+</ul>
+<p>Descrizione del byte riservato per il tipo di messaggio:</p>
+<ul>
+<li>bit 1 : indica se il pacchetto contiene un messaggio (bit settato a 1) oppure se è un messaggio ACK (bit settato a 0)</li>
+<li>bit 2-6: riservati per usi futuri per indicare il tipo di messaggio (status report, comando, keep alive...)</li>
+<li>bit 7-8: indicano il livello di QoS utilizzato: 0 = no ACK, 1 = ACK, 2 = ACK a tre passi</li>
+</ul>
+<h3 id="payload">Payload</h3>
+<p>Il payload del masseaggio varia a seconda del tipo di pacchetto scelto.</p>
+<p>Per i pacchetti ACK il payload è vuoto ed il byte di lunghezza del payload deve essere settato a 0</p>
+<p>I pacchetti non ack avranno un payload diverso a seconda del tipo spacificato dei bit 2-6 del campo tipo (Il loro formato non è ancora stato deciso)</p>
+<hr />
+<h2 id="documentazione-tecnica-della-libreria-loraprotocol">Documentazione tecnica della libreria LoRaProtocol</h2>
+<p><code>class Packet</code>: rappresenta un pacchetto spedito od inviato tramite LoRa.<br />
+Attributi:</p>
+<ul>
+<li><code>dest</code> : il destinatario del pacchetto</li>
+<li><code>sender</code> : il mittente del pacchetto</li>
+<li><code>type</code> : il tipo di pacchetto</li>
+<li><code>packetLenght</code>: la lunghezza del payload</li>
+<li><code>packetNumber</code> : il numero di sequenza del pacchetto</li>
+<li><code>body</code> : il payload del pacchetto</li>
+</ul>
+<p>Metodi:</p>
+<ul>
+<li><code>isAck()</code> : controlla se il pacchetto è un'ack</li>
+<li><code>requestsAck()</code>: controlla se il pacchetto richiede un ack in risposta</li>
+</ul>
+<hr />
+<p><code>struct Helpers</code>: medodi helpers per scrivere interi a più bytes nel flusso in uscita e leggerli dal flusso in entrata</p>
+<hr />
+<p><code>Packet lastReceivedPacket</code> : contiene le informazioni sul pacchetto ricevuto</p>
+<p><code>void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin)</code> : inizializza la scheda LoRa sui pin dati ed imposta il proprio indirizzo per lo scambio di messaggio</p>
+<p><code>int sendPacket(Packet packet)</code> : invia un pacchetto e ritorna: 1 se il pacchetto è stato inviato, 0 altrimenti</p>
+<p><code>int sendPacketAck(Packet packet)</code> : invia un pacchetto aspettandosi un ACK di conferma. ritorna <code>SUCCESFUL_RESPONSE</code> in caso di successo, <code>HOST_UNREACHABLE</code>in caso di insuccesso dopo aver provato il reinvio per 3 volte</p>
+<p><code>void activateReceiveMode()</code> : mette la scheda in modalità ascolto (da usare dopo ogni invio di pacchetto)</p>
+<p><code>void receivePacket(int packetSize)</code> : chiamata automaticamente quando un pacchetto viene ricevuto in modalità ascolto, risponde con un ack se necessario</p>
