@@ -27,13 +27,29 @@
 <p>Descrizione del byte riservato per il tipo di messaggio:</p>
 <ul>
 <li>bit 1 : indica se il pacchetto contiene un messaggio (bit settato a 1) oppure se è un messaggio ACK (bit settato a 0)</li>
-<li>bit 2-6: riservati per usi futuri per indicare il tipo di messaggio (status report, comando, keep alive...)</li>
+<li>bit 2-6: riservati per usi futuri per indicare il tipo di messaggio (status report, comando, keep alive...) **</li>
 <li>bit 7-8: indicano il livello di QoS utilizzato: 0 = no ACK, 1 = ACK, 2 = ACK a tre passi</li>
+</ul>
+<p>**[Nota]: Valori di tipologia del pacchetto:</p>
+<ul>
+<li>1: pacchetto di richiesta/risposta a registrazione id di un arduino</li>
 </ul>
 <h3 id="payload">Payload</h3>
 <p>Il payload del masseaggio varia a seconda del tipo di pacchetto scelto.</p>
 <p>Per i pacchetti ACK il payload è vuoto ed il byte di lunghezza del payload deve essere settato a 0</p>
 <p>I pacchetti non ack avranno un payload diverso a seconda del tipo spacificato dei bit 2-6 del campo tipo (Il loro formato non è ancora stato deciso)</p>
+<h4 id="pacchetti-di-registrazione">Pacchetti di registrazione</h4>
+<p>I pacchetti di registrazione dai dispositivi verso il server sono vuoti e hanno <code>packetLenght = 0</code></p>
+<p>I pacchetti di registrazione da nodo a dispositivo contengono la risposta al controllo dell'ID e hanno <code>packetLenght = 1</code><br />
+L'unico byte di payload ha il seguente contenuto:</p>
+<ul>
+<li>bit 7-8:
+<ul>
+<li>0: ID non accettato</li>
+<li>1: ID accettato</li>
+<li>2: Il nodo non è pronto a ricevere registrazioni</li>
+</ul></li>
+</ul>
 <hr />
 <h2 id="documentazione-tecnica-della-libreria-loraprotocol">Documentazione tecnica della libreria LoRaProtocol</h2>
 <p><code>class Packet</code>: rappresenta un pacchetto spedito od inviato tramite LoRa.<br />

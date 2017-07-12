@@ -36,8 +36,12 @@ L'header di un pacchetto LoRa è formato da 11 bytes:
 Descrizione del byte riservato per il tipo di messaggio: 
 
  * bit 1  : indica se il pacchetto contiene un messaggio (bit settato a 1) oppure se è un messaggio ACK (bit settato a 0)
- * bit 2-6: riservati per usi futuri per indicare il tipo di messaggio (status report, comando, keep alive...)
+ * bit 2-6: riservati per usi futuri per indicare il tipo di messaggio (status report, comando, keep alive...) **
  * bit 7-8: indicano il livello di QoS utilizzato: 0 = no ACK, 1 = ACK, 2 = ACK a tre passi
+ 
+ **[Nota]: Valori di tipologia del pacchetto:
+
+* 1: pacchetto di richiesta/risposta a registrazione id di un arduino 
  
 ### Payload
 
@@ -46,6 +50,19 @@ Il payload del masseaggio varia a seconda del tipo di pacchetto scelto.
 Per i pacchetti ACK il payload è vuoto ed il byte di lunghezza del payload deve essere settato a 0
 
 I pacchetti non ack avranno un payload diverso a seconda del tipo spacificato dei bit 2-6 del campo tipo (Il loro formato non è ancora stato deciso)
+
+#### Pacchetti di registrazione 
+
+I pacchetti di registrazione dai dispositivi verso il server sono vuoti e hanno `packetLenght = 0`
+
+I pacchetti di registrazione da nodo a dispositivo contengono la risposta al controllo dell'ID e hanno `packetLenght = 1`    
+L'unico byte di payload ha il seguente contenuto:
+
+* bit 7-8:
+    * 0: ID non accettato
+	* 1: ID accettato
+	* 2: Il nodo non è pronto a ricevere registrazioni
+	* 3: Il nodo è ora pronto a ricevere 
 
 ***
 
