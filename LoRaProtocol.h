@@ -57,7 +57,7 @@ class Packet{
 };
 
 typedef struct Helpers {
-	static uint32_t read32bitInt(byte[] bytes) {
+	static uint32_t read32bitInt(byte bytes[]) {
 		int shifter = 24;
 		uint32_t result = 0;
 		for (int a = 0; a < 4; a++) {
