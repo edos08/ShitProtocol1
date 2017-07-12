@@ -57,6 +57,7 @@ Attributi:</p>
 <p><code>Packet lastReceivedPacket</code> : contiene le informazioni sul pacchetto ricevuto</p>
 <p><code>void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin)</code> : inizializza la scheda LoRa sui pin dati ed imposta il proprio indirizzo per lo scambio di messaggio</p>
 <p><code>int sendPacket(Packet packet)</code> : invia un pacchetto e ritorna: 1 se il pacchetto è stato inviato, 0 altrimenti</p>
-<p><code>int sendPacketAck(Packet packet)</code> : invia un pacchetto aspettandosi un ACK di conferma. ritorna <code>SUCCESFUL_RESPONSE</code> in caso di successo, <code>HOST_UNREACHABLE</code>in caso di insuccesso dopo aver provato il reinvio per 3 volte</p>
+<p><code>int sendPacketAck(Packet packet)</code> : invia un pacchetto aspettandosi un ACK di conferma. ritorna <code>SUCCESFUL_RESPONSE</code> in caso di successo, <code>HOST_UNREACHABLE</code> in caso di insuccesso dopo aver provato il reinvio per 3 volte</p>
 <p><code>void activateReceiveMode()</code> : mette la scheda in modalità ascolto (da usare dopo ogni invio di pacchetto)</p>
 <p><code>void receivePacket(int packetSize)</code> : chiamata automaticamente quando un pacchetto viene ricevuto in modalità ascolto, risponde con un ack se necessario</p>
+<p><code>bool hasReceivedPacket()</code> : controlla se è stato ricevuto un nuovo pacchetto o meno</p>

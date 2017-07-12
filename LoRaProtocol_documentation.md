@@ -84,6 +84,7 @@ Metodi:
 
 `void receivePacket(int packetSize)` : chiamata automaticamente quando un pacchetto viene ricevuto in modalità ascolto, risponde con un ack se necessario
 
+`bool hasReceivedPacket()` : controlla se è stato ricevuto un nuovo pacchetto o meno
 
 
 
