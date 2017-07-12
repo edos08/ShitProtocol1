@@ -84,6 +84,8 @@ void activateReceiveMode();
 int sendPacket(Packet packet);
 void receivePacket(int packetSize);
 
+bool hasReceivedPacket();
+
 
 uint32_t read32bitInt(uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4);
 
