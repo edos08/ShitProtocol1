@@ -32,6 +32,10 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
   Serial.println("LoRa init succeeded.");
 }
 
+void changeAddress(uint32_t newAddress) {
+	myAddress = newAddress;
+}
+
 int sendPacket(Packet packet){
 	if(!packet.isAck())
 		Serial.println("Sending packet");
@@ -82,9 +86,8 @@ void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
 
   Packet receivedPacket = Helpers::readInputPacket();
-  Serial.println(receivedPacket.dest,HEX);
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
-    Serial.println("This message is not for me.");
+    //Serial.println("This message is not for me.");
     return;
   }
                                         
@@ -99,7 +102,7 @@ void receivePacket(int packetSize) {
       return;
   }
 
-  if (!receivedPacket.isAck()) {
+  /*if (!receivedPacket.isAck()) {
 	  Serial.print("Received from: 0x");
 	  Serial.println(receivedPacket.sender, HEX);
 	  Serial.print("Message: ");
@@ -107,7 +110,7 @@ void receivePacket(int packetSize) {
 		  Serial.print(receivedPacket.body[a]);
 	  }
 	  Serial.println();
-  }
+  }*/
 
   if (receivedPacket.requestsAck()) {
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);

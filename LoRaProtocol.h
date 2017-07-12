@@ -2,9 +2,12 @@
 #include "LoRa.h"
 #include <SPI.h>
 
+
+#define PACKET_TYPE_MASK 126
 #define PACKET_TYPE_ACK 0
 #define PACKET_TYPE_NORM 128
 #define PACKET_TYPE_REQUESTS_ACK 1 
+#define PACKET_TYPE_REGISTRATION 4
 
 #define QOS_REQUEST_ACK 1
 
@@ -13,6 +16,8 @@
 #define HOST_UNREACHABLE_RESPONSE 2
 
 #define ACK_WAITING_MILLIS 200
+
+#define BROADCAST 0x0
 
 
 //Class packet
@@ -140,7 +145,7 @@ int sendPacket(Packet packet);
 
 void receivePacket(int packetSize);
 
-bool hasReceivedPacket();
+void changeAddress(uint32_t newAddress);
 
 //subscribe to received packet event
 
@@ -159,11 +164,6 @@ static Packet AckPacket(uint32_t dest, uint32_t sender, uint8_t reponsePacketNum
 	return Packet(dest, sender, PACKET_TYPE_ACK, reponsePacketNumber, "", 0);
 }
 
-static Packet* copyPacket(Packet p){
-	Packet* result = new Packet();
-	result->sender = p.sender;
-	result->packetNumber = p.packetNumber;
-}
 
 
 
