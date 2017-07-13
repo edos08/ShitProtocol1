@@ -1,8 +1,3 @@
----
-css: 'https://gist.github.com/killercup/5917178'
-generator: pandoc
----
-
 Protocollo di registrazione
 ===========================
 
@@ -61,13 +56,9 @@ Descrizione del protocollo
     stati tentativi di registrazione durante il monitoraggio
 -   A: Aspetta di ricevere dei pacchetti dai dispositivi
     -   1: Leggo l'ID che ricevo nel pacchetto
-    -   2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è
-        duplicato
+    -   2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato. (Da aggiungere: query al mongodb presente nel raspberry per gli ID già salvati)
         -   2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
-            -   2.a.1: Se il numero degli ID accettabili è pari al
-                numero dei dispositivi da registrare allora invio un
-                messaggio di conferma dell'ID a tutti ed esco dalla fase
-                di registrazione
+            -   2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti ed esco dalla fase di registrazione
         -   2.b: Se lo è setto il flag "id duplicato" e memorizzo l'ID
             non valido
 -   B: Invio all'ID duplicato un pacchetto di rifiuto dell'ID e elimino
