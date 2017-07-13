@@ -1,6 +1,7 @@
 #include <SPI.h>
 #include <LoRa.h>
 #include <RegistrationProtocol.h>
+#include <EEPROM.h>
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000 
@@ -20,6 +21,9 @@ unsigned long long timerStartTime = 0;
 void setup() {
   Serial.begin(9600);
   while(!Serial);
+  //TODO: controllare EPROM
+  Serial.print("Memory content ");
+  Serial.println(readEEPROM(),HEX);
   randomSeed(analogRead(0));
   randomAddress = generateRandomAddress();
   initLoRa(randomAddress, 8, 4, 3);
@@ -42,7 +46,7 @@ void loop() {
       
       if(!idSent){
         delay(generateRandomWaitingTime());
-        int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,"",0));
+        int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
         Helpers::printResponseMessage(result);
         idSent = true;
         timerStartTime = millis();
@@ -54,6 +58,7 @@ void loop() {
       Serial.print("My ID 0x");
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
+      //TODO: write to EPROM
       while(true);
     }
   }else{
@@ -96,6 +101,17 @@ void handleResponsePacket(Packet response){
     case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
       registrationResumed = true;
   }
+}
+
+uint32_t readEEPROM(){
+    uint32_t result = 0;
+    int shifter = 24;
+    for(int a = 0; a < 4; a++){
+        uint8_t c_byte = EEPROM.read(a);
+        result |= (((uint32_t)c_byte) << shifter);
+        shifter -= 8;
+    }
+    return result;
 }
 
 

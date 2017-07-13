@@ -26,8 +26,8 @@ typedef struct Id_pn_pair {
 
 }Pair_p;
 
-static Packet RegistrationPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght) {
-	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, body, packetLenght);
+static Packet RegistrationPacket(uint32_t dest, uint32_t sender) {
+	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, "", 0);
 }
 
 static Packet RegistrationIDDeniedPacket(uint32_t dest, uint32_t sender) {
@@ -45,6 +45,12 @@ static Packet RegistrationIDAcceptedPacket(uint32_t dest, uint32_t sender) {
 static Packet RegistrationResumedPacket(uint32_t dest, uint32_t sender) {
 	char body[1];
 	body[0] = REGISTRATION_RESPONSE_REGISTRATION_RESUMED;
+	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, body, 1);
+}
+
+static Packet RegistrationUnavailablePacket(uint32_t dest, uint32_t sender) {
+	char body[1];
+	body[0] = REGISTRATION_RESPONSE_REGISTRATION_DENIED;
 	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, body, 1);
 }
 

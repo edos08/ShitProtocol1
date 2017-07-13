@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="github-pandoc.css" type="text/css" />
+</head>
+<body>
+<h1 id="protocollo-di-registrazione">Protocollo di registrazione</h1>
+<p><a href="LoRaProtocol_documentation.html">Home</a></p>
+<h2 id="descrizione-dei-pacchetti">Descrizione dei pacchetti</h2>
+<p>I pacchetti di registrazione dai dispositivi verso il server sono vuoti e hanno <code>packetLenght = 0</code></p>
+<p>I pacchetti di registrazione da nodo a dispositivo contengono la risposta al controllo dell'ID e hanno <code>packetLenght = 1</code><br />
+L'unico byte di payload ha il seguente contenuto:</p>
+<pre><code>* bit 7-8:
+    * 0: ID non accettato
+    * 1: ID accettato
+    * 2: Il nodo non è pronto a ricevere registrazioni
+    * 3: Il nodo è ora pronto a ricevere</code></pre>
+<h2 id="costruttori-di-pacchetti-predefiniti">Costruttori di pacchetti predefiniti</h2>
+<p><code>static Packet RegistrationPacket(uint32_t dest, uint32_t sender)</code></p>
+<p>Pacchetto con cui un dispositivo invia il proprio ID al nodo. Il <code>dest</code> deve quindi essere il nodo ed ha valore <code>0xFFFFFFFF</code>.</p>
+<p><code>RegistrationIDDeniedPacket(uint32_t dest, uint32_t sender)</code></p>
+<p>Pacchetto inviato dal nodo per rifiutare un ID</p>
+<p><code>static Packet RegistrationIDAcceptedPacket(uint32_t dest, uint32_t sender)</code></p>
+<p>Pacchetto inviato dal nodo per accettare gli ID</p>
+<p><code>static Packet RegistrationResumedPacket(uint32_t dest, uint32_t sender)</code></p>
+<p>Pacchetto inviato dal nodo per avvisare i dispositivi di essere pronto a ricevere la registrazione</p>
+<p><code>static Packet RegistrationUnavailablePacket(uint32_t dest, uint32_t sender)</code></p>
+<p>Pacchetto inviato dal nodo per avvisare i dispositivi di non essere pronto a ricevere pacchetti di registrazione</p>
+<h2 id="descrizione-del-protocollo">Descrizione del protocollo</h2>
+<h3 id="nodo">Nodo</h3>
+<ul>
+<li>Il dispositivo si accende</li>
+<li>Riceve il numero di dispositivi da registrare</li>
+<li>Invia un pacchetto di &quot;registrazione ripresa&quot; in caso ci fossero stati tentativi di registrazione durante il monitoraggio</li>
+<li>A: Aspetta di ricevere dei pacchetti dai dispositivi
+<ul>
+<li>1: Leggo l'ID che ricevo nel pacchetto</li>
+<li>2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato
+<ul>
+<li>2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
+<ul>
+<li>2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti ed esco dalla fase di registrazione</li>
+</ul></li>
+<li>2.b: Se lo è setto il flag &quot;id duplicato&quot; e memorizzo l'ID non valido</li>
+</ul></li>
+</ul></li>
+<li>B: Invio all'ID duplicato un pacchetto di rifiuto dell'ID e elimino tutte le occorrenze di quell'ID dalla coda degli ID accettabili</li>
+</ul>
+<h3 id="dispositivo">Dispositivo</h3>
+<ul>
+<li>Il dispositivo si accende</li>
+<li>Controlla se nella EPROM ha un ID salvato
+<ul>
+<li>Se si allora inizia il suo normale ciclo di vita a regime</li>
+<li>Se no allora inizia la procedura di registrazione:
+<ul>
+<li>1: Generazione di un ID casuale</li>
+<li>2: Attesa di un tempo casuale tra gli 0,5 e gli 1,5 secondi per minimizzare le collisioni</li>
+<li>3: Invio del pacchetto contenente l'ID al nodo</li>
+<li>4: Attesa della risposta per 8 secondi
+<ul>
+<li>4.a Se non riceve risposta prova a reinviare il pacchetto presumendo che non sia arrivato<br />
+</li>
+<li>4.b Se riceve risposta:
+<ul>
+<li>4.b.1 Se è positiva allora salva l'ID sulla EPROM ed inizia il suo ciclo di vita a regime</li>
+<li>4.b.2 Se è negativa torna al passo 1</li>
+<li>4.b.3 Se la risposta è &quot;nodo non disponibile alla registrazione&quot; rimane in attesa di un pacchetto di &quot;registrazione ripresa&quot; dal nodo e a pacchetto ricevuto riprende dal punto 1</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+</body>
+</html>
