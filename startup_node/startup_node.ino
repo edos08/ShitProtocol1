@@ -2,15 +2,20 @@
 #include <LoRa.h>
 #include <RegistrationProtocol.h>
 
+//TODO: Implement all serial communication (already done on test sketch)
+
 #define NODE_ADDRESS 0xFFFFFFFF
 #define DEVICES_TO_REGISTER 1 //TODO: receive info from raspberry
 
 uint32_t devices_ids[DEVICES_TO_REGISTER];
+uint32_t devices_types[DEVICES_TO_REGISTER];
 int devices_ids_index = 0;
 uint32_t doubled_ID;
 
 bool alertDoubledDevicesTrigger = false;
 bool notifyDevicesTrigger = false;
+bool hasReceivedType = false;
+uint8_t type_received = -1;
 
 void setup() {
   Serial.begin(9600);
@@ -46,6 +51,9 @@ void loop() {
     for(int a = 0; a <devices_ids_index; a++){
         int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[a],NODE_ADDRESS));
         Helpers::printResponseMessage(result);
+        while(!hasReceivedType);
+        devices_types[a] = type_received;
+        hasReceivedType = false;
         if(result == SUCCESFUL_RESPONSE)
             identified_devices++;
         delay(1);
@@ -53,14 +61,13 @@ void loop() {
     Serial.println(String(identified_devices) + "/" + String(DEVICES_TO_REGISTER) + " devices identified succesfully!!!");
     Serial.println("Now I should start my normal lyfecycle");
     Serial.println("Here is a list of all the ids: ");
-    for(int a = 0; a < devices_ids_index; a++){
+    for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
         Serial.print("0x");
-        Serial.println(devices_ids[a], HEX);  
+        Serial.println(devices_ids[a], HEX);
     }
-
     while(true);
   }
-  
+
 }
 
 
@@ -81,6 +88,11 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
       alertDoubledDevicesTrigger = true;
     }
   }
+  if(notifyDevicesTrigger && isTypeSubmissionPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
+    hasReceivedType = true;
+    type_received = idSubmissionPacket.body[1];
+  }
+
 }
 
 
@@ -94,5 +106,3 @@ bool findDuplicateIds(uint32_t receivedId){
   //TODO: query to ID DB
   return idsFound != 0;
 }
-
-
