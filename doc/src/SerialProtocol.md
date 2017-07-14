@@ -1,10 +1,14 @@
 # Documentazione relativa allo scambio di messaggi tra arduino e raspberry tramite porta seriale
 
+* [LoRa](LoRaProtocol_documentation.html)
+* [Registrazione](Registrazione.html)
+* [Seriale](SerialProtocol.html)
+
 ## Sezione relativa all'Arduino
 
 L'arduino può essere collegato tramite porta USB alla raspberry per la comunicazione ma sarebbe pù consigliato collegarlo tramite i canali RX e TX presenti sulla board sia dell'arduino che della raspberry. Qui si trova spiegato il procedimento:
 
-[Collegare arduino a rasperry via seriale] (https://gist.github.com/ajfisher/8880882)
+[Collegare arduino a rasperry via seriale](https://gist.github.com/ajfisher/8880882)
 
 Questo tutorial non usa la stessa libreria che utilizzo ma il concetto di base per l'hardware è lo stesso.
 
@@ -16,11 +20,9 @@ Collegandosi via seriale con il cavo USB con la scheda FEATHER M0 occorre utiliz
 
 Da notare anche che in questo caso la funzione `serialEvent()` non viene richiamata in automatico ma occorre utilizzare il seguente snippet all'interno della funzione `loop()`:
 
-```
-
+```c
 if(serial.available())
     serialEvent()
-
 
 ```
 
@@ -46,6 +48,12 @@ Ogni messaggio scambiato tra arduino e raspberry conterrà 1 byte di header ed u
 ## Comunicazione seriale durante la fase di Registrazione
 
 Durante la fase di registrazione l'arduino dovrà comunicare alla raspberry gli ID nuovi arrivati, e la raspberry dovrà consultare il suo database per verificare che non siano duplicati. Lo scambio di messaggi in seriale avverà in questo modo:
+
+* 0 Il raspberry invia all'arduino un pacchetto in cui gli comunica quanti dispositivi vuole connettere. Il formato di tale pacchetto è:
+
+    |Header (1 byte)| Payload(1 byte)|
+    |---------------|-----------------|
+    | 0   |   N di dispositivi |
 
 * 1 L'arduino riceve un nuovo ID
 * 2 L'arduino controlla che non sia un duplicato delgi id degli altri arduini che stanno facendo la registrazione
@@ -79,4 +87,14 @@ Durante la fase di registrazione l'arduino dovrà comunicare alla raspberry gli 
         | Header (1 byte) | payload (1 byte) |
         |-----|-----|
         |  2  |  255  |
+
 * 4 Dopo questo passaggio la fase di registrazione può considerarsi terminata e si passa alla fasi di associazione dei dispositivi
+
+
+### Tipi di dispositivo
+
+| Codice | Tipo | Descrizione |
+|------|--------|-----|
+|  1   |  Nodo  | Dispositivo collegato alla raspeberry in seriale |
+|  2   |  Controllore | Dispositivo che controlla la luminosità di una lampada |
+|  3   |  Sensore | Sensore di luminosità |

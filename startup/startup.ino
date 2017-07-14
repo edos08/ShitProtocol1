@@ -5,6 +5,7 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
+#define TYPE DEVICE_TYPE_CONTROLLER
 
 bool idSent = false;
 bool idAccepted = false;
@@ -59,6 +60,9 @@ void loop() {
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
       //TODO: write to EPROM
+      //TODO: send type to NODE
+      int result = sendPacket(TypeSubmissionPacket(NODE_ADDRESS,randomAddress,TYPE));
+      Helpers::printResponseMessage(result);
       while(true);
     }
   }else{

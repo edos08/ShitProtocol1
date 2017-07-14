@@ -1,4 +1,4 @@
-#include <stdint.h>    
+#include <stdint.h>
 #include "LoRa.h"
 #include <SPI.h>
 
@@ -6,8 +6,9 @@
 #define PACKET_TYPE_MASK 126
 #define PACKET_TYPE_ACK 0
 #define PACKET_TYPE_NORM 128
-#define PACKET_TYPE_REQUESTS_ACK 1 
+#define PACKET_TYPE_REQUESTS_ACK 1
 #define PACKET_TYPE_REGISTRATION 4
+#define PACKET_TYPE_DEVICE_SUBMISSION 8 
 
 #define QOS_REQUEST_ACK 1
 
@@ -91,7 +92,7 @@ typedef struct Helpers {
 		for (int a = 0; a < 4; a++)
 			buffer[a] = LoRa.read();
 	}
-	
+
 	static void printResponseMessage(int response_code) {
 		switch (response_code) {
 		case PACKET_SENDING_ERROR:
@@ -151,7 +152,7 @@ void changeAddress(uint32_t newAddress);
 
 void subscribeToReceivePacketEvent(functionCall function);
 
-//Packet factory 
+//Packet factory
 static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght) {
 	return Packet(dest, sender, PACKET_TYPE_NORM, packetCounter, body, packetLenght);
 }
@@ -163,7 +164,3 @@ static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint
 static Packet AckPacket(uint32_t dest, uint32_t sender, uint8_t reponsePacketNumber) {
 	return Packet(dest, sender, PACKET_TYPE_ACK, reponsePacketNumber, "", 0);
 }
-
-
-
-

@@ -1,5 +1,9 @@
 # LoRa protocol
 
+* [LoRa](LoRaProtocol_documentation.html)
+* [Registrazione](Registrazione.html)
+* [Seriale](SerialProtocol.html)
+
 Questo protocollo è stato creato per l'utilizzo all'interno di una rete LoRa per la comunicazione wireless tra vari dispositivi
 
 Legenda:

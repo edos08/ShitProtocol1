@@ -1,7 +1,9 @@
 Protocollo di registrazione
 ===========================
 
-[Home](LoRaProtocol_documentation.html)
+* [LoRa](LoRaProtocol_documentation.html)
+* [Registrazione](Registrazione.html)
+* [Seriale](SerialProtocol.html)
 
 Descrizione dei pacchetti
 -------------------------
@@ -58,7 +60,8 @@ Descrizione del protocollo
     -   1: Leggo l'ID che ricevo nel pacchetto
     -   2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato. (Da aggiungere: query al mongodb presente nel raspberry per gli ID già salvati)
         -   2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
-            -   2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti ed esco dalla fase di registrazione
+            -   2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti
+            -   2.a.2: Per ogni dispositivo che mi risponde con un ack alla conferma dell'ID aspetto che mi invii il tipo di dispositivo a cui appartiene 
         -   2.b: Se lo è setto il flag "id duplicato" e memorizzo l'ID
             non valido
 -   B: Invio all'ID duplicato un pacchetto di rifiuto dell'ID e elimino
