@@ -61,7 +61,8 @@ Descrizione del protocollo
     -   2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato. (Da aggiungere: query al mongodb presente nel raspberry per gli ID già salvati)
         -   2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
             -   2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti
-            -   2.a.2: Per ogni dispositivo che mi risponde con un ack alla conferma dell'ID aspetto che mi invii il tipo di dispositivo a cui appartiene 
+            -   2.a.2: Per ogni dispositivo che mi risponde con un ack alla conferma dell'ID aspetto che mi invii il tipo di dispositivo a cui appartiene
+            -   2.a.3: Invio alla raspberry gli ID e itipi dei dispositivi
         -   2.b: Se lo è setto il flag "id duplicato" e memorizzo l'ID
             non valido
 -   B: Invio all'ID duplicato un pacchetto di rifiuto dell'ID e elimino
@@ -81,12 +82,13 @@ Descrizione del protocollo
             -   4.a Se non riceve risposta prova a reinviare il
                 pacchetto presumendo che non sia arrivato\
             -   4.b Se riceve risposta:
-                -   4.b.1 Se è positiva allora salva l'ID sulla EPROM ed
-                    inizia il suo ciclo di vita a regime
+                -   4.b.1 Se è positiva allora salva l'ID sulla EPROM ed invia al nodo l'informazione relativa alla tipologia del dispsitivo ed inizia il suo ciclo di vita a regime
                 -   4.b.2 Se è negativa torna al passo 1
                 -   4.b.3 Se la risposta è "nodo non disponibile alla
                     registrazione" rimane in attesa di un pacchetto di
                     "registrazione ripresa" dal nodo e a pacchetto
                     ricevuto riprende dal punto 1
+
+Per informazioni riguardo ai pacchetti di invio della tipologia del dispositivo consultare la [pagina relativa](Submission.html)
 
 ------------------------------------------------------------------------

@@ -48,7 +48,9 @@ L'unico byte di payload ha il seguente contenuto:</p>
 <ul>
 <li>2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
 <ul>
-<li>2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti ed esco dalla fase di registrazione</li>
+<li>2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti</li>
+<li>2.a.2: Per ogni dispositivo che mi risponde con un ack alla conferma dell'ID aspetto che mi invii il tipo di dispositivo a cui appartiene</li>
+<li>2.a.3: Invio alla raspberry gli ID e itipi dei dispositivi</li>
 </ul></li>
 <li>2.b: Se lo è setto il flag &quot;id duplicato&quot; e memorizzo l'ID non valido</li>
 </ul></li>
@@ -72,7 +74,7 @@ L'unico byte di payload ha il seguente contenuto:</p>
 </li>
 <li>4.b Se riceve risposta:
 <ul>
-<li>4.b.1 Se è positiva allora salva l'ID sulla EPROM ed inizia il suo ciclo di vita a regime</li>
+<li>4.b.1 Se è positiva allora salva l'ID sulla EPROM ed invia al nodo l'informazione relativa alla tipologia del dispsitivo ed inizia il suo ciclo di vita a regime</li>
 <li>4.b.2 Se è negativa torna al passo 1</li>
 <li>4.b.3 Se la risposta è &quot;nodo non disponibile alla registrazione&quot; rimane in attesa di un pacchetto di &quot;registrazione ripresa&quot; dal nodo e a pacchetto ricevuto riprende dal punto 1</li>
 </ul></li>
@@ -80,6 +82,7 @@ L'unico byte di payload ha il seguente contenuto:</p>
 </ul></li>
 </ul></li>
 </ul>
+<p>Per informazioni riguardo ai pacchetti di invio della tipologia del dispositivo consultare la <a href="Submission.html">pagina relativa</a></p>
 <hr />
 </body>
 </html>
