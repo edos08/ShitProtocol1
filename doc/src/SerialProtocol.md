@@ -68,7 +68,7 @@ Durante la fase di registrazione l'arduino dovrà comunicare alla raspberry gli 
         | Header (1 byte)| payload (1 byte)|
         |------|-------|
         |   1  |   RESPONSE |
-    Dove RESPONSE avraà valore 0 se l'ID è valido, 1 se l'ID è già presente nel mongoDB.
+    Dove RESPONSE avrà valore 0 se l'ID è valido, 1 se l'ID è già presente nel mongoDB.
 * 3 Dopo aver completato la ricezione di tutti gli ID validi ed aver notificato i dispositivi del loro ID l'arduino invierà una serie di messaggi alla raspberry affichè memorizzi gli ID dei vari dispositivi nel proprio mongoDB. I messaggi della serie saranno così composti
     * 3.1 Messaggio di inizio invio degli ID:
 
