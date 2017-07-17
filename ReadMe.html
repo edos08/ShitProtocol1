@@ -19,15 +19,61 @@
 </ul>
 <p><em>startup_node code should be integrated with the serial-communication test code</em></p>
 <h1 id="todo">TODO</h1>
-<ul>
-<li>Integrare il codice dello startup del nodo con la comunicazione seriale verso la raspberry</li>
-<li>Effettuare il test della registrazione + comunicazione seriale</li>
-<li>Decidere che DBMS utilizzare nella rasperry (da tenere conto la semplicità di utilizzo dall'interno dell'ambiente Node.js). Propongo PostreSQL a cui è possibile accedere tramite il modulo Knex scaricabile con <code>npm install Knex</code>. MongoDB è più complicato da utilizzare all'interno dell'ambiente node.js in quanto non ho trovato moduli pronti per l'accesso diretto e completo al database. Le chiamate rest non permettono di compiere tutte le operazioni volute (<code>INSERT</code>).</li>
-<li>Rivedere il protocollo di handshake seriale tra raspberry e arduino in caso di terminazione del programma di monitoraggio da raspberry</li>
-<li>Mettere a punto l'idea per il funzionamento del sistema a regime</li>
-<li>Sviluppare l'interfaccia grafica dell'applicazione tramite modulo <code>electron</code> scaricabile da <code>npm</code> in HTML-CSS</li>
-<li>Mettere a punto le idee per l'assegnazione dei dispositivi alla stanza.</li>
-<li>Sviluppare una suite di test</li>
-</ul>
+<table style="width:54%;">
+<colgroup>
+<col width="19%" />
+<col width="20%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Descrizione</th>
+<th>Implementato</th>
+<th>Testato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Integrare il codice dello startup del nodo con la comunicazione seriale verso la raspberry</td>
+<td>v</td>
+<td>x</td>
+</tr>
+<tr class="even">
+<td>Effettuare il test della registrazione + comunicazione seriale</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="odd">
+<td>Decidere che DBMS utilizzare nella rasperry (da tenere conto la semplicità di utilizzo dall'interno dell'ambiente Node.js). Propongo PostreSQL a cui è possibile accedere tramite il modulo Knex scaricabile con <code>npm install Knex</code>. MongoDB è più complicato da utilizzare all'interno dell'ambiente node.js in quanto non ho trovato moduli pronti per l'accesso diretto e completo al database. Le chiamate rest non permettono di compiere tutte le operazioni volute (<code>INSERT</code>).</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="even">
+<td>Rivedere il protocollo di handshake seriale tra raspberry e arduino in caso di terminazione del programma di monitoraggio da raspberry</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="odd">
+<td>Mettere a punto l'idea per il funzionamento del sistema a regime</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="even">
+<td>Sviluppare l'interfaccia grafica dell'applicazione tramite modulo <code>electron</code> scaricabile da <code>npm</code> in HTML-CSS</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="odd">
+<td>Mettere a punto le idee per l'assegnazione dei dispositivi alla stanza</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="even">
+<td>Sviluppare una suite di test</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>

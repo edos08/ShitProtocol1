@@ -10,11 +10,13 @@ _startup_node code should be integrated with the serial-communication test code_
 
 # TODO
 
-* Integrare il codice dello startup del nodo con la comunicazione seriale verso la raspberry
-* Effettuare il test della registrazione + comunicazione seriale
-* Decidere che DBMS utilizzare nella rasperry (da tenere conto la semplicità di utilizzo dall'interno dell'ambiente Node.js). Propongo PostreSQL a cui è possibile accedere tramite il modulo Knex scaricabile con `npm install Knex`. MongoDB è più complicato da utilizzare all'interno dell'ambiente node.js in quanto non ho trovato moduli pronti per l'accesso diretto e completo al database. Le chiamate rest non permettono di compiere tutte le operazioni volute (`INSERT`).
-* Rivedere il protocollo di handshake seriale tra raspberry e arduino in caso di terminazione del programma di monitoraggio da raspberry
-* Mettere a punto l'idea per il funzionamento del sistema a regime
-* Sviluppare l'interfaccia grafica dell'applicazione tramite modulo `electron` scaricabile da `npm` in HTML-CSS
-* Mettere a punto le idee per l'assegnazione dei dispositivi alla stanza.
-* Sviluppare una suite di test
+| Descrizione | Implementato | Testato |
+|-------------|--------------|---------|
+| Integrare il codice dello startup del nodo con la comunicazione seriale verso la raspberry | v | x |  
+| Effettuare il test della registrazione + comunicazione seriale | x | x |
+| Decidere che DBMS utilizzare nella rasperry (da tenere conto la semplicità di utilizzo dall'interno dell'ambiente Node.js). Propongo PostreSQL a cui è possibile accedere tramite il modulo Knex scaricabile con `npm install Knex`. MongoDB è più complicato da utilizzare all'interno dell'ambiente node.js in quanto non ho trovato moduli pronti per l'accesso diretto e completo al database. Le chiamate rest non permettono di compiere tutte le operazioni volute (`INSERT`). | x | x |
+| Rivedere il protocollo di handshake seriale tra raspberry e arduino in caso di terminazione del programma di monitoraggio da raspberry | x | x |
+| Mettere a punto l'idea per il funzionamento del sistema a regime | x | x |
+| Sviluppare l'interfaccia grafica dell'applicazione tramite modulo `electron` scaricabile da `npm` in HTML-CSS | x | x |
+| Mettere a punto le idee per l'assegnazione dei dispositivi alla stanza | x | x |
+| Sviluppare una suite di test | x | x |
