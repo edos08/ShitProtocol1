@@ -1,17 +1,26 @@
 #include <SPI.h>
 #include <LoRa.h>
 #include <RegistrationProtocol.h>
-
-//TODO: Implement all serial communication (already done on test sketch)
+#include <SerialHelpers.h>
+//!!!!! Da mettere solo se la scheda è una Feather M0 !!!!!!
+#define Serial SERIAL_PORT_USBVIRTUAL
 
 #define NODE_ADDRESS 0xFFFFFFFF
-#define DEVICES_TO_REGISTER 1 //TODO: receive info from raspberry
+#define SERIAL_BUFFER_SIZE 15
+//#define DEVICES_TO_REGISTER 1 //TODO: receive info from raspberry
 
-uint32_t devices_ids[DEVICES_TO_REGISTER];
-uint32_t devices_types[DEVICES_TO_REGISTER];
+char SerialBuffer[SERIAL_BUFFER_SIZE];
+
+uint8_t devices_to_register = 0;
+uint32_t* devices_ids;
+uint32_t* devices_types;
 int devices_ids_index = 0;
 uint32_t doubled_ID;
+uint8_t idCheckResult = 0;
 
+bool handshakeCompleted = false;
+bool hasReceivedNumberOfDevicesToRegister = false;
+bool isWaitingForDeviceIDCheck = false;
 bool alertDoubledDevicesTrigger = false;
 bool notifyDevicesTrigger = false;
 bool hasReceivedType = false;
@@ -20,54 +29,62 @@ uint8_t type_received = -1;
 void setup() {
   Serial.begin(9600);
   while(!Serial);
+  sendHandshakeMessage();
   initLoRa(NODE_ADDRESS, 8, 4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
-  int result = sendPacket(RegistrationResumedPacket(BROADCAST,NODE_ADDRESS));
-  Helpers::printResponseMessage(result);
 }
 
 void loop() {
 
-  if(alertDoubledDevicesTrigger){
-    alertDoubledDevicesTrigger = false;
-    int result = sendPacket(RegistrationIDDeniedPacket(doubled_ID,NODE_ADDRESS));
-    Helpers::printResponseMessage(result);
-    int double_index = -1;
-    for(int b = 0; b < devices_ids_index; b++){
-        if(devices_ids[b] == doubled_ID){
-            double_index = b;
-            break;
-        }
-    }
-
-    for(int b = double_index; b < devices_ids_index - 1; b++)
-        devices_ids[b] = devices_ids[b+1];
-
-    devices_ids_index--;
+  if(serial.available()){
+    serialEvent();
   }
-
-  if(notifyDevicesTrigger){
-    int identified_devices = 0;
-    for(int a = 0; a <devices_ids_index; a++){
-        int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[a],NODE_ADDRESS));
+  if(handshakeCompleted){
+    if(hasReceivedNumberOfDevicesToRegister){
+      if(alertDoubledDevicesTrigger){
+        alertDoubledDevicesTrigger = false;
+        int result = sendPacket(RegistrationIDDeniedPacket(doubled_ID,NODE_ADDRESS));
         Helpers::printResponseMessage(result);
-        while(!hasReceivedType);
-        devices_types[a] = type_received;
-        hasReceivedType = false;
-        if(result == SUCCESFUL_RESPONSE)
-            identified_devices++;
-        delay(1);
-    }
-    Serial.println(String(identified_devices) + "/" + String(DEVICES_TO_REGISTER) + " devices identified succesfully!!!");
-    Serial.println("Now I should start my normal lyfecycle");
-    Serial.println("Here is a list of all the ids: ");
-    for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
-        Serial.print("0x");
-        Serial.println(devices_ids[a], HEX);
-    }
-    while(true);
-  }
+        int double_index = -1;
+        for(int b = 0; b < devices_ids_index; b++){
+            if(devices_ids[b] == doubled_ID){
+                double_index = b;
+                break;
+            }
+        }
 
+        for(int b = double_index; b < devices_ids_index - 1; b++)
+            devices_ids[b] = devices_ids[b+1];
+
+        devices_ids_index--;
+      }
+
+      if(notifyDevicesTrigger){
+        int identified_devices = 0;
+        sendDevicesStreamStartMessage();
+        for(int a = 0; a <devices_ids_index; a++){
+            int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[a],NODE_ADDRESS));
+            Helpers::printResponseMessage(result);
+            while(!hasReceivedType);
+            devices_types[a] = type_received;
+            hasReceivedType = false;
+            if(result == SUCCESFUL_RESPONSE)
+                identified_devices++;
+            sendDeviceInfoPacket(devices_ids[a],type_received);
+            delay(1);
+        }
+        sendDevicesStreamEndMessage();
+        Serial.println(String(identified_devices) + "/" + String(DEVICES_TO_REGISTER) + " devices identified succesfully!!!");
+        Serial.println("Now I should start my normal lyfecycle");
+        Serial.println("Here is a list of all the ids: ");
+        for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
+            Serial.print("0x");
+            Serial.println(devices_ids[a], HEX);
+        }
+        while(true);
+      }
+    }
+  }
 }
 
 
@@ -95,7 +112,6 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
 
 }
 
-
 bool findDuplicateIds(uint32_t receivedId){
   int idsFound = 0;
   for(int a = 0; a < devices_ids_index; a++){
@@ -103,6 +119,39 @@ bool findDuplicateIds(uint32_t receivedId){
       idsFound++;
     }
   }
-  //TODO: query to ID DB
-  return idsFound != 0;
+  if(idsFound > 0)
+      return true;
+  isWaitingForDeviceIDCheck = true;
+  sendIDCheckMessage(receivedId);
+  while(isWaitingForDeviceIDCheck);
+  return idCheckResult == MESSAGE_ID_INVALID;
+}
+
+void serialEvent(){
+  int serialIndex = 0;
+  while(Serial.available()){
+    serialBuffer[serialIndex] = (char)Serial.read();
+    serialIndex++;
+  }
+  if(!handshakeCompleted){
+    if(isHandshakeResponseMessage(serialBuffer,serialIndex)){
+      handshakeCompleted = true;
+      int result = sendPacket(RegistrationResumedPacket(BROADCAST,NODE_ADDRESS));
+      Helpers::printResponseMessage(result);
+    }
+    return;
+  }else if(!hasReceivedNumberOfDevicesToRegister){
+    if(isDevicesCountMessage(serialBuffer,serialIndex)){
+      hasReceivedNumberOfDevicesToRegister = true;
+      devices_to_register = (uint8_t)serialBuffer[1];
+      devices_ids = new uint32_t[devices_to_register];
+      devices_types = new uint32_t[devices_to_register];
+    }
+    return;
+  } else if(isWaitingForDeviceIDCheck){
+    if(isIDCheckResponse(serialBuffer,serialIndex)){
+      isWaitingForDeviceIDCheck = false;
+      idCheckResult = serialBuffer[1];
+    }
+  }
 }

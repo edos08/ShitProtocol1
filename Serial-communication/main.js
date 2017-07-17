@@ -1,8 +1,5 @@
 var SerialPort = require('serialport');
 var globals = require('./globals');
-//var tests = require('./test-serial');
-//var crest = require('crest');
-//var http = require('http');
 
 var devices_to_register = 1; //this should be given from the user (1 - 255)
 var handshakeSucceded = false;
@@ -31,7 +28,7 @@ port.on('data',(data) =>{
   } else if (id_acceptation_stream_active && globals.isIDStreamEndPacket(data)) {
     !id_acceptation_stream_active = false;
     if(accepted_ids == devices_to_register)
-        //operation completed, go to device assoiation phase
+        //operation completed, go to device association phase
     else {
       //Operation failed, abort
     }

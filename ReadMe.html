@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="doc/src/github-pandoc.css" type="text/css" />
+</head>
+<body>
+<h1 id="giude-for-the-content-of-this-directory">Giude for the content of this directory:</h1>
+<ul>
+<li>doc: contains the documentation for the LoRa Project, read it before reading and modifying the code</li>
+<li>libsrc: contains the ardiuni library files needed to make the communication between the devices work. Everything is explained in the documentation</li>
+<li>Serial-communication: contains the Node.js app with the startup code for the raspberry and an arduino test client. The code in the test should be added to the startup arduino sketches. The javascript server is already ready for use</li>
+<li>startup: contains the startup registration code for the devices</li>
+<li>startup_node: contains the startup registration code for the node wired in serial to the raspberry</li>
+</ul>
+<p><em>startup_node code should be integrated with the serial-communication test code</em></p>
+<h1 id="todo">TODO</h1>
+<ul>
+<li>Integrare il codice dello startup del nodo con la comunicazione seriale verso la raspberry</li>
+<li>Effettuare il test della registrazione + comunicazione seriale</li>
+<li>Decidere che DBMS utilizzare nella rasperry (da tenere conto la semplicità di utilizzo dall'interno dell'ambiente Node.js). Propongo PostreSQL a cui è possibile accedere tramite il modulo Knex scaricabile con <code>npm install Knex</code>. MongoDB è più complicato da utilizzare all'interno dell'ambiente node.js in quanto non ho trovato moduli pronti per l'accesso diretto e completo al database. Le chiamate rest non permettono di compiere tutte le operazioni volute (<code>INSERT</code>).</li>
+<li>Rivedere il protocollo di handshake seriale tra raspberry e arduino in caso di terminazione del programma di monitoraggio da raspberry</li>
+<li>Mettere a punto l'idea per il funzionamento del sistema a regime</li>
+<li>Sviluppare l'interfaccia grafica dell'applicazione tramite modulo <code>electron</code> scaricabile da <code>npm</code> in HTML-CSS</li>
+<li>Mettere a punto le idee per l'assegnazione dei dispositivi alla stanza.</li>
+<li>Sviluppare una suite di test</li>
+</ul>
+</body>
+</html>
