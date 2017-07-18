@@ -15,9 +15,11 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 
 function init(portPath){
-  port = new SerialPort(portPath,{
-    baudRate: 9600
-  }, onPortOpened);
+  if(portPath != ''){
+    port = new SerialPort(portPath,{
+      baudRate: 9600
+    }, onPortOpened); 
+  }
 }
 
 function onPortOpened(err){
