@@ -40,22 +40,22 @@ static bool isIDCheckResponse(char dataBuffer[], int buffer_size){
 }
 
 static void sendIDCheckMessage(uint32_t ID){
-  Serial.write((uin8t_t)MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE);
+  Serial.write((uint8_t)MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE);
   SerialHelpers::write32bitIntegerIntoSerial(ID);
 }
 
 static void sendDevicesStreamStartMessage(){
-  Serial.write((uin8t_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((uin8t_t)MESSAGE_DEVICES_STREAM_START);
+  Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uint8_t)MESSAGE_DEVICES_STREAM_START);
 }
 
 static void sendDevicesStreamEndMessage(){
-  Serial.write((uin8t_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((uin8t_t)MESSAGE_DEVICE_STREAM_END);
+  Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uint8_t)MESSAGE_DEVICE_STREAM_END);
 }
 
 static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
-  Serial.write((uin8t_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
   SerialHelpers::write32bitIntegerIntoSerial(ID);
   Serial.write(type);
 }
