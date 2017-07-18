@@ -16,10 +16,10 @@
 
 typedef struct SerialHelpers{
   static void write32bitIntegerIntoSerial(uint32_t valueToWrite){
-    Serial.write((value & 0xFF000000) >> 24);
-		Serial.write((value & 0x00FF0000) >> 16);
-		Serial.write((value & 0x0000FF00) >> 8);
-		Serial.write(value & 0x000000FF);
+    Serial.write((valueToWrite & 0xFF000000) >> 24);
+		Serial.write((valueToWrite & 0x00FF0000) >> 16);
+		Serial.write((valueToWrite & 0x0000FF00) >> 8);
+		Serial.write(valueToWrite & 0x000000FF);
   }
 };
 
@@ -40,22 +40,22 @@ static bool isIDCheckResponse(char dataBuffer[], int buffer_size){
 }
 
 static void sendIDCheckMessage(uint32_t ID){
-  Serial.write((char)MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE);
+  Serial.write((uin8_t)MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE);
   SerialHelpers::write32bitIntegerIntoSerial(ID);
 }
 
 static void sendDevicesStreamStartMessage(){
-  Serial.write((char)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((char)MESSAGE_DEVICES_STREAM_START);
+  Serial.write((uin8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uin8_t)MESSAGE_DEVICES_STREAM_START);
 }
 
 static void sendDevicesStreamEndMessage(){
-  Serial.write((char)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((char)MESSAGE_DEVICE_STREAM_END);
+  Serial.write((uin8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uin8_t)MESSAGE_DEVICE_STREAM_END);
 }
 
 static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
-  Serial.write((char)MESSAGE_TYPE_DEVICES_SUBMISSION);
+  Serial.write((uin8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
   SerialHelpers::write32bitIntegerIntoSerial(ID);
   Serial.write(type);
 }
