@@ -7,9 +7,9 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
-//#define DEVICES_TO_REGISTER 1 //TODO: receive info from raspberry
+//#define devices_to_register 1 //TODO: receive info from raspberry
 
-char SerialBuffer[SERIAL_BUFFER_SIZE];
+char serialBuffer[SERIAL_BUFFER_SIZE];
 
 uint8_t devices_to_register = 0;
 uint32_t* devices_ids;
@@ -36,7 +36,7 @@ void setup() {
 
 void loop() {
 
-  if(serial.available()){
+  if(Serial.available()){
     serialEvent();
   }
   if(handshakeCompleted){
@@ -74,7 +74,7 @@ void loop() {
             delay(1);
         }
         sendDevicesStreamEndMessage();
-        Serial.println(String(identified_devices) + "/" + String(DEVICES_TO_REGISTER) + " devices identified succesfully!!!");
+        Serial.println(String(identified_devices) + "/" + String(devices_to_register) + " devices identified succesfully!!!");
         Serial.println("Now I should start my normal lyfecycle");
         Serial.println("Here is a list of all the ids: ");
         for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
@@ -90,7 +90,7 @@ void loop() {
 
 void handleSubmissionPacket(Packet idSubmissionPacket){
   if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
-    if(devices_ids_index >= DEVICES_TO_REGISTER){ //redundant packet, already have al that i need
+    if(devices_ids_index >= devices_to_register){ //redundant packet, already have al that i need
       notifyDevicesTrigger = true;
       return;
     }
@@ -98,7 +98,7 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
     if(!duplicatesFound){
       devices_ids[devices_ids_index] = idSubmissionPacket.sender;
       devices_ids_index++;
-      if(devices_ids_index >= DEVICES_TO_REGISTER)
+      if(devices_ids_index >= devices_to_register)
         notifyDevicesTrigger = true;
     } else{
       doubled_ID = idSubmissionPacket.sender;
