@@ -18,7 +18,7 @@ function init(portPath){
   if(portPath != ''){
     port = new SerialPort(portPath,{
       baudRate: 9600
-    }, onPortOpened); 
+    }, onPortOpened);
   }
 }
 
@@ -28,7 +28,7 @@ function onPortOpened(err){
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
-    console.log('Received: ' + data);
+    console.log('Received: ' + data + "\n");
     if(isHandshakePacket){
       if(handshakeHandler)
         handshakeHandler();
