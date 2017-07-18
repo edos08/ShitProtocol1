@@ -4,13 +4,16 @@ var devicesToRegister = 1; //this should be given from the user (1 - 255)
 var handshakeSucceded = false;
 var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
+var onEnd = null;
 
-helpers.init('COM7');
-helpers.handshakeHandler = handleHandshake;
-helpers.idCheckRequestHandler = handleIDCheckRequest;
-helpers.idStreamStartHandler = handleIDStreamStartMessage;
-helpers.idStreamValueHandler = handleIDStreamValueMessage;
-helpers.idStreamEndHandler = handleIDStreamEndMessage;
+function start(){
+  helpers.init('COM7');
+  helpers.handshakeHandler = handleHandshake;
+  helpers.idCheckRequestHandler = handleIDCheckRequest;
+  helpers.idStreamStartHandler = handleIDStreamStartMessage;
+  helpers.idStreamValueHandler = handleIDStreamValueMessage;
+  helpers.idStreamEndHandler = handleIDStreamEndMessage;
+}
 
 function handleHandshake(){
   if(!handshakeSucceded){
@@ -75,6 +78,9 @@ function handleIDStreamEndMessage(){
     console.log("Operation failed");
     //Operation failed, abort
   }
+  if(onEnd){
+    onEnd(accepted_ids == devices_to_register);
+  }
 }
 
 function checkHendshakeState(){
@@ -83,4 +89,9 @@ function checkHendshakeState(){
     return false;
   }
   return true;
+}
+
+module.exports = {
+  start,
+  onEnd
 }

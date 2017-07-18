@@ -4,8 +4,16 @@
   "description": "management IOT",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron .",
+    "install": "electron-rebuild"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.6.11",
+    "electron-rebuild": "^1.5.11"
+  },
+  "dependencies": {
+    "serialport": "^5.0.0-beta8"
+  }
 }
