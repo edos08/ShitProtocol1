@@ -94,7 +94,7 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
       notifyDevicesTrigger = true;
       return;
     }
-    bool duplicatesFound = findDuplicateIds(idSubmissionPacket.sender);
+    bool duplicatesFound = isDuplicateId(idSubmissionPacket.sender);
     if(!duplicatesFound){
       devices_ids[devices_ids_index] = idSubmissionPacket.sender;
       devices_ids_index++;
@@ -112,7 +112,7 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
 
 }
 
-bool findDuplicateIds(uint32_t receivedId){
+bool isDuplicateId(uint32_t receivedId){
   int idsFound = 0;
   for(int a = 0; a < devices_ids_index; a++){
     if(devices_ids[a] == receivedId){

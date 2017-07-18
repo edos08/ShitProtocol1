@@ -1,29 +1,28 @@
-var SerialPort = require('serialport');
+//var SerialPort = require('serialport');
 
+function testFindDuplicateFunction(){
+  var givenDevicesIds = [0xCCC,0xFF3,0xAB123];
+  thenIdSouldBeInvalid(givenDevicesIds,0xCCC);
+  thenIdSouldBeValid(givenDevicesIds,0xA);
+}
 
-
-function testRead(port){
-  var expected = 'H';
-
-  var valueRead = port.read(1);
-
-  if(expected == valueRead)
-    return console.log("Read operation test is succesful");
-  else{
-    return console.log("Reading test failed: expected " + expected + ", actual " + valueRead);
+function isDuplicateId(devices,id){
+  var idsFound = 0;
+  for(var a = 0; a < devices.length; a++){
+    if(devices[a] == id){
+      idsFound++;
+    }
   }
+  return idsFound > 0;
 }
 
-function testWrite(port){
-    port.write('H');
-    port.drain();
-    console.log("H written");
-    testRead(port);
+function thenIdSouldBeInvalid(devices,id){
+  console.log("Id should be invalid: " + isDuplicateId(devices,id));
 }
 
 
-
-module.exports = {
-  testRead: testRead,
-  testWrite: testWrite
+function thenIdSouldBeValid(devices,id){
+  console.log("Id should be valid: " + !isDuplicateId(devices,id));
 }
+
+testFindDuplicateFunction();
