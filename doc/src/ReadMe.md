@@ -6,7 +6,15 @@
 * startup: contains the startup registration code for the devices
 * startup_node: contains the startup registration code for the node wired in serial to the raspberry
 
-_startup_node code should be integrated with the serial-communication test code_
+## RASPBERRY:
+ scaricare la repository:
+
+ ```
+sudo git clone --depth=1 https://github.com/edos08/ShitProtocol1        
+ ```
+
+ copiare il contenuto di `ShitProtocol1/libsrc` in /opt/arduino-1.8.3/libraries/LoRa
+
 
 # TODO
 
