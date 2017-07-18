@@ -1,6 +1,8 @@
 #ifndef SERIAL_HELPERS_H
 #define SERIAL_HELPERS_H
 
+#include <stdint.h>
+
 #define HANDSHAKE_MESSAGE 'H'
 #define HANDSHAKE_VALID_RESPONSE 'W'
 
