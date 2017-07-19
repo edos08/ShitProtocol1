@@ -16,11 +16,11 @@
 #define MESSAGE_DEVICE_STREAM_END 255
 
 typedef struct SerialHelpers{
-  static void write32bitIntegerIntoBuffer(char buffer*,uint32_t valueToWrite){
-    buffer[1] = ((valueToWrite & 0xFF000000) >> 24);
-		buffer[2] = ((valueToWrite & 0x00FF0000) >> 16);
-		buffer[3] = ((valueToWrite & 0x0000FF00) >> 8);
-		buffer[4] = (valueToWrite & 0x000000FF);
+  static void write32bitIntegerIntoBuffer(char* buffer,uint32_t valueToWrite){
+    buffer[1] = (char)((valueToWrite & 0xFF000000) >> 24);
+		buffer[2] = (char)((valueToWrite & 0x00FF0000) >> 16);
+		buffer[3] = (char)((valueToWrite & 0x0000FF00) >> 8);
+		buffer[4] = (char)((valueToWrite & 0x000000FF);
   }
 };
 
@@ -63,7 +63,7 @@ static void sendDevicesStreamEndMessage(){
 
 static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  SerialHelpers::write32bitIntegerIntoSerial(ID);
+  //SerialHelpers::write32bitIntegerIntoSerial(ID);
   Serial.write(type);
 }
 
