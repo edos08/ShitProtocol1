@@ -7,8 +7,8 @@ var accepted_ids = 0;
 var onEnd = null;
 
 function start(){
-  var portName = '/dev/ttyACM';
-  var portnameCounter = 0;
+  var portName = '/dev/ttyACM0';
+  /*var portnameCounter = 0;
   var result = false;
   var skip = false;
    do{
@@ -21,8 +21,8 @@ function start(){
        result = true;
      }
 
-   }while(!result && portnameCounter < 5);
-
+   }while(!result && portnameCounter < 5);*/
+  helpers.init(portName);
   helpers.handshakeHandler = handleHandshake;
   helpers.idCheckRequestHandler = handleIDCheckRequest;
   helpers.idStreamStartHandler = handleIDStreamStartMessage;
