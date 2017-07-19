@@ -15,19 +15,22 @@ var idStreamStartHandler;
 var idStreamValueHandler;
 var idStreamEndHandler;
 
-function init(portPath){
+function init(portPath,handlers){
   onPortOpenedCalled = false;
   if(portPath != ''){
     console.log("Testing " + portPath);
-      try{
-        port = new SerialPort(portPath,{
-          baudRate: 9600,
-          autoOpen: false
-        });
-        port.open(onPortOpened);
-      }catch(e){
-        return -1;
-      }
+    port = new SerialPort(portPath,{
+      baudRate: 9600,
+      autoOpen: false
+    });
+    
+    handshakeHandler = handlers.handshakeHandler;
+    idCheckRequestHandler = handlers.idCheckRequestHandler;
+    idStreamStartHandler = handlers.idStreamStartHandler;
+    idStreamValueHandler = handlers.idStreamValueHandler;
+    idStreamEndHandler = handlers.idStreamEndHandler;
+
+    port.open(onPortOpened);
   }
 }
 
