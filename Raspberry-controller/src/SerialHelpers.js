@@ -21,11 +21,11 @@ function init(portPath){
     try {
       port = new SerialPort(portPath,{
         baudRate: 9600,
-        autoOpen = false;
+        autoOpen: false
       });
     } catch (e) {
       return false;
-    } 
+    }
     port.open(onPortOpened);
     //onPortOpenedCalled = false;
     return port.isOpen;
