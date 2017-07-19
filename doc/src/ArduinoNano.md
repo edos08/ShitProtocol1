@@ -31,3 +31,9 @@ Il DIO0 deve rimanere sul 3 perchè i pin 2 e 3 sono gli unici a cui ci si può 
 NSS e RESET non devono andare sui pin 6,7,8 perchè altrimenti non carica lo sketch
 
 Chiamando initLoRa si abbia cura di chiamarlo con gli argomenti (indirizzo,10,9,3)
+
+# Errore 'can't set com state for ...'
+
+Succede quando si stacca la scheda dalla corrente.
+
+Occorre togliere il modulo lora, ricaricare lo sketch e reinserire il modulo LoRa

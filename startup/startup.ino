@@ -46,7 +46,9 @@ void loop() {
       }
 
       if(!idSent){
+        Serial.println("Am i here?");
         delay(generateRandomWaitingTime());
+        Serial.println("delayed");
         int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
         Helpers::printResponseMessage(result);
         idSent = true;

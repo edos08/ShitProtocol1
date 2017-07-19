@@ -93,7 +93,7 @@ function sendDevicesNumberPacket(devicesNumber){
 
 function answerToHandshake(){
     port.write(HANDSHAKE_RESPONSE);
-    console.log("Handshake completed");
+    console.log("Handshake awerered");
 }
 
 function read32bitInt(data,startIndex){

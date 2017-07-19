@@ -6,7 +6,7 @@
   <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="doc/src/github-pandoc.css" type="text/css" />
+  <link rel="stylesheet" href="src/github-pandoc.css" type="text/css" />
 </head>
 <body>
 <h1 id="arduino-nano-versione-cinese">Arduino Nano (versione cinese)</h1>
@@ -90,5 +90,8 @@
 <p>Il DIO0 deve rimanere sul 3 perchè i pin 2 e 3 sono gli unici a cui ci si può iscrivere per ricevere cambiamenti di stato (callback)</p>
 <p>NSS e RESET non devono andare sui pin 6,7,8 perchè altrimenti non carica lo sketch</p>
 <p>Chiamando initLoRa si abbia cura di chiamarlo con gli argomenti (indirizzo,10,9,3)</p>
+<h1 id="errore-cant-set-com-state-for-...">Errore 'can't set com state for ...'</h1>
+<p>Succede quando si stacca la scheda dalla corrente.</p>
+<p>Occorre togliere il modulo lora, ricaricare lo sketch e reinserire il modulo LoRa</p>
 </body>
 </html>
