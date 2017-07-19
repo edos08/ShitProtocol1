@@ -131,8 +131,10 @@ function isHandshakeEndPacket(data){
 }
 
 function answerToIDCheckRequest(result){
-  port.write(Buffer.alloc(1,ID_CHECK_PACKET));
-  port.write(Buffer.alloc(1,result));
+  var buf = Buffer.alloc(2);
+  buf[0] = ID_CHECK_PACKET;
+  buf[1] = result;
+  port.write(buf);
 }
 module.exports = {
   init: init,
