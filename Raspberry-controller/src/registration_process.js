@@ -9,7 +9,7 @@ var onEnd = null;
 function start(){
   var portName = '/dev/tty';
   var portnameCounter = 0;
-  while(!helpers.init(portName + portnameCounter)){
+  while(!helpers.init(portName + portnameCounter) && portnameCounter < 15){
       portnameCounter++;
   }
   helpers.handshakeHandler = handleHandshake;
