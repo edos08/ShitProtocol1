@@ -30,7 +30,7 @@ void setup() {
   Serial.begin(9600);
   while(!Serial);
   sendHandshakeMessage();
-  initLoRa(NODE_ADDRESS, 10, 9, 3);
+  initLoRa(NODE_ADDRESS, 8,4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
 }
 

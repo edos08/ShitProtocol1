@@ -27,7 +27,7 @@ void setup() {
   //Serial.println(readEEPROM(),HEX);
   randomSeed(analogRead(0));
   randomAddress = generateRandomAddress();
-  initLoRa(randomAddress, 8,4, 3);
+  initLoRa(randomAddress, 10,9, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
