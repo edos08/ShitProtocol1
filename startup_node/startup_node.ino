@@ -3,7 +3,7 @@
 #include <RegistrationProtocol.h>
 #include <SerialHelpers.h>
 //!!!!! Da mettere solo se la scheda è una Feather M0 !!!!!!
-#define Serial SERIAL_PORT_USBVIRTUAL
+//#define Serial SERIAL_PORT_USBVIRTUAL
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
@@ -30,7 +30,7 @@ void setup() {
   Serial.begin(9600);
   while(!Serial);
   sendHandshakeMessage();
-  initLoRa(NODE_ADDRESS, 8, 4, 3);
+  initLoRa(NODE_ADDRESS, 10, 9, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
 }
 
