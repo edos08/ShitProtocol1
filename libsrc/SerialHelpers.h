@@ -20,7 +20,7 @@ typedef struct SerialHelpers{
     buffer[1] = (char)((valueToWrite & 0xFF000000) >> 24);
 		buffer[2] = (char)((valueToWrite & 0x00FF0000) >> 16);
 		buffer[3] = (char)((valueToWrite & 0x0000FF00) >> 8);
-		buffer[4] = (char)((valueToWrite & 0x000000FF);
+		buffer[4] = (char)(valueToWrite & 0x000000FF);
   }
 };
 
