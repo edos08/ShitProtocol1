@@ -23,7 +23,7 @@ function start(){
        console.log("?");
      }
 
-   }while(!result && portnameCounter < 15);
+   }while(!result && portnameCounter < 5);
 
   helpers.handshakeHandler = handleHandshake;
   helpers.idCheckRequestHandler = handleIDCheckRequest;
