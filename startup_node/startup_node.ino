@@ -74,13 +74,13 @@ void loop() {
             delay(1);
         }
         sendDevicesStreamEndMessage();
-        Serial.println(String(identified_devices) + "/" + String(devices_to_register) + " devices identified succesfully!!!");
-        Serial.println("Now I should start my normal lyfecycle");
-        Serial.println("Here is a list of all the ids: ");
-        for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
-            Serial.print("0x");
-            Serial.println(devices_ids[a], HEX);
-        }
+        //Serial.println(String(identified_devices) + "/" + String(devices_to_register) + " devices identified succesfully!!!");
+        //Serial.println("Now I should start my normal lyfecycle");
+        //Serial.println("Here is a list of all the ids: ");
+        //for(int a = 0; a < devices_ids_index; a++){ // this loop should send the devices ids and types to the raspberry
+        //    Serial.print("0x");
+        //    Serial.println(devices_ids[a], HEX);
+        //}
         while(true);
       }
     }
