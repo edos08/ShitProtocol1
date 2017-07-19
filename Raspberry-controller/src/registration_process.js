@@ -7,13 +7,16 @@ var accepted_ids = 0;
 var onEnd = null;
 
 function start(){
-  var portName = '/dev/ttyAMA';
+  var portName = '/dev/ttyACM';
   var portnameCounter = 0;
   var result = false;
+  var skip = false;
    do{
-     if(portnameCounter == 0 || (helpers.onPortOpenedCalled && !helpers.isPortOpen)){
-         helpers.init(portName + portnameCounter);
+     if(portnameCounter == 0 || skip || (helpers.onPortOpenedCalled && !helpers.isPortOpen)){
+         skip = false;
+         var res = helpers.init(portName + portnameCounter);
          portnameCounter++;
+         if(res == -1) skip = true;
      }else if(helpers.onPortOpenedCalled && helpers.isPortOpen){
        result = true;
      }else{
