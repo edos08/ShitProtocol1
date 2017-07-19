@@ -3,7 +3,7 @@
 #include <RegistrationProtocol.h>
 #include <SerialHelpers.h>
 //!!!!! Da mettere solo se la scheda è una Feather M0 !!!!!!
-//#define Serial SERIAL_PORT_USBVIRTUAL
+#define Serial SERIAL_PORT_USBVIRTUAL
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
@@ -117,7 +117,7 @@ bool isDuplicateId(uint32_t receivedId){
   isWaitingForDeviceIDCheck = true;
   sendIDCheckMessage(receivedId);
   while(isWaitingForDeviceIDCheck);
-  return idCheckResult == MESSAGE_ID_INVALID;
+  return idCheckResult != MESSAGE_ID_VALID;
 }
 
 void serialEvent(){
@@ -143,7 +143,9 @@ void serialEvent(){
     }
     return;
   } else if(isWaitingForDeviceIDCheck){
+    Serial.println("Wainting for check");
     if(isIDCheckResponse(serialBuffer,serialIndex)){
+      Serial.println("checked");
       isWaitingForDeviceIDCheck = false;
       idCheckResult = serialBuffer[1];
     }
