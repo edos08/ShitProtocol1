@@ -3,6 +3,7 @@
 
 #define HANDSHAKE_MESSAGE 'H'
 #define HANDSHAKE_VALID_RESPONSE 'W'
+#define HANDSHAKE_END_MESSAGE 'A'
 
 #define MESSAGE_TYPE_DEVICES_COUNT 0
 #define MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE 1
@@ -29,6 +30,10 @@ static bool isHandshakeResponseMessage(char dataBuffer[], int buffer_size){
 
 static void sendHandshakeMessage(){
   Serial.write(HANDSHAKE_MESSAGE);
+}
+
+static void sendHandShakeEndMessage(){
+  Serial.write(HANDSHAKE_END_MESSAGE);
 }
 
 static bool isDevicesCountMessage(char dataBuffer[], int buffer_size){

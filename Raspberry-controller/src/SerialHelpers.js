@@ -1,14 +1,18 @@
 var SerialPort = require('serialport');
 
-var DEVICES_NUMBER_PACKET = 0;
-var ID_CHECK_PACKET = 1;
-var ID_CONFIRMED_PACKET = 2;
-var ID_CONFIRMATION_PROCESS_START = 0;
-var ID_CONFERMATION_PROCESS_END = 255;
+const DEVICES_NUMBER_PACKET = 0;
+const ID_CHECK_PACKET = 1;
+const ID_CONFIRMED_PACKET = 2;
+const ID_CONFIRMATION_PROCESS_START = 0;
+const ID_CONFERMATION_PROCESS_END = 255;
+const HANDSHAKE_RESPONSE = 'W';
+const HANDSHAKE_END = 'A';
+const HANDSHAKE_MESSAGE = 'H';
 
 var port;
 
 var handshakeHandler;
+var handshakeEndHandler;
 var idCheckRequestHandler;
 var idStreamStartHandler;
 var idStreamValueHandler;
@@ -23,6 +27,7 @@ function init(portPath,handlers){
     idStreamStartHandler = handlers.idStreamStartHandler;
     idStreamValueHandler = handlers.idStreamValueHandler;
     idStreamEndHandler = handlers.idStreamEndHandler;
+    handshakeEndHandler = handlers.handshakeEndHandler;
 
     port = new SerialPort(portPath,{
       baudRate: 9600,
@@ -45,10 +50,12 @@ function onPortOpened(err){
     if(isHandshakePacket(data)){
       if(handshakeHandler){
         handshakeHandler();
-      }else{
-        console.log("No handler");;
       }
-    } else if(isIDCheckRequest(data)){
+    } else if(isHandshakeEndPacket(data)){
+      if(handshakeEndHandler){
+        handshakeEndHandler();
+      }
+    }else if(isIDCheckRequest(data)){
       if(idCheckRequestHandler){
         var _id = read32bitInt(data,1);
         idCheckRequestHandler(_id);
@@ -80,7 +87,7 @@ function sendDevicesNumberPacket(devicesNumber){
 }
 
 function answerToHandshake(){
-    port.write("W");
+    port.write(HANDSHAKE_RESPONSE);
     console.log("Handshake completed");
 }
 
@@ -95,7 +102,7 @@ function read32bitInt(data,startIndex){
 }
 
 function isHandshakePacket(data){
-  return data == 'H';
+  return data.size == 1 && data[0] == HANDSHAKE_MESSAGE;
 }
 
 function isIDStreamStartPacket(data){
@@ -114,6 +121,10 @@ function isIDCheckRequest(data){
   return data.length == 5 && data[0] == ID_CHECK_PACKET;
 }
 
+function isHandshakeEndPacket(data){
+  return data.length == 1 && data[0] == HANDSHAKE_END;
+}
+
 function answerToIDCheckRequest(result){
   port.write(Buffer.alloc(1,ID_CHECK_PACKET));
   port.write(Buffer.alloc(1,result));
@@ -122,10 +133,5 @@ module.exports = {
   init: init,
   answerToHandshake: answerToHandshake,
   sendDevicesNumberPacket: sendDevicesNumberPacket,
-  handshakeHandler: handshakeHandler,
-  idCheckRequestHandler: idCheckRequestHandler,
-  idStreamStartHandler: idStreamStartHandler,
-  idStreamValueHandler: idStreamValueHandler,
-  idStreamEndHandler: idStreamEndHandler,
   answerToIDCheckRequest: answerToIDCheckRequest
 }
