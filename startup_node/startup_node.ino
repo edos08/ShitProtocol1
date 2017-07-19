@@ -137,7 +137,8 @@ void serialEvent(){
     if(isHandshakeResponseMessage(serialBuffer,serialIndex)){
       handshakeCompleted = true;
       int result = sendPacket(RegistrationResumedPacket(BROADCAST,NODE_ADDRESS));
-      Helpers::printResponseMessage(result);
+      //Helpers::printResponseMessage(result);
+      sendHandShakeEndMessage();
     }
     return;
   }else if(!hasReceivedNumberOfDevicesToRegister){

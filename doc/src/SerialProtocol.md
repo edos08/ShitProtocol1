@@ -39,7 +39,7 @@ Per entrambi la comunicazione seriale è gestita ad una frquenza di 9600 baud
 
 ## Protocollo di comunicazione
 
-La raspberry attende che l'arduino le mandi un messaggio prima di iniziare la comunicazione. Tale messaggio di handshake è costituito da un singolo byte contenente il carattere 'H' (Hello), a cui la raspberry dovrà rispondere con un messaggio lungo 1 byte contenente il carattere 'W' (Welcome). Dopo questo passaggio di handshake i due componenti possono iniziare a comunicare.
+La raspberry attende che l'arduino le mandi un messaggio prima di iniziare la comunicazione. Tale messaggio di handshake è costituito da un singolo byte contenente il carattere 'H' (Hello), a cui la raspberry dovrà rispondere con un messaggio lungo 1 byte contenente il carattere 'W' (Welcome). A questo l'arduino dovrà rispondere con un messaggio lungo 1 byte contenente il carattere 'A' (accepted). Dopo questo passaggio di handshake i due componenti possono iniziare a comunicare.
 
 ! L'handshake va eseguito ogni volta che l'arduino viene riacceso
 
