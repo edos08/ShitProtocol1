@@ -20,12 +20,13 @@ function init(portPath){
       baudRate: 9600
     }, onPortOpened);
   }
-  return port != null;
+  return port.open() != null;
 }
 
 function onPortOpened(err){
   if(err != null){
-      return console.log("Serial port error: ",err.message);
+      console.log("Serial port error: ",err.message);
+      return null;
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
@@ -52,6 +53,7 @@ function onPortOpened(err){
       }
     }
   });
+  return 1;
 }
 
 
