@@ -19,16 +19,14 @@ function init(portPath){
   onPortOpenedCalled = false;
   if(portPath != ''){
     console.log("Testing " + portPath);
-    try {
       port = new SerialPort(portPath,{
         baudRate: 9600,
         autoOpen: false
       });
-    } catch (e) {
-      console.log("Error opening port " + portPath + ": " + e);
     }
     port.open(onPortOpened);
   }
+  throw("Invalid port name");
 }
 
 function onPortOpened(err){
