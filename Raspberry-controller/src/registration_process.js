@@ -8,26 +8,14 @@ var onEnd = null;
 
 function start(){
   var portName = '/dev/ttyACM0';
-  /*var portnameCounter = 0;
-  var result = false;
-  var skip = false;
-   do{
-     if(portnameCounter == 0 || skip || (helpers.onPortOpenedCalled && !helpers.isPortOpen)){
-         skip = false;
-         var res = helpers.init(portName + portnameCounter);
-         portnameCounter++;
-         if(res == -1) skip = true;
-     }else if(helpers.onPortOpenedCalled && helpers.isPortOpen){
-       result = true;
-     }
-
-   }while(!result && portnameCounter < 5);*/
-  helpers.init(portName);
-  helpers.handshakeHandler = handleHandshake;
-  helpers.idCheckRequestHandler = handleIDCheckRequest;
-  helpers.idStreamStartHandler = handleIDStreamStartMessage;
-  helpers.idStreamValueHandler = handleIDStreamValueMessage;
-  helpers.idStreamEndHandler = handleIDStreamEndMessage;
+  var handlers = {
+    handshakeHandler: handleHandshake;
+    idCheckRequestHandler: handleIDCheckRequest;
+    idStreamStartHandler: handleIDStreamStartMessage;
+    dStreamValueHandler: handleIDStreamValueMessage;
+    idStreamEndHandler: handleIDStreamEndMessage;
+  }
+  helpers.init(portName,handlers);
 }
 
 function handleHandshake(){
