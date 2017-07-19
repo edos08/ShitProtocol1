@@ -13,23 +13,31 @@ function start(){
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
     dStreamValueHandler: handleIDStreamValueMessage,
-    idStreamEndHandler: handleIDStreamEndMessage
+    idStreamEndHandler: handleIDStreamEndMessage,
+    handshakeEndHandler: handleHandshakeEnd
   };
   helpers.init(portName,handlers);
 }
 
 function handleHandshake(){
   if(!handshakeSucceded){
-    handshakeSucceded = true;
     helpers.answerToHandshake();
-    helpers.sendDevicesNumberPacket(devicesToRegister);
     return;
   }
   console.log("Warning: unexpected handshake attempt");
 }
 
+function handleHandshakeEnd(){
+  if(!handshakeSucceded){
+      handshakeSucceded = true;
+      helpers.sendDevicesNumberPacket(devicesToRegister);
+  }else{
+    console.log("Warning: unexpected handshake attempt");
+  }
+}
+
 function handleIDCheckRequest(id){
-  if(!checkHendshakeState())
+  if(!checkHandshakeState())
       return;
   if(isAcceptationIDStreamActive){
     console.log("Warning: received ID check request while id submission stream is open [All IDs were already checked]");
@@ -42,7 +50,7 @@ function handleIDCheckRequest(id){
 }
 
 function handleIDStreamStartMessage(){
-  if(!checkHendshakeState())
+  if(!checkHandshakeState())
       return;
   if(isAcceptationIDStreamActive){
     console.log("Warning: received id stream start packet while stream is already open");
@@ -53,7 +61,7 @@ function handleIDStreamStartMessage(){
 }
 
 function handleIDStreamValueMessage(id,type){
-  if(!checkHendshakeState())
+  if(!checkHandshakeState())
       return;
   if(!isAcceptationIDStreamActive){
     console.log("Warning: received an id stream packet while stream is closed");
@@ -66,7 +74,7 @@ function handleIDStreamValueMessage(id,type){
 }
 
 function handleIDStreamEndMessage(){
-  if(!checkHendshakeState())
+  if(!checkHandshakeState())
       return;
   if(!isAcceptationIDStreamActive){
     console.log("Warning: received id stream end message while stream is already closed");
@@ -86,7 +94,7 @@ function handleIDStreamEndMessage(){
   }
 }
 
-function checkHendshakeState(){
+function checkHandshakeState(){
   if(!handshakeSucceded){
     console.log("Warning: received a serial message without completing the handshake");
     return false;
