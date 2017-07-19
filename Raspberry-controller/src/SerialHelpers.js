@@ -19,11 +19,15 @@ function init(portPath){
   onPortOpenedCalled = false;
   if(portPath != ''){
     console.log("Testing " + portPath);
-      port = new SerialPort(portPath,{
-        baudRate: 9600,
-        autoOpen: false
-      });
-    port.open(onPortOpened);
+      try{
+        port = new SerialPort(portPath,{
+          baudRate: 9600,
+          autoOpen: false
+        });
+        port.open(onPortOpened);
+      }catch(e){
+        return -1;
+      }
   }
 }
 
