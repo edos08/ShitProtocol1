@@ -100,7 +100,7 @@ function read32bitInt(data,startIndex){
   var _id = 0;
   var shifter = 24;
   for(var a = startIndex; a < startIndex+4; a++){
-    id |= (data[a] << shifter);
+    _id |= (data[a] << shifter);
     shifter -= 8;
   }
   return _id;
