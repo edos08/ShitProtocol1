@@ -26,7 +26,6 @@ function init(portPath){
     }
     port.open(onPortOpened);
   }
-  throw("Invalid port name");
 }
 
 function onPortOpened(err){
