@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="doc/src/github-pandoc.css" type="text/css" />
+</head>
+<body>
+<h1 id="arduino-nano-versione-cinese">Arduino Nano (versione cinese)</h1>
+<p>Documentazione scritta in seguito alla risoluzione del seguente problema: Impossibile caricare sketch su arduino nano atmega328.</p>
+<h2 id="soluzioni-tentate">Soluzioni tentate:</h2>
+<table style="width:47%;">
+<colgroup>
+<col width="16%" />
+<col width="11%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tentativo</th>
+<th>Esito</th>
+<th>Motivazione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Scaricare ed installare driver FTDI</td>
+<td>Negativo</td>
+<td>I driver FTDI sono per l'arduino nano originale</td>
+</tr>
+<tr class="even">
+<td>Scaricare ed installare driver CH340G</td>
+<td>Parziale</td>
+<td>I dirver sono giusti ma non ha risolto il problema</td>
+</tr>
+<tr class="odd">
+<td>Cambio della cablatura del chip LoRa</td>
+<td>Positivo</td>
+<td>Spiegate sotto</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cambio-del-cablaggio">Cambio del cablaggio</h2>
+<h3 id="nuovo-schema-di-cablatura">Nuovo schema di cablatura</h3>
+<table>
+<thead>
+<tr class="header">
+<th>LoRa</th>
+<th>Arduino Nano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr class="even">
+<td>VCC</td>
+<td>3V3</td>
+</tr>
+<tr class="odd">
+<td>MISO</td>
+<td>MISO (D12)</td>
+</tr>
+<tr class="even">
+<td>MOSI</td>
+<td>MOSI (D11)</td>
+</tr>
+<tr class="odd">
+<td>SCK</td>
+<td>SCK (D13)</td>
+</tr>
+<tr class="even">
+<td>NSS</td>
+<td>D10</td>
+</tr>
+<tr class="odd">
+<td>RESET</td>
+<td>D9</td>
+</tr>
+<tr class="even">
+<td>DIO0</td>
+<td>D3</td>
+</tr>
+</tbody>
+</table>
+<p>Il DIO0 deve rimanere sul 3 perchè i pin 2 e 3 sono gli unici a cui ci si può iscrivere per ricevere cambiamenti di stato (callback)</p>
+<p>NSS e RESET non devono andare sui pin 6,7,8 perchè altrimenti non carica lo sketch</p>
+<p>Chiamando initLoRa si abbia cura di chiamarlo con gli argomenti (indirizzo,10,9,3)</p>
+</body>
+</html>
