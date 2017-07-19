@@ -9,6 +9,17 @@ var onEnd = null;
 function start(){
   var portName = '/dev/ttyAMA';
   var portnameCounter = 0;
+  var result = false;
+   do{
+     if(helpers.onPortOpenedCalled && !helpers.isPortOpen){
+         helpers.init(portName + portnameCounter);
+         portnameCounter++;
+     }else if(helpers.onPortOpenedCalled && helper.isPortOpen){
+       result = true;
+     }
+
+   }while(!result && portnameCounter < 15);
+
   while(!helpers.init(portName + portnameCounter) && portnameCounter < 15){
       portnameCounter++;
   }
