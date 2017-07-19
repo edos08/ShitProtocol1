@@ -35,7 +35,7 @@ function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
       onPortOpenedCalled = true;
-      return null;
+      return -1;
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{

@@ -19,8 +19,6 @@ function start(){
          if(res == -1) skip = true;
      }else if(helpers.onPortOpenedCalled && helpers.isPortOpen){
        result = true;
-     }else{
-       console.log("?");
      }
 
    }while(!result && portnameCounter < 5);
