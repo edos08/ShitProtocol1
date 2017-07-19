@@ -16,11 +16,13 @@ var idStreamEndHandler;
 
 function init(portPath){
   if(portPath != ''){
+    console.log("Testing " + portName + portnameCounter);
     port = new SerialPort(portPath,{
       baudRate: 9600
     }, onPortOpened);
+    return port.isOpen;
   }
-  return port.isOpen;
+  return false;
 }
 
 function onPortOpened(err){
