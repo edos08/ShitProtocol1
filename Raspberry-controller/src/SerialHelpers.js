@@ -23,7 +23,7 @@ function init(portPath,handlers){
       baudRate: 9600,
       autoOpen: false
     });
-    
+
     handshakeHandler = handlers.handshakeHandler;
     idCheckRequestHandler = handlers.idCheckRequestHandler;
     idStreamStartHandler = handlers.idStreamStartHandler;
@@ -72,8 +72,10 @@ function onPortOpened(err){
 
 
 function sendDevicesNumberPacket(devicesNumber){
+  console.log(("Sending devices number.."));
   port.write(DEVICES_NUMBER_PACKET);
   port.write(devicesNumber);
+  console.log("done");
 }
 
 function answerToHandshake(){
