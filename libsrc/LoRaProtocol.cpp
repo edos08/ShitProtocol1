@@ -1,8 +1,8 @@
 #include "LoRaProtocol.h"
 
-//int csPin = 8;          
-//int resetPin = 4;       
-//int irqPin = 3;   
+//int csPin = 8;
+//int resetPin = 4;
+//int irqPin = 3;
 
 // Global varialbles
 
@@ -11,7 +11,7 @@ uint32_t myAddress;
 uint8_t packetCounter = 0;
 AckHolder ackHolder;
 functionCall subscribedFunction = NULL;
-//Global functions not declared in LoRaProtocol.h 
+//Global functions not declared in LoRaProtocol.h
 
 int sendPacketAck(Packet packet, int retries);
 int sendNonAckPacket(Packet packet);
@@ -24,12 +24,12 @@ void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
 	//lastPacket = new Packet();
     LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
     if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
-        Serial.println("LoRa init failed. Check your connections.");
+        //Serial.println("LoRa init failed. Check your connections.");
         while (true);                       // if failed, do nothing
     }
 
   LoRa.onReceive(receivePacket);
-  Serial.println("LoRa init succeeded.");
+  //Serial.println("LoRa init succeeded.");
 }
 
 void changeAddress(uint32_t newAddress) {
@@ -37,8 +37,8 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
-	if(!packet.isAck())
-		Serial.println("Sending packet");
+	//if(!packet.isAck())
+	//	Serial.println("Sending packet");
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
@@ -90,15 +90,15 @@ void receivePacket(int packetSize) {
     //Serial.println("This message is not for me.");
     return;
   }
-                                        
+
   int position = 0;
   while (LoRa.available()) {
 	  receivedPacket.body[position] = (char)LoRa.read();      // add bytes one by one
     position++;
   }
-  
+
   if((receivedPacket.packetLenght) != position){
-      Serial.println("Attenzione, pacchetto corrotto");
+      //Serial.println("Attenzione, pacchetto corrotto");
       return;
   }
 
@@ -131,7 +131,3 @@ void receivePacket(int packetSize) {
 void subscribeToReceivePacketEvent(functionCall function) {
 	subscribedFunction = function;
 }
-
-
-
-
