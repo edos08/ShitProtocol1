@@ -14,7 +14,7 @@ function start(){
     idStreamStartHandler: handleIDStreamStartMessage,
     dStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage
-  }
+  };
   helpers.init(portName,handlers);
 }
 
