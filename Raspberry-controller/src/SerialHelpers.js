@@ -92,8 +92,8 @@ function sendDevicesNumberPacket(devicesNumber){
 }
 
 function answerToHandshake(){
-    port.write(HANDSHAKE_RESPONSE);
-    console.log("Handshake awerered");
+    port.write('W');
+    console.log("Handshake answered");
 }
 
 function read32bitInt(data,startIndex){
