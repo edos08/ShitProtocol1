@@ -20,9 +20,6 @@ function start(){
 
    }while(!result && portnameCounter < 15);
 
-  while(!helpers.init(portName + portnameCounter) && portnameCounter < 15){
-      portnameCounter++;
-  }
   helpers.handshakeHandler = handleHandshake;
   helpers.idCheckRequestHandler = handleIDCheckRequest;
   helpers.idStreamStartHandler = handleIDStreamStartMessage;
