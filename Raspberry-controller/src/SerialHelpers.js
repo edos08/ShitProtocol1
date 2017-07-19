@@ -26,15 +26,13 @@ function init(portPath){
     } catch (e) {
       return false;
     }
-    port.open(onPortOpened);
+    return port.open(onPortOpened);
     //onPortOpenedCalled = false;
-    return port.isOpen;
   }
   return false;
 }
 
 function onPortOpened(err){
-  //onPortOpenedCalled = true;
   if(err != null){
       console.log("Serial port error: ",err.message);
       return null;
