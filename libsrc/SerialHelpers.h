@@ -48,7 +48,7 @@ static void sendIDCheckMessage(uint32_t ID){
   uint8_t buffer[5];
   buffer[0] = MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
-  Serial.write(buffer);
+  Serial.print(buffer);
 }
 
 static void sendDevicesStreamStartMessage(){
