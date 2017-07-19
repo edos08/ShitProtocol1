@@ -46,7 +46,7 @@ function onPortOpened(err){
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
-    console.log('Received: ' + data + "\n");
+    console.log('Received: \"' + data + "\"\n");
     if(isHandshakePacket(data)){
       if(handshakeHandler){
         handshakeHandler();
@@ -84,8 +84,6 @@ function sendDevicesNumberPacket(devicesNumber){
   var buf = Buffer.alloc(2);
   buf[0] = DEVICES_NUMBER_PACKET;
   buf[1] = devicesNumber;
-  //port.write(Buffer.alloc(1,DEVICES_NUMBER_PACKET));
-  //port.write(Buffer.alloc(1,devicesNumber));
   port.write(buf);
   console.log(buf);
   console.log("done");

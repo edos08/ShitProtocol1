@@ -29,6 +29,7 @@ function handleHandshake(){
 
 function handleHandshakeEnd(){
   if(!handshakeSucceded){
+      console.log("Handshake ended!");
       handshakeSucceded = true;
       helpers.sendDevicesNumberPacket(devicesToRegister);
   }else{
