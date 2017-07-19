@@ -9,8 +9,10 @@ var onEnd = null;
 function start(){
   var portName = '/dev/tty';
   var portnameCounter = 0;
-  while(!helpers.init(portName + portnameCounter))
+  while(!helpers.init(portName + portnameCounter)){
+      console.log("Testing " + portName + portnameCounter);
       portnameCounter++;
+  }
   helpers.handshakeHandler = handleHandshake;
   helpers.idCheckRequestHandler = handleIDCheckRequest;
   helpers.idStreamStartHandler = handleIDStreamStartMessage;
