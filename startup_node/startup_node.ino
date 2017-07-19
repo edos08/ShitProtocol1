@@ -116,7 +116,7 @@ bool isDuplicateId(uint32_t receivedId){
       return true;
   isWaitingForDeviceIDCheck = true;
   sendIDCheckMessage(receivedId);
-  while(!serial.available());
+  while(!Serial.available());
   serialEvent();
   return idCheckResult != MESSAGE_ID_VALID;
 }
