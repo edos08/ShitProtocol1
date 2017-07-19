@@ -16,6 +16,8 @@ function start(){
          portnameCounter++;
      }else if(helpers.onPortOpenedCalled && helpers.isPortOpen){
        result = true;
+     }else{
+       console.log("?");
      }
 
    }while(!result && portnameCounter < 15);
