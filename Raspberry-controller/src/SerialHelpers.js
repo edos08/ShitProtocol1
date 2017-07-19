@@ -7,7 +7,6 @@ var ID_CONFIRMATION_PROCESS_START = 0;
 var ID_CONFERMATION_PROCESS_END = 255;
 
 var port;
-var onPortOpenedCalled = false;
 
 var handshakeHandler;
 var idCheckRequestHandler;
@@ -16,7 +15,6 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 
 function init(portPath,handlers){
-  onPortOpenedCalled = false;
   if(portPath != ''){
     console.log("Testing " + portPath);
     port = new SerialPort(portPath,{
@@ -37,7 +35,6 @@ function init(portPath,handlers){
 function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
-      onPortOpenedCalled = true;
       return -1;
   }
   console.log("Port " + this.path + " opened succesfully");
@@ -65,7 +62,6 @@ function onPortOpened(err){
       }
     }
   });
-  onPortOpenedCalled = true;
   return 1;
 }
 
@@ -113,8 +109,9 @@ function isIDCheckRequest(data){
   return data.length == 5 && data[0] == ID_CHECK_PACKET;
 }
 
-function isPortOpen(){
-  return port != null && port.isOpen;
+function answerToIDCheckRequest(result){
+  port.write(Buffer.alloc(1,ID_CHECK_PACKET));
+  port.write(Buffer.alloc(1,result));
 }
 module.exports = {
   init: init,
@@ -125,7 +122,5 @@ module.exports = {
   idStreamStartHandler: idStreamStartHandler,
   idStreamValueHandler: idStreamValueHandler,
   idStreamEndHandler: idStreamEndHandler,
-  onPortOpened: onPortOpened,
-  onPortOpenedCalled: onPortOpenedCalled,
-  isPortOpen: isPortOpen
+  answerToIDCheckRequest: answerToIDCheckRequest
 }

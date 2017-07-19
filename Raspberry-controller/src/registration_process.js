@@ -38,7 +38,7 @@ function handleIDCheckRequest(id){
   console.log("Received ID to check: " + id);
   //query mongodb here
   //"SELECT ID FROM devices WHERE ID = \"" + _id + ""\""
-  return 0;//Number of lines found in mongo*/
+  helpers.answerToIDCheckRequest(0);//Number of lines found in mongo*/
 }
 
 function handleIDStreamStartMessage(){
