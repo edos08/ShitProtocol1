@@ -32,9 +32,9 @@ function init(portPath){
 }
 
 function onPortOpened(err){
-  onPortOpenedCalled = true;
   if(err != null){
       console.log("Serial port error: ",err.message);
+      onPortOpenedCalled = true;
       return null;
   }
   console.log("Port " + this.path + " opened succesfully");
@@ -62,6 +62,7 @@ function onPortOpened(err){
       }
     }
   });
+  onPortOpenedCalled = true;
   return 1;
 }
 
