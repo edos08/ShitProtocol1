@@ -18,18 +18,23 @@ var idStreamEndHandler;
 function init(portPath){
   if(portPath != ''){
     console.log("Testing " + portPath);
-    port = new SerialPort(portPath,{
-      baudRate: 9600
-    }, onPortOpened);
-    while(!onPortOpenedCalled);
-    onPortOpenedCalled = false;
+    try {
+      port = new SerialPort(portPath,{
+        baudRate: 9600,
+        autoOpen = false;
+      });
+    } catch (e) {
+      return false;
+    } 
+    port.open(onPortOpened);
+    //onPortOpenedCalled = false;
     return port.isOpen;
   }
   return false;
 }
 
 function onPortOpened(err){
-  onPortOpenedCalled = true;
+  //onPortOpenedCalled = true;
   if(err != null){
       console.log("Serial port error: ",err.message);
       return null;
