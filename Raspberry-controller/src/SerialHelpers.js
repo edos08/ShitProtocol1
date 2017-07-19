@@ -20,6 +20,7 @@ function init(portPath){
       baudRate: 9600
     }, onPortOpened);
   }
+  return port != null;
 }
 
 function onPortOpened(err){
