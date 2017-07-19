@@ -7,7 +7,7 @@ var ID_CONFIRMATION_PROCESS_START = 0;
 var ID_CONFERMATION_PROCESS_END = 255;
 
 var port;
-var onPortOpenedCalled = true;
+var onPortOpenedCalled = false;
 
 var handshakeHandler;
 var idCheckRequestHandler;
