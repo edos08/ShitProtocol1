@@ -11,7 +11,7 @@ function start(){
   var portnameCounter = 0;
   var result = false;
    do{
-     if(helpers.onPortOpenedCalled && !helpers.isPortOpen){
+     if(portnameCounter == 0 || helpers.onPortOpenedCalled && !helpers.isPortOpen){
          helpers.init(portName + portnameCounter);
          portnameCounter++;
      }else if(helpers.onPortOpenedCalled && helpers.isPortOpen){
