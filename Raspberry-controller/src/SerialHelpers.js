@@ -36,7 +36,7 @@ function init(portPath,handlers){
 function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
-      this = null;
+      port = null;
       return -1;
   }
   console.log("Port " + this.path + " opened succesfully");
