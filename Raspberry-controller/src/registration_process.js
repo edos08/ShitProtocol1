@@ -9,11 +9,11 @@ var onEnd = null;
 function start(){
   var portName = '/dev/ttyACM0';
   var handlers = {
-    handshakeHandler: handleHandshake;
-    idCheckRequestHandler: handleIDCheckRequest;
-    idStreamStartHandler: handleIDStreamStartMessage;
-    dStreamValueHandler: handleIDStreamValueMessage;
-    idStreamEndHandler: handleIDStreamEndMessage;
+    handshakeHandler: handleHandshake,
+    idCheckRequestHandler: handleIDCheckRequest,
+    idStreamStartHandler: handleIDStreamStartMessage,
+    dStreamValueHandler: handleIDStreamValueMessage,
+    idStreamEndHandler: handleIDStreamEndMessage
   }
   helpers.init(portName,handlers);
 }
