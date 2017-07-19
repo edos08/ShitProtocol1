@@ -27,7 +27,7 @@ void setup() {
   //Serial.println(readEEPROM(),HEX);
   randomSeed(analogRead(0));
   randomAddress = generateRandomAddress();
-  initLoRa(randomAddress, 8, 4, 3);
+  initLoRa(randomAddress, 10,9, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
@@ -78,7 +78,7 @@ uint32_t generateRandomAddress(){
   uint32_t randomNumber = 0;
   uint16_t leftHalf = random(1,0xFFFF);
   uint16_t rightHalf = random(1,0xFFFF);
-  randomNumber |= leftHalf << 16;
+  randomNumber |= ((uint32_t)(leftHalf)) << 16;
   randomNumber |= rightHalf;
   Serial.print("ID generated = ");
   Serial.println(randomNumber, HEX);

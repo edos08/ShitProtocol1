@@ -17,16 +17,17 @@ var idStreamEndHandler;
 function init(portPath,handlers){
   if(portPath != ''){
     console.log("Testing " + portPath);
-    port = new SerialPort(portPath,{
-      baudRate: 9600,
-      autoOpen: false
-    });
 
     handshakeHandler = handlers.handshakeHandler;
     idCheckRequestHandler = handlers.idCheckRequestHandler;
     idStreamStartHandler = handlers.idStreamStartHandler;
     idStreamValueHandler = handlers.idStreamValueHandler;
     idStreamEndHandler = handlers.idStreamEndHandler;
+
+    port = new SerialPort(portPath,{
+      baudRate: 9600,
+      autoOpen: false
+    });
 
     port.open(onPortOpened);
   }
@@ -35,14 +36,18 @@ function init(portPath,handlers){
 function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
+      this = null;
       return -1;
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
     console.log('Received: ' + data + "\n");
     if(isHandshakePacket(data)){
-      if(handshakeHandler)
+      if(handshakeHandler){
         handshakeHandler();
+      }else{
+        console.log("No handler");;
+      }
     } else if(isIDCheckRequest(data)){
       if(idCheckRequestHandler){
         var _id = read32bitInt(data,1);
