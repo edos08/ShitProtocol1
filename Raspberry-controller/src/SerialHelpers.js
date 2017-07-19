@@ -135,6 +135,8 @@ function answerToIDCheckRequest(result){
   buf[0] = ID_CHECK_PACKET;
   buf[1] = result;
   port.write(buf);
+  console.log(buf);
+  console.log("done");
   console.log("check result returned");
 }
 module.exports = {
