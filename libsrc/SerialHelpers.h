@@ -16,7 +16,7 @@
 #define MESSAGE_DEVICE_STREAM_END 255
 
 typedef struct SerialHelpers{
-  static void write32bitIntegerIntoBuffer(uint8_t buffer,uint32_t valueToWrite){
+  static void write32bitIntegerIntoBuffer(char buffer*,uint32_t valueToWrite){
     buffer[1] = ((valueToWrite & 0xFF000000) >> 24);
 		buffer[2] = ((valueToWrite & 0x00FF0000) >> 16);
 		buffer[3] = ((valueToWrite & 0x0000FF00) >> 8);
@@ -45,7 +45,7 @@ static bool isIDCheckResponse(char dataBuffer[], int buffer_size){
 }
 
 static void sendIDCheckMessage(uint32_t ID){
-  uint8_t buffer[5];
+  char buffer[5];
   buffer[0] = MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   Serial.print(buffer);
