@@ -10,7 +10,6 @@ function start(){
   var portName = '/dev/tty';
   var portnameCounter = 0;
   while(!helpers.init(portName + portnameCounter)){
-      console.log("Testing " + portName + portnameCounter);
       portnameCounter++;
   }
   helpers.handshakeHandler = handleHandshake;
