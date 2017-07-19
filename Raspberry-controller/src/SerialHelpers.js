@@ -102,7 +102,7 @@ function read32bitInt(data,startIndex){
 }
 
 function isHandshakePacket(data){
-  return data.size == 1 && data[0] == HANDSHAKE_MESSAGE;
+  return data.lenght == 1 && data[0] == HANDSHAKE_MESSAGE;
 }
 
 function isIDStreamStartPacket(data){
@@ -118,11 +118,11 @@ function isIDStreamValuePacket(data){
 }
 
 function isIDCheckRequest(data){
-  return data.length == 5 && data[0] == ID_CHECK_PACKET;
+  return data.lenght == 5 && data[0] == ID_CHECK_PACKET;
 }
 
 function isHandshakeEndPacket(data){
-  return data.length == 1 && data[0] == HANDSHAKE_END;
+  return data.lenght == 1 && data[0] == HANDSHAKE_END;
 }
 
 function answerToIDCheckRequest(result){
