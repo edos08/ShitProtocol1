@@ -81,8 +81,13 @@ function onPortOpened(err){
 
 function sendDevicesNumberPacket(devicesNumber){
   console.log(("Sending devices number.."));
-  port.write(Buffer.alloc(1,DEVICES_NUMBER_PACKET));
-  port.write(Buffer.alloc(1,devicesNumber));
+  var buf = Buffer.alloc(2);
+  buf[0] = DEVICES_NUMBER_PACKET;
+  buf[1] = devicesNumber;
+  //port.write(Buffer.alloc(1,DEVICES_NUMBER_PACKET));
+  //port.write(Buffer.alloc(1,devicesNumber));
+  port.write(buf);
+  console.log(buf);
   console.log("done");
 }
 
@@ -102,7 +107,7 @@ function read32bitInt(data,startIndex){
 }
 
 function isHandshakePacket(data){
-  return data.lenght == 1 && data[0] == HANDSHAKE_MESSAGE;
+  return data == HANDSHAKE_MESSAGE;
 }
 
 function isIDStreamStartPacket(data){
@@ -122,7 +127,7 @@ function isIDCheckRequest(data){
 }
 
 function isHandshakeEndPacket(data){
-  return data.lenght == 1 && data[0] == HANDSHAKE_END;
+  return data == HANDSHAKE_END;
 }
 
 function answerToIDCheckRequest(result){
