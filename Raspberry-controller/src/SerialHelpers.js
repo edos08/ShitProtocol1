@@ -7,6 +7,7 @@ var ID_CONFIRMATION_PROCESS_START = 0;
 var ID_CONFERMATION_PROCESS_END = 255;
 
 var port;
+var onPortOpenedCalled = false;
 
 var handshakeHandler;
 var idCheckRequestHandler;
@@ -20,12 +21,15 @@ function init(portPath){
     port = new SerialPort(portPath,{
       baudRate: 9600
     }, onPortOpened);
+    while(!onPortOpenedCalled);
+    onPortOpenedCalled = false;
     return port.isOpen;
   }
   return false;
 }
 
 function onPortOpened(err){
+  onPortOpenedCalled = true;
   if(err != null){
       console.log("Serial port error: ",err.message);
       return null;
