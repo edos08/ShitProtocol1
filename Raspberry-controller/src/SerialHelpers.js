@@ -73,8 +73,8 @@ function onPortOpened(err){
 
 function sendDevicesNumberPacket(devicesNumber){
   console.log(("Sending devices number.."));
-  port.write(DEVICES_NUMBER_PACKET);
-  port.write(devicesNumber);
+  port.write(Buffer.alloc(1,DEVICES_NUMBER_PACKET));
+  port.write(Buffer.alloc(1,devicesNumber));
   console.log("done");
 }
 
