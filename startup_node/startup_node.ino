@@ -21,6 +21,8 @@ uint8_t idCheckResult = 0;
 bool handshakeCompleted = false;
 bool hasReceivedNumberOfDevicesToRegister = false;
 bool isWaitingForDeviceIDCheck = false;
+uint8_t idToCheck = 0;
+
 bool alertDoubledDevicesTrigger = false;
 bool notifyDevicesTrigger = false;
 bool hasReceivedType = false;
@@ -40,7 +42,9 @@ void loop() {
     serialEvent();
   }
   if(handshakeCompleted){
+
     if(hasReceivedNumberOfDevicesToRegister){
+
       if(alertDoubledDevicesTrigger){
         alertDoubledDevicesTrigger = false;
         int result = sendPacket(RegistrationIDDeniedPacket(doubled_ID,NODE_ADDRESS));
@@ -89,10 +93,8 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
     }
     bool duplicatesFound = isDuplicateId(idSubmissionPacket.sender);
     if(!duplicatesFound){
-      devices_ids[devices_ids_index] = idSubmissionPacket.sender;
-      devices_ids_index++;
-      if(devices_ids_index >= devices_to_register)
-        notifyDevicesTrigger = true;
+      idToCheck = idSubmissionPacket.sender;
+      isWaitingForDeviceIDCheck = true;
     } else{
       doubled_ID = idSubmissionPacket.sender;
       alertDoubledDevicesTrigger = true;
@@ -112,13 +114,7 @@ bool isDuplicateId(uint32_t receivedId){
       idsFound++;
     }
   }
-  if(idsFound > 0)
-      return true;
-  isWaitingForDeviceIDCheck = true;
-  sendIDCheckMessage(receivedId);
-  while(!Serial.available());
-  serialEvent();
-  return idCheckResult != MESSAGE_ID_VALID;
+  return idsFound > 0
 }
 
 void serialEvent(){
@@ -149,6 +145,15 @@ void serialEvent(){
       Serial.println("checked");
       isWaitingForDeviceIDCheck = false;
       idCheckResult = serialBuffer[1];
+      if(idCheckResult == MESSAGE_ID_VALID){
+        devices_ids[devices_ids_index] = idToCheck;
+        devices_ids_index++;
+        if(devices_ids_index >= devices_to_register)
+          notifyDevicesTrigger = true;
+      } else{
+        doubled_ID = idToCheck;
+        alertDoubledDevicesTrigger = true;
+      }
     }
   }
 }
