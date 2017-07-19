@@ -46,7 +46,7 @@ function onPortOpened(err){
   }
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
-    console.log('Received: \"' + data + "\"\n");
+    console.log('Received: \"' + data + "\" \n");
     if(isHandshakePacket(data)){
       if(handshakeHandler){
         handshakeHandler();
@@ -109,19 +109,19 @@ function isHandshakePacket(data){
 }
 
 function isIDStreamStartPacket(data){
-  return data.lenght == 2 && data[0] == ID_CONFIRMED_PACKET && data[1] == ID_CONFIRMATION_PROCESS_START;
+  return Buffer.byteLength(data) == 2 && data[0] == ID_CONFIRMED_PACKET && data[1] == ID_CONFIRMATION_PROCESS_START;
 }
 
 function isIDStreamEndPacket(data){
-  return data.lenght == 2 && data[0] == ID_CONFIRMED_PACKET && data[1] == ID_CONFIRMATION_PROCESS_END;
+  return Buffer.byteLength(data) == 2 && data[0] == ID_CONFIRMED_PACKET && data[1] == ID_CONFIRMATION_PROCESS_END;
 }
 
 function isIDStreamValuePacket(data){
-  return data.lenght == 6 && data[0] == ID_CONFIRMED_PACKET;
+  return Buffer.byteLength(data) == 6 && data[0] == ID_CONFIRMED_PACKET;
 }
 
 function isIDCheckRequest(data){
-  return data.lenght == 5 && data[0] == ID_CHECK_PACKET;
+  return Buffer.byteLength(data) == 5 && data[0] == ID_CHECK_PACKET;
 }
 
 function isHandshakeEndPacket(data){
