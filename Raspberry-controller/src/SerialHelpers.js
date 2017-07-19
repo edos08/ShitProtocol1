@@ -29,13 +29,9 @@ function onPortOpened(err){
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
     console.log('Received: ' + data + "\n");
-    if(isHandshakePacket){
+    if(isHandshakePacket(data)){
       if(handshakeHandler)
         handshakeHandler();
-      /*handshakeSucceded = helpers.assertHandshakeAndAnswer(data);
-      if(handshakeSucceded){
-          helpers.sendDevicesNumberPacket(port,devicesToRegister);
-      }*/
     } else if(isIDCheckRequest(data)){
       if(idCheckRequestHandler){
         var _id = read32bitInt(data,1);
@@ -107,5 +103,6 @@ module.exports = {
   idCheckRequestHandler: idCheckRequestHandler,
   idStreamStartHandler: idStreamStartHandler,
   idStreamValueHandler: idStreamValueHandler,
-  idStreamEndHandler: idStreamEndHandler
+  idStreamEndHandler: idStreamEndHandler,
+  onPortOpened: onPortOpened
 }
