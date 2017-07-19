@@ -23,7 +23,6 @@ function init(portPath){
         baudRate: 9600,
         autoOpen: false
       });
-    }
     port.open(onPortOpened);
   }
 }
