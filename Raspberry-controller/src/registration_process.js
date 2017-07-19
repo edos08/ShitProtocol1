@@ -7,7 +7,7 @@ var accepted_ids = 0;
 var onEnd = null;
 
 function start(){
-  var portName = '/dev/tty';
+  var portName = '/dev/ttyAMA';
   var portnameCounter = 0;
   while(!helpers.init(portName + portnameCounter) && portnameCounter < 15){
       portnameCounter++;
