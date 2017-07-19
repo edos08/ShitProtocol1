@@ -26,8 +26,8 @@ function init(portPath){
     } catch (e) {
       return false;
     }
-    return port.open(onPortOpened);
-    //onPortOpenedCalled = false;
+    port.open(onPortOpened);
+    return port.isOpen;
   }
   return false;
 }
