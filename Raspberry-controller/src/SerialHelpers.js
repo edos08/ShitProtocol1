@@ -16,7 +16,7 @@ var idStreamEndHandler;
 
 function init(portPath){
   if(portPath != ''){
-    console.log("Testing " + portName + portnameCounter);
+    console.log("Testing " + portPath);
     port = new SerialPort(portPath,{
       baudRate: 9600
     }, onPortOpened);
