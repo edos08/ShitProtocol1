@@ -48,7 +48,7 @@ function onPortOpened(err){
   this.on('data',(data) =>{
     console.log('Received: \"' + data + "\"");
     if(Buffer.isBuffer(data))
-      console.log('lenght = ' + Buffer.btyeLength(data));
+      console.log('lenght = ' + Buffer.byteLength(data));
     if(isHandshakePacket(data)){
       if(handshakeHandler){
         handshakeHandler();
