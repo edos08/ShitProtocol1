@@ -7,7 +7,8 @@ var accepted_ids = 0;
 var onEnd = null;
 
 function start(){
-  helpers.init('COM7');
+  if(!helpers.init('/dev/ttyACM0'))
+      helpers.init('/dev/ttyACM1');
   helpers.handshakeHandler = handleHandshake;
   helpers.idCheckRequestHandler = handleIDCheckRequest;
   helpers.idStreamStartHandler = handleIDStreamStartMessage;
