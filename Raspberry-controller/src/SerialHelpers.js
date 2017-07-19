@@ -16,6 +16,7 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 
 function init(portPath){
+  onPortOpenedCalled = false;
   if(portPath != ''){
     console.log("Testing " + portPath);
     try {
@@ -24,15 +25,14 @@ function init(portPath){
         autoOpen: false
       });
     } catch (e) {
-      return false;
+      console.log("Error opening port " + portPath + ": " + e);
     }
     port.open(onPortOpened);
-    return port.isOpen;
   }
-  return false;
 }
 
 function onPortOpened(err){
+  onPortOpenedCalled = true;
   if(err != null){
       console.log("Serial port error: ",err.message);
       return null;
@@ -107,6 +107,9 @@ function isIDCheckRequest(data){
   return data.length == 5 && data[0] == ID_CHECK_PACKET;
 }
 
+function isPortOpen(){
+  return port != null && port.isOpen;
+}
 module.exports = {
   init: init,
   answerToHandshake: answerToHandshake,
@@ -116,5 +119,7 @@ module.exports = {
   idStreamStartHandler: idStreamStartHandler,
   idStreamValueHandler: idStreamValueHandler,
   idStreamEndHandler: idStreamEndHandler,
-  onPortOpened: onPortOpened
+  onPortOpened: onPortOpened,
+  onPortOpenedCalled; onPortOpenedCalled,
+  isPortOpen: isPortOpen
 }
