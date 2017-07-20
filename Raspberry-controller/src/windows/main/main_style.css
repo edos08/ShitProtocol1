@@ -2,7 +2,7 @@
   float: left;
   width: 30%;
 }
-#content{
+.content{
   float: right;
   width: 70%;
 }
