@@ -87,6 +87,7 @@ void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
   Packet receivedPacket = Helpers::readInputPacket();
   Serial.println("The hard way");
+  delay(500);
   if(receivedPacket == (*lastPacket)) return;
   //Serial.println("Packet received");
   //Serial.print("Dest: 0x");
