@@ -73,7 +73,7 @@ void loop() {
           stream_started = true;
        }
         if(!waitingForType){
-          sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
+          int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
           waitingForType = true;
         }else{
           if(hasReceivedType){
@@ -88,6 +88,8 @@ void loop() {
                 stream_ended = true;
                 while(true);
             }
+          }else{
+           // Serial.println("Waiting type");
           }
         }
       }
@@ -112,12 +114,14 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
       doubled_ID = idSubmissionPacket.sender;
       alertDoubledDevicesTrigger = true;
     }
-  }
-  if(notifyDevicesTrigger && isTypeSubmissionPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
+  }else{
+    Serial.println("Received packet");
+    if(notifyDevicesTrigger && isTypeSubmissionPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
     Serial.println("TYPE");
     hasReceivedType = true;
     type_received = idSubmissionPacket.body[0];
   }
+ }
 
 }
 
