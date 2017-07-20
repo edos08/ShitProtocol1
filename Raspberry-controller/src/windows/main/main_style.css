@@ -19,6 +19,10 @@ body{
   border-bottom-color: black;
 }
 
+#rooms_container{
+  list-style: none;
+}
+
 #left{
   float: left;
   width: 30%;
