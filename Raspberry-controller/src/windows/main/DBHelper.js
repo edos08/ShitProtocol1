@@ -30,7 +30,7 @@ function fillRoomsScreen(container,onClick){
 function fillContentDivWithDevices(container,roomID){
   knex.withSchema('LoRa')
   .select('Devices.ID','Devices.Description','Device_types.Description')
-  .table('Devices','Device_types')
+  .from('Devices','Device_types')
   .where('Devices.Type','Device_types.ID')
   .andWhere('Room',roomID)
   .then(function(devices){
