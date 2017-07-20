@@ -28,7 +28,7 @@ function fillRoomsScreen(container,onClick){
 }
 
 function fillContentDivWithDevices(container,roomID){
-  knex.withSchema('LoRa')
+  var k = knex.withSchema('LoRa')
   .select('Devices.ID','Devices.Description','Device_types.Description')
   .from('Devices')
   .where('Room','=',roomID)
@@ -41,6 +41,7 @@ function fillContentDivWithDevices(container,roomID){
     content += "</ul>"
     container.innerHTML = content;
   });
+  console.log(k);
 }
 
 module.exports = {
