@@ -21,7 +21,7 @@ app.on('ready', function(){
   mainWindow.on('closed',() =>{
     mainWindow = null;
   })
-})
+});
 
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
@@ -30,8 +30,8 @@ ipc.on("register_devices_pressed",function(){
 });
 
 ipc.on('open_room_event',function(id){
-  
-})
+
+});
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
