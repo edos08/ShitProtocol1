@@ -21,7 +21,7 @@ int sendPacketAck(Packet packet, int retries);
 
 void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
     myAddress = _myAddress;
-	//lastPacket = new Packet();
+	  lastPacket = new Packet();
     LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
     if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
         //Serial.println("LoRa init failed. Check your connections.");
@@ -85,8 +85,8 @@ void activateReceiveMode(){
 
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
-
   Packet receivedPacket = Helpers::readInputPacket();
+  if(receivedPacket == (*lastPacket)) return;
   //Serial.println("Packet received");
   //Serial.print("Dest: 0x");
   //Serial.println(receivedPacket.dest,HEX);
@@ -118,7 +118,8 @@ void receivePacket(int packetSize) {
   if (subscribedFunction != NULL && !receivedPacket.isAck()) {
 	  subscribedFunction(receivedPacket);
   }
-
+  *lastPacket = receivedPacket;
+   return;
 }
 
 void subscribeToReceivePacketEvent(functionCall function) {
