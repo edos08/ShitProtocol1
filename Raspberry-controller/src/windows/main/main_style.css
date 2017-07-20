@@ -10,17 +10,12 @@ body{
 }
 
 .room_element{
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: black;
-
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: black;
+  padding-left: 10px;
 }
 
 #rooms_container{
   list-style: none;
+  padding-left: 0px;
 }
 
 #left{
