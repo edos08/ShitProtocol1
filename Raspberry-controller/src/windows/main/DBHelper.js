@@ -31,13 +31,13 @@ function fillContentDivWithDevices(container,roomID){
   knex.withSchema('LoRa')
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .where('Devices.Room',roomID)
-  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as type')
+  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type')
   .from('Devices')
   .then(function(devices){
     console.log(devices[0]);
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
-        //content += "<li> " + devices.Devices.Description + " (" + devices.Device_types.Description + ")</li>";
+        content += "<li> " + devices.desc + " (" + devices.dev_type + ")</li>";
     }
     content += "</ul>"
     container.innerHTML = content;
