@@ -19,6 +19,7 @@
     "sinon": "^2.3.8"
   },
   "dependencies": {
+    "knex": "^0.13.0",
     "serialport": "^5.0.0-beta8"
   }
 }
