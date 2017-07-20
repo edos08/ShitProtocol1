@@ -44,7 +44,7 @@ function handleIDCheckRequest(id){
     console.log("Warning: received ID check request while id submission stream is open [All IDs were already checked]");
     return;
   }
-  console.log("Received ID to check: " + id);
+  console.log("Received ID to check: " + id.toString(16));
   //query mongodb here
   //"SELECT ID FROM devices WHERE ID = \"" + _id + ""\""
   helpers.answerToIDCheckRequest(0);//Number of lines found in mongo*/
