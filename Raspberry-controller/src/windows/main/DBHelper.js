@@ -45,5 +45,6 @@ function fillContentDivWithDevices(container,roomID){
 
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
-  fillRoomsScreen
+  fillRoomsScreen,
+  fillContentDivWithDevices
 }
