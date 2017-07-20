@@ -28,13 +28,13 @@ function fillRoomsScreen(container,onClick){
 }
 
 function fillContentDivWithDevices(container,roomID){
-  var k = knex.withSchema('LoRa')
+  knex.withSchema('LoRa')
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .where('Devices.Room',roomID)
   .select('Devices.ID','Devices.Description','Device_types.Description')
   .from('Devices')
   .then(function(devices){
-    console.log(k);
+    console.log(devices);
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
         //content += "<li> " + devices.Devices.Description + " (" + devices.Device_types.Description + ")</li>";
