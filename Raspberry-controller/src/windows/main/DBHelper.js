@@ -37,7 +37,7 @@ function fillContentDivWithDevices(container,roomID){
     console.log(devices[0]);
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
-        content += "<li> " + devices.desc + " (" + devices.dev_type + ")</li>";
+        content += "<li> " + devices[a].desc + " (" + devices[a].dev_type + ")</li>";
     }
     content += "</ul>"
     container.innerHTML = content;
