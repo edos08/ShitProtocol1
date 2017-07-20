@@ -10,7 +10,6 @@ var knex = require('knex')({
 });
 
 function checkFirstStartupOfSystem(action){
-  var result;
   knex.select().table('Devices').then(function(devices){
     console.log("devices: " + devices);
     if(devices.length == 0)
@@ -19,5 +18,5 @@ function checkFirstStartupOfSystem(action){
 }
 
 module.exports = {
-  checkFirstStartupOfSystem
+  checkFirstStartupOfSystem: checkFirstStartupOfSystem
 }

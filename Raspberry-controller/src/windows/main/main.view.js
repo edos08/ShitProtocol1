@@ -3,7 +3,7 @@ var DBHelper = require('./DBHelper');
 
 function setUpElements(){
   setupRegisterDevicesButton
-  DBHelper.checksFirstStartupOfSystem(displayEmptyDBMessage);  
+  DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);  
 }
 
 function setupRegisterDevicesButton(){
