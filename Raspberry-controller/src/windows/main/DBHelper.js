@@ -17,6 +17,15 @@ function checkFirstStartupOfSystem(action){
   });
 }
 
+function fillRoomsScreen(container){
+  knex.withSchema('LoRa').select('Description').then(function(rooms)){
+    var content = "";
+    for(var a = 0; a < rooms.length; a++){
+      content += "<li>" + rooms[a] + " </li>";
+    }
+    container.innerHTML = content;
+  }
+}
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem
 }
