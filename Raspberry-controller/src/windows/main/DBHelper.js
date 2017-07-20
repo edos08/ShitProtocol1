@@ -31,7 +31,7 @@ function fillContentDivWithDevices(container,roomID){
   knex.withSchema('LoRa')
   .select('Devices.ID','Devices.Description','Device_types.Description')
   .from('Devices')
-  .inneJoin('Devices.Type','Device_types.ID')
+  .innerJoin('Devices.Type','Device_types.ID')
   .where('Room',roomID)
   .then(function(devices){
     var content = "<ul>";
