@@ -2,6 +2,8 @@ body{
   width 100%;
   overflow: hidden;
   display: flex;
+  padding: 0px;
+  margin: 0px;
 }
 
 
@@ -35,4 +37,5 @@ body{
   border-style: solid;
   border-color: black;
   border-width: 1px;
+  padding: 10px;
 }
