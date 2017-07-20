@@ -6,15 +6,17 @@ body{
 #left{
   float: left;
   width: 30%;
-  height: inherit;
+  height: 100%;
   border-style: solid;
   border-color: black;
   border-width: 1px;
   align-items: stretch;
+  padding: 10px;
 }
 #content{
   float: left;
   width: 70%;
+  height: 100%;
   margin-left: -1px;
   border-style: solid;
   border-color: black;
