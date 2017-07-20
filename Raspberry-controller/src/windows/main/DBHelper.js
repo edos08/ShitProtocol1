@@ -34,9 +34,10 @@ function fillContentDivWithDevices(container,roomID){
   .select('Devices.ID','Devices.Description','Device_types.Description')
   .from('Devices')
   .then(function(devices){
+    console.log(k);
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
-        content += "<li> " + devices.Devices.Description + " (" + devices.Device_types.Description + ")</li>";
+        //content += "<li> " + devices.Devices.Description + " (" + devices.Device_types.Description + ")</li>";
     }
     content += "</ul>"
     container.innerHTML = content;
