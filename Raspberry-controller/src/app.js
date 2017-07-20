@@ -2,6 +2,7 @@ const {app,BrowserWindow} = require('electron');
 var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
+
 registration.onEnd = onRegistrationEnd;
 
 
@@ -27,10 +28,6 @@ ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
   registration.start();
   registrationActive = true;
-});
-
-ipc.on('open_room_event',function(id){
-
 });
 
 function onRegistrationEnd(result){
