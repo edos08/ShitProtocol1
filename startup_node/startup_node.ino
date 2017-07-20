@@ -114,7 +114,7 @@ bool isDuplicateId(uint32_t receivedId){
       idsFound++;
     }
   }
-  return idsFound > 0
+  return idsFound > 0;
 }
 
 void serialEvent(){

@@ -46,11 +46,11 @@ void loop() {
       }
 
       if(!idSent){
-        Serial.println("Am i here?");
         delay(generateRandomWaitingTime());
-        Serial.println("delayed");
         int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
         Helpers::printResponseMessage(result);
+        Serial.print("My ID 0x");
+        Serial.print(randomAddress,HEX);
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -92,6 +92,7 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
+  Serial.println("Packet received");
   if(!isRegistrationResponsePacket(response.type, response.packetLenght))
     return;
   switch(response_result((uint8_t)response.body[0])){
