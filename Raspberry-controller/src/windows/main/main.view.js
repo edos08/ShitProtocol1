@@ -3,7 +3,7 @@ var DBHelper = require('./DBHelper');
 
 function setUpElements(){
   setupRegisterDevicesButton
-  DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);  
+  DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
 }
 
 function setupRegisterDevicesButton(){
@@ -15,5 +15,5 @@ function setupRegisterDevicesButton(){
 }
 
 function displayEmptyDBMessage(){
-  document.getElementById('empty_db_message').innerHTML("Non ci sono ancora dispositivi registrati. Premi il pulsante sottostante per iniziare il processo di registrazione dei dispositivi");
+  document.getElementById('empty_db_message').innerHTML = "Non ci sono ancora dispositivi registrati. Premi il pulsante sottostante per iniziare il processo di registrazione dei dispositivi";
 }
