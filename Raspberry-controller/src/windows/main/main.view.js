@@ -21,6 +21,6 @@ function displayEmptyDBMessage(){
 
 
 function onRoomClicked(id){
-  console.println("Congratulations, you clicked on the room!");
+  console.log("Congratulations, you clicked on the room!");
   ipc.send('open_room_event',id);
 }
