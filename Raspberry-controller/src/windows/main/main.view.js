@@ -1,5 +1,5 @@
 var ipc = require('electron').ipcRenderer;
-var DBHelper = require('./DBHelper');
+var DBHelper = require('../DBHelper');
 
 function setUpElements(){
   setupRegisterDevicesButton
