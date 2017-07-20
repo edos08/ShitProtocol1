@@ -21,12 +21,16 @@ uint8_t idCheckResult = 0;
 bool handshakeCompleted = false;
 bool hasReceivedNumberOfDevicesToRegister = false;
 bool isWaitingForDeviceIDCheck = false;
-uint8_t idToCheck = 0;
+uint32_t idToCheck = 0;
 
 bool alertDoubledDevicesTrigger = false;
 bool notifyDevicesTrigger = false;
 bool hasReceivedType = false;
 uint8_t type_received = -1;
+bool stream_started = false;
+bool waitingForType = false;
+bool stream_ended = false;
+uint8_t identified_devices = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -63,22 +67,29 @@ void loop() {
         devices_ids_index--;
       }
 
-      if(notifyDevicesTrigger){
-        int identified_devices = 0;
-        sendDevicesStreamStartMessage();
-        for(int a = 0; a <devices_ids_index; a++){
-            int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[a],NODE_ADDRESS));
-            Helpers::printResponseMessage(result);
-            while(!hasReceivedType);
-            devices_types[a] = type_received;
+      if(notifyDevicesTrigger){ 
+        if(!stream_started){
+          sendDevicesStreamStartMessage();
+          stream_started = true;
+       }
+        if(!waitingForType){
+          sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
+          waitingForType = true;
+        }else{
+          if(hasReceivedType){
+            Serial.println("Type received");
+            devices_types[identified_devices] = type_received;
             hasReceivedType = false;
-            if(result == SUCCESFUL_RESPONSE)
-                identified_devices++;
-            sendDeviceInfoPacket(devices_ids[a],type_received);
-            delay(1);
+            waitingForType = false;
+            identified_devices++;
+            sendDeviceInfoPacket(devices_ids[identified_devices],type_received);
+            if(identified_devices == devices_to_register){
+                sendDevicesStreamEndMessage();
+                stream_ended = true;
+                while(true);
+            }
+          }
         }
-        sendDevicesStreamEndMessage();
-        while(true);
       }
     }
   }
@@ -94,15 +105,18 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
     bool duplicatesFound = isDuplicateId(idSubmissionPacket.sender);
     if(!duplicatesFound){
       idToCheck = idSubmissionPacket.sender;
+      sendIDCheckMessage(idToCheck);
       isWaitingForDeviceIDCheck = true;
+      return;
     } else{
       doubled_ID = idSubmissionPacket.sender;
       alertDoubledDevicesTrigger = true;
     }
   }
   if(notifyDevicesTrigger && isTypeSubmissionPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
+    Serial.println("TYPE");
     hasReceivedType = true;
-    type_received = idSubmissionPacket.body[1];
+    type_received = idSubmissionPacket.body[0];
   }
 
 }
@@ -114,7 +128,7 @@ bool isDuplicateId(uint32_t receivedId){
       idsFound++;
     }
   }
-  return idsFound > 0;
+  return (idsFound > 0);
 }
 
 void serialEvent(){
@@ -140,9 +154,7 @@ void serialEvent(){
     }
     return;
   } else if(isWaitingForDeviceIDCheck){
-    Serial.println("Wainting for check");
     if(isIDCheckResponse(serialBuffer,serialIndex)){
-      Serial.println("checked");
       isWaitingForDeviceIDCheck = false;
       idCheckResult = serialBuffer[1];
       if(idCheckResult == MESSAGE_ID_VALID){
