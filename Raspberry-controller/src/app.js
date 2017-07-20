@@ -1,8 +1,10 @@
 const {app,BrowserWindow} = require('electron');
 var ipc = require('electron').ipcMain;
 
-var registration = require('./registration_process')
+var registration = require('./registration_process');
 registration.onEnd = onRegistrationEnd;
+
+
 
 let mainWindow;
 var registrationActive = false;
