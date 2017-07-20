@@ -3,6 +3,22 @@ body{
   overflow: hidden;
   display: flex;
 }
+
+
+.register_container{
+  padding: 10px;
+}
+
+.room_element{
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: black;
+
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: black;
+}
+
 #left{
   float: left;
   width: 30%;
@@ -20,18 +36,4 @@ body{
   border-style: solid;
   border-color: black;
   border-width: 1px;
-}
-
-.register_container{
-  padding: 10px;
-}
-
-.room_element{
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: black;
-
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: black;
 }
