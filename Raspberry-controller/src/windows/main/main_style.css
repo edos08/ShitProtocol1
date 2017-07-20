@@ -1,13 +1,21 @@
+body{
+  width 100%;
+  overflow: hidden;
+  display: flex;
+}
 #left{
   float: left;
   width: 30%;
+  height: inherit;
   border-style: solid;
   border-color: black;
   border-width: 1px;
+  align-items: stretch;
 }
 #content{
-  float: right;
+  float: left;
   width: 70%;
+  margin-left: -1px;
   border-style: solid;
   border-color: black;
   border-width: 1px;
