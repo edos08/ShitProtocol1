@@ -4,7 +4,7 @@ var DBHelper = require('./DBHelper');
 function setUpElements(){
   setupRegisterDevicesButton
   DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
-  DBHelper.fillRoomsScreen(document.getElementById('rooms_container'));
+  DBHelper.fillRoomsScreen(document.getElementById('rooms_container'),onRoomClicked);
 }
 
 function setupRegisterDevicesButton(){
