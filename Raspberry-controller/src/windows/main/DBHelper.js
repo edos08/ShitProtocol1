@@ -17,11 +17,11 @@ function checkFirstStartupOfSystem(action){
   });
 }
 
-function fillRoomsScreen(container){
-  knex.withSchema('LoRa').select('Description').table('Rooms').then(function(rooms){
+function fillRoomsScreen(container,onClick){
+  knex.withSchema('LoRa').select().table('Rooms').then(function(rooms){
     var content = "";
     for(var a = 0; a < rooms.length; a++){
-      content += "<li>" + rooms[a].Description + " </li>";
+      content += "<li id=\""+ rooms[a].ID +"\" onCLick = \""+ onCLick + "(this.id)\">" + rooms[a].Description + " </li>";
     }
     container.innerHTML = content;
   });
