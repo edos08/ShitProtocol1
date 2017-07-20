@@ -91,7 +91,7 @@ void receivePacket(int packetSize) {
   //Serial.print("Dest: 0x");
   //Serial.println(receivedPacket.dest,HEX);
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
-    //Serial.println("This message is not for me.");
+    Serial.println("This message is not for me.");
     return;
   }
 
@@ -102,6 +102,7 @@ void receivePacket(int packetSize) {
   }
 
   if((receivedPacket.packetLenght) != position){
+      Serial.println("Corrupted message");
       return;
   }
 
