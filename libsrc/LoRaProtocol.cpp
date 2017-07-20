@@ -42,6 +42,7 @@ int sendPacket(Packet packet){
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
+
 }
 
 int sendNonAckPacket(Packet packet) {
@@ -86,6 +87,9 @@ void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
 
   Packet receivedPacket = Helpers::readInputPacket();
+  //Serial.println("Packet received");
+  //Serial.print("Dest: 0x");
+  //Serial.println(receivedPacket.dest,HEX);
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     //Serial.println("This message is not for me.");
     return;
@@ -98,19 +102,8 @@ void receivePacket(int packetSize) {
   }
 
   if((receivedPacket.packetLenght) != position){
-      //Serial.println("Attenzione, pacchetto corrotto");
       return;
   }
-
-  /*if (!receivedPacket.isAck()) {
-	  Serial.print("Received from: 0x");
-	  Serial.println(receivedPacket.sender, HEX);
-	  Serial.print("Message: ");
-	  for (int a = 0; a < receivedPacket.packetLenght; a++) {
-		  Serial.print(receivedPacket.body[a]);
-	  }
-	  Serial.println();
-  }*/
 
   if (receivedPacket.requestsAck()) {
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
