@@ -1,5 +1,4 @@
 #include <SPI.h>
-#include <LoRa.h>
 #include <RegistrationProtocol.h>
 //#include <EEPROM.h>
 
@@ -27,15 +26,16 @@ void setup() {
   //Serial.println(readEEPROM(),HEX);
   randomSeed(analogRead(0));
   randomAddress = generateRandomAddress();
-  initLoRa(randomAddress, 10,9, 3);
+  initLoRa(randomAddress, 8, 4, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
   if(!registrationDenied){
     if(!idAccepted){
-
+      
       if(idDenied){
+        Serial.println("Id denied");
         randomAddress = generateRandomAddress();
         changeAddress(randomAddress);
         idSent = false;
@@ -46,11 +46,13 @@ void loop() {
       }
 
       if(!idSent){
+        Serial.println("loopin'");
         delay(generateRandomWaitingTime());
+        Serial.println("delayed");
         int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
         Helpers::printResponseMessage(result);
         Serial.print("My ID 0x");
-        Serial.print(randomAddress,HEX);
+        Serial.println(randomAddress,HEX);
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -68,6 +70,7 @@ void loop() {
       while(true);
     }
   }else{
+      Serial.println("Else");
       if(registrationResumed)
         registrationDenied = false;
       else
@@ -92,22 +95,30 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
-  Serial.println("Packet received");
+
   if(!isRegistrationResponsePacket(response.type, response.packetLenght))
     return;
+  Serial.print("Packet received ");
   switch(response_result((uint8_t)response.body[0])){
     case REGISTRATION_RESPONSE_ID_DENIED:
+      Serial.println("ID denied");
       idDenied = true;
       break;
     case REGISTRATION_RESPONSE_ID_ACCEPTED:
+      Serial.println("ID accepted");
       idAccepted = true;
       break;
     case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
+      Serial.println("Registration denied");
       registrationDenied = true;
       break;
     case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
-      registrationResumed = true;
+      Serial.println("Registration resumed");
+      if(registrationDenied)
+        registrationResumed = true;
+      break;
   }
+  return;
 }
 
 /*uint32_t readEEPROM(){
