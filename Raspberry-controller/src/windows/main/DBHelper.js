@@ -11,6 +11,7 @@ var knex = require('knex')({
 
 function isFirstStartupOfSystem(){
   var result = knex.select().table('Devices');
+  console.log("Select result: " + result);
   return result.length;
 }
 
