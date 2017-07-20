@@ -26,6 +26,23 @@ function fillRoomsScreen(container,onClick){
     container.innerHTML = content;
   });
 }
+
+function fillContentDivWithDevices(container,roomID){
+  knex.withSchema('LoRa')
+  .select('Devices.ID','Devices.Description','Device_types.Description')
+  .table('Devices','Device_types')
+  .where('Devices.Type','Device_types.ID')
+  .andWhere('Room',roomID)
+  .then(function(devices){
+    var content = "<ul>";
+    for(var a = 0; a < devices.length; a++){
+        content += "<li> " + devices.Devices.Description + " (" + devices.Device_types.Description + ")</li>";
+    }
+    content += "</ul>"
+    container.innerHTML = content;
+  });
+}
+
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen
