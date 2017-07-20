@@ -1,8 +1,14 @@
 #left{
   float: left;
   width: 30%;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
 }
-.content{
+#content{
   float: right;
   width: 70%;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
 }
