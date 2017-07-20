@@ -18,7 +18,7 @@ function checkFirstStartupOfSystem(action){
 }
 
 function fillRoomsScreen(container){
-  knex.withSchema('LoRa').select('Description').then(function(rooms){
+  knex.withSchema('LoRa').select('Description').table('Rooms').then(function(rooms){
     var content = "";
     for(var a = 0; a < rooms.length; a++){
       content += "<li>" + rooms[a] + " </li>";
