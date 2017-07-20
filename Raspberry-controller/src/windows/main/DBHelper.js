@@ -22,7 +22,7 @@ function fillRoomsScreen(container,onClick){
     var content = "";
     for(var a = 0; a < rooms.length; a++){
       content+= "<hr>";
-      content += "<li id=\""+ rooms[a].ID +"\" onClick = \""+ onClick + "(this.id)\">" + rooms[a].Description + " </li>";
+      content += "<li class = \"room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ onClick + "(this.id)\">" + rooms[a].Description + " </li>";
       content += "<hr>";
     }
     container.innerHTML = content;
