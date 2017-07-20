@@ -10,7 +10,10 @@ var knex = require('knex')({
 });
 
 function isFirstStartupOfSystem(){
-  var result = knex.select().table('Devices');
+  var result;
+  knex.select().table('Devices').then(function(devices){
+    result = devices;
+  });
   console.log("Select result: " + result);
   return result.length;
 }
