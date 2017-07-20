@@ -10,7 +10,7 @@ var knex = require('knex')({
 });
 
 function checkFirstStartupOfSystem(action){
-  knex.select().table('Devices').then(function(devices){
+  knex.eithSchema('LoRa').select().table('Devices').then(function(devices){
     console.log("devices: " + devices);
     if(devices.length == 0)
         action();
