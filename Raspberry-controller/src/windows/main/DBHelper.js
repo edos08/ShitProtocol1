@@ -21,7 +21,9 @@ function fillRoomsScreen(container,onClick){
   knex.withSchema('LoRa').select().table('Rooms').then(function(rooms){
     var content = "";
     for(var a = 0; a < rooms.length; a++){
-      content += "<li class = \"room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ onClick + "(this.id)\">" + rooms[a].Description + " </li>";
+      content+= "<hr>";
+      content += "<li id=\""+ rooms[a].ID +"\" onClick = \""+ onClick + "(this.id)\">" + rooms[a].Description + " </li>";
+      content += "<hr>";
     }
     container.innerHTML = content;
   });
