@@ -2,7 +2,7 @@ var ipc = require('electron').ipcRenderer;
 var DBHelper = require('./DBHelper');
 
 function setUpElements(){
-  setupRegisterDevicesButton
+  setupRegisterDevicesButton();
   DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
   DBHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
 }
