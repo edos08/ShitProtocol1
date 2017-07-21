@@ -36,11 +36,11 @@ ipc.on("insert_room_button_pressed", function(){
   console.log("Button rooms pressed");
 });
 
-ipc.on('assign_devices_button_pressed',function()){
+ipc.on('assign_devices_button_pressed',function(){
   deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
   deviceAssignationWindow.openDevTools();
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
-}
+});
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
