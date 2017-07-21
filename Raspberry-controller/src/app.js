@@ -40,5 +40,6 @@ function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
   registrationActive = false;
   deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
+  deviceAssignationWindow.openDevTools();
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 }
