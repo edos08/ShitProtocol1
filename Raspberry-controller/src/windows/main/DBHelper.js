@@ -76,11 +76,12 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   .from("Devices")
   .whereNull("Room")
   .then(function(devices){
-    var content;
+    var content = "";
     if(devices.length > 0){
       content = "<ul>";
       for(var a = 0; a < devices.length; a++){
           content += populateListItemWithDeviceInfo(devices[a]);
+          console.log(content);
       }
       content += "</ul>";
     }else {
