@@ -91,7 +91,7 @@ function handleIDStreamEndMessage(){
     //Operation failed, abort
   }
   if(onEnd){
-    onEnd(accepted_ids == devices_to_register);
+    onEnd(accepted_ids == devicesToRegister);
   }
 }
 
