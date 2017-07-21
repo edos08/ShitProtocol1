@@ -32,6 +32,7 @@ ipc.on("register_devices_pressed",function(){
 });
 
 ipc.on("insert_room_button_pressed", function(){
+  console.log("Button rooms pressed");
   dialogs.prompt('Nome della stanza','Stanza01',function(ok){
     console.log("Ok? " + ok);
   })
