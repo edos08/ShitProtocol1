@@ -9,7 +9,7 @@ var accepted_ids = 0;
 var onEnd = null;
 
 function start(){
-  var portName = '/dev/ttyACM1';
+  var portName = '/dev/ttyACM2';
   var handlers = {
     handshakeHandler: handleHandshake,
     idCheckRequestHandler: handleIDCheckRequest,
