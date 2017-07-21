@@ -8,10 +8,16 @@ function setUpElements(){
 }
 
 function setupRegisterDevicesButton(){
-  console.log("loaded");
   var registerDevicesButton = document.getElementById('register_devices_button');
   registerDevicesButton.addEventListener('click',function(){
     ipc.send('register_devices_pressed');
+  });
+}
+
+function setupInsertRoomButton(){
+  var insertRoomButton = document.getElementById('insert_room_button');
+  insertRoomButton.addEventListener('click',function(){
+    
   });
 }
 
