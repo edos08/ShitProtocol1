@@ -90,6 +90,11 @@ Durante la fase di registrazione l'arduino dovrà comunicare alla raspberry gli 
 
 * 4 Dopo questo passaggio la fase di registrazione può considerarsi terminata e si passa alla fasi di associazione dei dispositivi
 
+In aggiunta il programma di monitoraggio può inviare pacchetti per resettare lo stato del nodo per ricominciare la comunicazione seriale (solo per il debug)
+
+| Header (1 byte) | payload (0 byte) |
+|-----|-----|
+|  3  |  ---  |
 
 ### Tipi di dispositivo
 
