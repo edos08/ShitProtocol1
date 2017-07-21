@@ -37,10 +37,6 @@ ipc.on("register_devices_pressed",function(){
 
 ipc.on("insert_room_button_pressed", function(){
   console.log("Button rooms pressed");
-  /*smalltalk.prompt("Nuova stanza","Inserisci il nome della nuova pagina").then(function(name){
-    console.log("Nome inserito " + name);
-    dbHelper.insertRoomIntoDB(name);
-  });*/
 });
 
 function onRegistrationEnd(result){
