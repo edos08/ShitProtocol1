@@ -8,8 +8,8 @@ var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
 
-function start(){
-  var portName = '/dev/ttyACM2';
+function start(processEndHandler){
+  var portName = '/dev/ttyACM0';
   var handlers = {
     handshakeHandler: handleHandshake,
     idCheckRequestHandler: handleIDCheckRequest,
@@ -19,6 +19,7 @@ function start(){
     handshakeEndHandler: handleHandshakeEnd
   };
   helpers.init(portName,handlers);
+  onEnd = processEndHandler;
 }
 
 function handleHandshake(){
