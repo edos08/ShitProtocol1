@@ -177,6 +177,21 @@ In cui ID è l'ID del dispositivo e tipo è il tipo di dispositivo (sensore o la
 </ul></li>
 <li><p>4 Dopo questo passaggio la fase di registrazione può considerarsi terminata e si passa alla fasi di associazione dei dispositivi</p></li>
 </ul>
+<p>In aggiunta il programma di monitoraggio può inviare pacchetti per resettare lo stato del nodo per ricominciare la comunicazione seriale (solo per il debug)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Header (1 byte)</th>
+<th>payload (0 byte)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
 <h3 id="tipi-di-dispositivo">Tipi di dispositivo</h3>
 <table>
 <thead>

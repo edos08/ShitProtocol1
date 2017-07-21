@@ -16,16 +16,68 @@
 <li><a href="SerialProtocol.html">Seriale</a></li>
 </ul>
 <h2 id="descrizione-dei-pacchetti">Descrizione dei pacchetti</h2>
-<p>I pacchetti di registrazione dai dispositivi verso il server sono vuoti e hanno <code>packetLenght = 0</code></p>
+<p>I pacchetti di registrazione dai dispositivi verso il server hanno <code>packetLenght = 1</code> ed il contenuto è il seguente:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Codice</th>
+<th>Tipo</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Nodo</td>
+<td>Dispositivo collegato alla raspeberry in seriale</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Controllore</td>
+<td>Dispositivo che controlla la luminosità di una lampada</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Sensore</td>
+<td>Sensore di luminosità</td>
+</tr>
+</tbody>
+</table>
 <p>I pacchetti di registrazione da nodo a dispositivo contengono la risposta al controllo dell'ID e hanno <code>packetLenght = 1</code><br />
 L'unico byte di payload ha il seguente contenuto:</p>
-<pre><code>* bit 7-8:
-    * 0: ID non accettato
-    * 1: ID accettato
-    * 2: Il nodo non è pronto a ricevere registrazioni
-    * 3: Il nodo è ora pronto a ricevere</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Bit 7</th>
+<th>Bit 8</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0</td>
+<td>ID non accettato</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>1</td>
+<td>ID accettato</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>0</td>
+<td>Il nodo non è pronto a ricevere registrazioni</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>Il nodo è ora pronto a ricevere le registrazioni</td>
+</tr>
+</tbody>
+</table>
 <h2 id="costruttori-di-pacchetti-predefiniti">Costruttori di pacchetti predefiniti</h2>
-<p><code>static Packet RegistrationPacket(uint32_t dest, uint32_t sender)</code></p>
+<p><code>static Packet RegistrationPacket(uint32_t dest, uint32_t sender, uint8_t type)</code></p>
 <p>Pacchetto con cui un dispositivo invia il proprio ID al nodo. Il <code>dest</code> deve quindi essere il nodo ed ha valore <code>0xFFFFFFFF</code>.</p>
 <p><code>RegistrationIDDeniedPacket(uint32_t dest, uint32_t sender)</code></p>
 <p>Pacchetto inviato dal nodo per rifiutare un ID</p>
@@ -44,15 +96,15 @@ L'unico byte di payload ha il seguente contenuto:</p>
 <li>A: Aspetta di ricevere dei pacchetti dai dispositivi
 <ul>
 <li>1: Leggo l'ID che ricevo nel pacchetto</li>
-<li>2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato. (Da aggiungere: query al mongodb presente nel raspberry per gli ID già salvati)
+<li>2: Itero tra tutti gli ID salvati per vedere se l'ID arrivato è duplicato. Se supero questo controllo faccio la query al database della raspberry per controllare che l'id non sia già nel database
 <ul>
-<li>2.a: Se non lo è salvo l'ID nella lista degli ID accettabili
+<li>2.a: Se passa il controllo salvo l'ID nella lista degli ID accettabili
 <ul>
 <li>2.a.1: Se il numero degli ID accettabili è pari al numero dei dispositivi da registrare allora invio un messaggio di conferma dell'ID a tutti</li>
 <li>2.a.2: Per ogni dispositivo che mi risponde con un ack alla conferma dell'ID aspetto che mi invii il tipo di dispositivo a cui appartiene</li>
 <li>2.a.3: Invio alla raspberry gli ID e itipi dei dispositivi</li>
 </ul></li>
-<li>2.b: Se lo è setto il flag &quot;id duplicato&quot; e memorizzo l'ID non valido</li>
+<li>2.b: Se non lo passa setto il flag &quot;id duplicato&quot; e memorizzo l'ID non valido</li>
 </ul></li>
 </ul></li>
 <li>B: Invio all'ID duplicato un pacchetto di rifiuto dell'ID e elimino tutte le occorrenze di quell'ID dalla coda degli ID accettabili</li>
@@ -67,14 +119,14 @@ L'unico byte di payload ha il seguente contenuto:</p>
 <ul>
 <li>1: Generazione di un ID casuale</li>
 <li>2: Attesa di un tempo casuale tra gli 0,5 e gli 1,5 secondi per minimizzare le collisioni</li>
-<li>3: Invio del pacchetto contenente l'ID al nodo</li>
+<li>3: Invio del pacchetto contenente l'ID ed il tipo al nodo</li>
 <li>4: Attesa della risposta per 8 secondi
 <ul>
 <li>4.a Se non riceve risposta prova a reinviare il pacchetto presumendo che non sia arrivato<br />
 </li>
 <li>4.b Se riceve risposta:
 <ul>
-<li>4.b.1 Se è positiva allora salva l'ID sulla EPROM ed invia al nodo l'informazione relativa alla tipologia del dispsitivo ed inizia il suo ciclo di vita a regime</li>
+<li>4.b.1 Se è positiva allora salva l'ID sulla EPROM ed inizia il suo ciclo di vita a regime</li>
 <li>4.b.2 Se è negativa torna al passo 1</li>
 <li>4.b.3 Se la risposta è &quot;nodo non disponibile alla registrazione&quot; rimane in attesa di un pacchetto di &quot;registrazione ripresa&quot; dal nodo e a pacchetto ricevuto riprende dal punto 1</li>
 </ul></li>
@@ -82,7 +134,6 @@ L'unico byte di payload ha il seguente contenuto:</p>
 </ul></li>
 </ul></li>
 </ul>
-<p>Per informazioni riguardo ai pacchetti di invio della tipologia del dispositivo consultare la <a href="Submission.html">pagina relativa</a></p>
 <hr />
 </body>
 </html>
