@@ -41,5 +41,4 @@ function onRegistrationEnd(result){
   registrationActive = false;
   deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
-  deviceAssignationWindow.show();
 }
