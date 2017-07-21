@@ -46,8 +46,25 @@ function fillContentDivWithDevices(container,roomID){
   });
 }
 
+function checkIfIdIsInDB(id,resultHandler){
+  knex.withSchema('LoRa')
+  .select('ID')
+  .from('Devices')
+  .where('ID',id)
+  .then(function(devices){
+    resultHandler(devices.length);
+  });
+}
+
+function insertDeviceIntoDB(id,type){
+  knex.withschema('LoRa')
+  .insert({Address: id,Type: type});
+}
+
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen,
-  fillContentDivWithDevices
+  fillContentDivWithDevices,
+  checkIfIdIsInDB,
+  insertDeviceIntoDB
 }
