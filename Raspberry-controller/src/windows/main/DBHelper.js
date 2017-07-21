@@ -59,13 +59,13 @@ function checkIfIdIsInDB(id,resultHandler){
 function insertDeviceIntoDB(id,type){
   console.log("Inserting : " + id + " - " + type);
   var k = knex('Devices').withSchema('LoRa')
-  .insert({Address: id,Type: type});
+  .insert({Address: id,Type: type}).then(function(){});
 }
 
 function insertRoomIntoDB(roomName){
   console.log("Inserting : " + roomName);
   var k = knex('Rooms').withSchema('LoRa')
-  .insert({Description: roomName});
+  .insert({Description: roomName}).then(function(){});;
 }
 
 function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
