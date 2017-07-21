@@ -68,6 +68,7 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .from("Devices")
   .whereNull("Room")
+  .orderBy('id','asc')
   .then(function(devices){
     var content = "";
     if(devices.length > 0){
