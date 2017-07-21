@@ -19,8 +19,6 @@ app.on('ready', function(){
     height: 768
   });
 
-  deviceAssignationWindow = new BrowserWindow({parent: window, modal: true, show:false});
-  deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html')
   window.loadURL('file://' + __dirname + '/windows/main/main.html');
   window.openDevTools();
 
@@ -42,5 +40,7 @@ ipc.on("insert_room_button_pressed", function(){
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
   registrationActive = false;
+  deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
+  deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
   deviceAssignationWindow.show();
 }
