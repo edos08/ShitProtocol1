@@ -45,7 +45,7 @@ void loop() {
 
       if(!idSent){
         delay(generateRandomWaitingTime());
-        int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
+        int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
         Helpers::printResponseMessage(result);
         Serial.print("My ID 0x");
         Serial.println(randomAddress,HEX);
@@ -61,8 +61,8 @@ void loop() {
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
       //TODO: write to EPROM
       //TODO: send type to NODE
-      int result = sendPacket(TypeSubmissionPacket(NODE_ADDRESS,randomAddress,TYPE));
-      Helpers::printResponseMessage(result);
+      /*int result = sendPacket(TypeSubmissionPacket(NODE_ADDRESS,randomAddress,TYPE));
+      Helpers::printResponseMessage(result);*/
       while(true);
     }
   }else{

@@ -32,4 +32,5 @@ ipc.on("register_devices_pressed",function(){
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
+  registrationActive = false;
 }
