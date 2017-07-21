@@ -8,6 +8,7 @@ const ID_CONFIRMATION_PROCESS_END = 255;
 const HANDSHAKE_RESPONSE = 'W';
 const HANDSHAKE_END = 'A';
 const HANDSHAKE_MESSAGE = 'H';
+const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 
 var port;
 
@@ -19,6 +20,10 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 
 function init(portPath,handlers){
+  if(port != null){
+    sendEntrerRegistrationModeMessage();
+    return;
+  }
   if(portPath != ''){
     console.log("Testing " + portPath);
 
@@ -139,6 +144,13 @@ function answerToIDCheckRequest(result){
   console.log("done");
   console.log("check result returned");
 }
+
+function sendEntrerRegistrationModeMessage(){
+  var buf = Buffer.alloc(1);
+  buf[0] = MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+  port.write(buf);
+}
+
 module.exports = {
   init: init,
   answerToHandshake: answerToHandshake,
