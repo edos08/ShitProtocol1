@@ -80,6 +80,7 @@ function handleIDStreamEndMessage(){
     console.log("Warning: received id stream end message while stream is already closed");
     return;
   }
+  handshakeSucceded = false;
   isAcceptationIDStreamActive = false;
   console.log("ID stream ended");
   if(accepted_ids == devicesToRegister)
@@ -89,6 +90,7 @@ function handleIDStreamEndMessage(){
     console.log("Operation failed");
     //Operation failed, abort
   }
+  accepted_ids = 0;
   if(onEnd){
     onEnd(accepted_ids == devicesToRegister);
   }
