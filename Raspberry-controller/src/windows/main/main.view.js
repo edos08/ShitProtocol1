@@ -1,5 +1,7 @@
 var ipc = require('electron').ipcRenderer;
 var DBHelper = require('./DBHelper');
+var smalltalk = require('smalltalk');
+
 
 function setUpElements(){
   setupRegisterDevicesButton();
