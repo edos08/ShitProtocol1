@@ -17,7 +17,7 @@ function setupRegisterDevicesButton(){
 function setupInsertRoomButton(){
   var insertRoomButton = document.getElementById('insert_room_button');
   insertRoomButton.addEventListener('click',function(){
-    
+    ipc.send('insert_room_button_pressed');
   });
 }
 
