@@ -84,11 +84,9 @@ function handleIDStreamEndMessage(){
   isAcceptationIDStreamActive = false;
   console.log("ID stream ended");
   if(accepted_ids == devicesToRegister)
-      //operation completed, go to device association phase
       console.log("operation completed");
   else {
     console.log("Operation failed");
-    //Operation failed, abort
   }
   accepted_ids = 0;
   if(onEnd){
