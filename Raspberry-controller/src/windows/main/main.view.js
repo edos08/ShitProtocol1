@@ -21,6 +21,10 @@ function setupInsertRoomButton(){
   var insertRoomButton = document.getElementById('insert_room_button');
   insertRoomButton.addEventListener('click',function(){
     ipc.send('insert_room_button_pressed');
+    smalltalk.prompt("Nuova stanza","Inserisci il nome della nuova pagina").then(function(name){
+      console.log("Nome inserito " + name);
+      dbHelper.insertRoomIntoDB(name);
+    });
   });
 }
 
@@ -30,5 +34,5 @@ function displayEmptyDBMessage(){
 
 function onRoomClicked(id){
   console.log("Congratulations, you clicked on the room!");
-  DBHelper.fillContentDivWithDevices(document.getElementById('content'),id);
+  DBHelper.fillContentDivWithDevices(document.getElementById('content'),id)
 }
