@@ -68,6 +68,20 @@ function insertRoomIntoDB(roomName){
   .insert({Description: roomName});
 }
 
+function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
+  knex.withSchema('LoRa').
+  .select("ID","Description","Type")
+  .from("Devices")
+  .whereNull("Room")
+  .then(function(devices){
+    var content = "<ul>";
+    for(var a = 0; a < devices.length; a++){
+
+    }
+    content += "</ul>";
+  });
+}
+
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen,
