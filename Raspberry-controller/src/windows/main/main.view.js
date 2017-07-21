@@ -8,8 +8,8 @@ var dialogs = Dialogs();
 function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
-  DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
-  DBHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
+  dbHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
+  dbHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
 }
 
 function setupRegisterDevicesButton(){
