@@ -16,8 +16,6 @@ bool waitingTimedOut = false;
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-
-
 void setup() {
   Serial.begin(9600);
   while(!Serial);
@@ -33,7 +31,7 @@ void setup() {
 void loop() {
   if(!registrationDenied){
     if(!idAccepted){
-      
+
       if(idDenied){
         Serial.println("Id denied");
         randomAddress = generateRandomAddress();
@@ -46,9 +44,7 @@ void loop() {
       }
 
       if(!idSent){
-        Serial.println("loopin'");
         delay(generateRandomWaitingTime());
-        Serial.println("delayed");
         int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress));
         Helpers::printResponseMessage(result);
         Serial.print("My ID 0x");
@@ -70,7 +66,6 @@ void loop() {
       while(true);
     }
   }else{
-      Serial.println("Else");
       if(registrationResumed)
         registrationDenied = false;
       else
@@ -118,7 +113,6 @@ void handleResponsePacket(Packet response){
         registrationResumed = true;
       break;
   }
-  return;
 }
 
 /*uint32_t readEEPROM(){
