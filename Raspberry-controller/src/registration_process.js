@@ -68,7 +68,7 @@ function handleIDStreamValueMessage(id,type){
     console.log("Warning: received an id stream packet while stream is closed");
     return;
   }
-  console.log("\t Device-> ID: " + id + " type: " + type);
+  console.log("\t Device-> ID: " + (id >>> 0).toString(16) + " type: " + type);
   dbHelper.insertDeviceIntoDB("0x" + (id >>> 0).toString(16)),type);
   accepted_ids++;
 }
