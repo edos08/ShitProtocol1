@@ -86,10 +86,7 @@ void activateReceiveMode(){
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
   Packet receivedPacket = Helpers::readInputPacket();
-  if(receivedPacket == (*lastPacket)) return;
-  //Serial.println("Packet received");
-  //Serial.print("Dest: 0x");
-  //Serial.println(receivedPacket.dest,HEX);
+  if(receivedPacket == (*lastPacket)){ Serial.println("Duplicated packet");return;}
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     Serial.println("This message is not for me.");
     return;
