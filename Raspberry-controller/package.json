@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "knex": "^0.13.0",
+    "pg": "^7.0.1",
     "serialport": "^5.0.0-beta8"
   }
 }
