@@ -59,9 +59,14 @@ function checkIfIdIsInDB(id,resultHandler){
 function insertDeviceIntoDB(id,type){
   console.log("Inserting : " + id + " - " + type);
   var k = knex('Devices').withSchema('LoRa')
-  .insert({ID: 0,Address: id,Type: type});
+  .insert({Address: id,Type: type});
 }
 
+function insertRoomIntoDB(roomName){
+  console.log("Inserting : " + roomName);
+  var k = knex('Rooms').withSchema('LoRa')
+  .insert({Description: roomName});
+}
 
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,

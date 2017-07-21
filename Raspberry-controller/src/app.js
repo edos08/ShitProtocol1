@@ -1,10 +1,11 @@
 const {app,BrowserWindow} = require('electron');
 var ipc = require('electron').ipcMain;
 
-var Dialogs = require('dialogs');
-var dialogs = Dialogs(opts = {});
+var smalltalk = require('smalltalk');
 
 var registration = require('./registration_process');
+
+var dbHelper =require('./windows/main/DBHelper');
 
 registration.onEnd = onRegistrationEnd;
 
@@ -35,9 +36,10 @@ ipc.on("register_devices_pressed",function(){
 
 ipc.on("insert_room_button_pressed", function(){
   console.log("Button rooms pressed");
-  dialogs.prompt('Nome della stanza','Stanza01',function(ok){
-    console.log("Ok? " + ok);
-  })
+  smalltalk.prompt("Nuova stanza","Inserisci il nome della nuova pagina").then(function(name){
+    console.log("Nome inserito " + name);
+    dbHelper.insertRoomIntoDB(name);
+  });
 });
 
 function onRegistrationEnd(result){
