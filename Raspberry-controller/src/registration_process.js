@@ -69,7 +69,7 @@ function handleIDStreamValueMessage(id,type){
     return;
   }
   console.log("\t Device-> ID: " + (id >>> 0).toString(16) + " type: " + type);
-  dbHelper.insertDeviceIntoDB("0x" + (id >>> 0).toString(16)),type);
+  dbHelper.insertDeviceIntoDB("0x" + ((id >>> 0).toString(16)),type);
   accepted_ids++;
 }
 
