@@ -81,6 +81,9 @@ function onPortOpened(err){
       }
     }
   });
+  this.on('error',(error) =>{
+    Console.log('Errore di connessione seriale');
+  });
   return 1;
 }
 

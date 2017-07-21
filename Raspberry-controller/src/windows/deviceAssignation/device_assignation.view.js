@@ -2,7 +2,7 @@ var dbHelper = require('../main/DBHelper');
 var Dialogs = require('dialogs');
 var dialogs = Dialogs();
 
-function setupComponents(){
+function setUpComponents(){
   dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn(document.getElementById('devicesContainer'));
 }
 

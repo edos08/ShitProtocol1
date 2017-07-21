@@ -89,10 +89,10 @@ function handleIDStreamEndMessage(){
   else {
     console.log("Operation failed");
   }
-  accepted_ids = 0;
   if(onEnd){
     onEnd(accepted_ids == devicesToRegister);
   }
+  accepted_ids = 0;
 }
 
 function checkHandshakeState(){
