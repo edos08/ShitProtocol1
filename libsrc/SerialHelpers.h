@@ -52,13 +52,17 @@ static void sendIDCheckMessage(uint32_t ID){
 }
 
 static void sendDevicesStreamStartMessage(){
-  Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((uint8_t)MESSAGE_DEVICES_STREAM_START);
+  char buffer[2];
+  buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
+  buffer[1] = MESSAGE_DEVICE_STREAM_START;
+  Serial.write(buffer,2);
 }
 
 static void sendDevicesStreamEndMessage(){
-  Serial.write((uint8_t)MESSAGE_TYPE_DEVICES_SUBMISSION);
-  Serial.write((uint8_t)MESSAGE_DEVICE_STREAM_END);
+  char buffer[2];
+  buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
+  buffer[1] = MESSAGE_DEVICE_STREAM_END;
+  Serial.write(buffer,2);
 }
 
 static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
