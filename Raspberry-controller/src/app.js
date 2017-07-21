@@ -11,20 +11,23 @@ registration.onEnd = onRegistrationEnd;
 
 
 
-let mainWindow;
+let window;
+let deviceAssignationWindow;
 var registrationActive = false;
 
 app.on('ready', function(){
-  mainWindow = new BrowserWindow({
+  window = new BrowserWindow({
     width: 1024,
     height: 768
   });
 
-  mainWindow.loadURL('file://' + __dirname + '/windows/main/main.html');
-  mainWindow.openDevTools();
+  deviceAssignationWindow = new BrowserWindow({parent: window, modal: true, show:false});
+  deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html')
+  window.loadURL('file://' + __dirname + '/windows/main/main.html');
+  window.openDevTools();
 
-  mainWindow.on('closed',() =>{
-    mainWindow = null;
+  window.on('closed',() =>{
+    window = null;
   })
 });
 
@@ -45,4 +48,5 @@ ipc.on("insert_room_button_pressed", function(){
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
   registrationActive = false;
+  deviceAssignationWindow.show();
 }
