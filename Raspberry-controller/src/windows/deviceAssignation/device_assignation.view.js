@@ -3,6 +3,7 @@ var Dialogs = require('dialogs');
 var dialogs = Dialogs();
 
 function setUpComponents(){
+  console.log("Setting components up");
   dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn(document.getElementById('devicesContainer'));
 }
 
