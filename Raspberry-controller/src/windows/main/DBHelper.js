@@ -103,8 +103,9 @@ function insertRoomIntoDB(roomName,windowToReload){
 }
 
 function renameDevice(id,name,windowToReload){
+  console.log("ID " + id + " name " + name);
   knex('Devices').withSchema('LoRa')
-  .where('ID','=',id)
+  .where('ID',id)
   .update('Description', name)
   .then(function(result){
     if(result == 1){
