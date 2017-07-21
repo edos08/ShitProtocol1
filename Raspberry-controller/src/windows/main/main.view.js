@@ -1,5 +1,5 @@
 var ipc = require('electron').ipcRenderer;
-var DBHelper = require('./DBHelper');
+var dbHelper = require('./DBHelper');
 
 var Dialogs = require('dialogs');
 
@@ -24,7 +24,8 @@ function setupInsertRoomButton(){
   insertRoomButton.addEventListener('click',function(){
     ipc.send('insert_room_button_pressed');
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
-      
+      if(ok != null && ok != "" && ok != " ")
+        dbHelper.insertRoomIntoDB(ok);
     });
   });
 }
