@@ -96,6 +96,7 @@ function populateListItemWithDeviceInfo(device){
   + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
   + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
   + " </li>";
+  return content;
 }
 
 function renameDevice(id,name){
