@@ -74,7 +74,6 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
       content = "<ul>";
       for(var a = 0; a < devices.length; a++){
           content += populateListItemWithDeviceInfo(devices[a]);
-          console.log(content);
       }
       content += "</ul>";
     }else {
@@ -85,12 +84,13 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
 }
 
 function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.ID +"\"> "
+  var content = "<li id = \"" + device.id +"\"> "
   + (device.dev_desc)?device.dev_desc:"Dispositivo senza nome"
   + " - " + device.dev_type
   + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
   + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
   + " </li>";
+  console.log(device);
   return content;
 }
 
