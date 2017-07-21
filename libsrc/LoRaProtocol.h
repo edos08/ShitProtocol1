@@ -118,9 +118,9 @@ typedef struct Helpers {
 		result.dest = read32bitInt(buffer);
 		read4BytesInto(buffer);
 		result.sender = read32bitInt(buffer);
-		result.type = LoRa.read();
-		result.packetNumber = LoRa.read();
-		result.packetLenght = LoRa.read();
+		result.type = (uint8_t)LoRa.read();
+		result.packetNumber = (uint8_t)LoRa.read();
+		result.packetLenght = (uint8_t)LoRa.read();
 		return result;
 	}
 
