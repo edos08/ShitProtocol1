@@ -64,6 +64,8 @@ void enterRegistrationMode(){
   alertDoubledDevicesTrigger = false;
   notifyDevicesIDsAcceptedTrigger = false;
   identified_devices = 0;
+  stream_started = false;
+  stream_ended = false;
   sendHandshakeMessage();
 }
 
