@@ -64,9 +64,9 @@ function insertDeviceIntoDB(id,type){
 
 function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   knex.withSchema('LoRa')
-  .select("Devices.ID as id ","Devices.Description as dev_desc ","Devices_types.Descriptio as dev_type")
-  .from("Devices")
+  .select("Devices.ID as id ","Devices.Description as dev_desc ","Device_types.Description as dev_type")
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
+  .from("Devices")
   .whereNull("Room")
   .then(function(devices){
     var content = "";
