@@ -2,7 +2,7 @@ const {app,BrowserWindow} = require('electron');
 var ipc = require('electron').ipcMain;
 
 var Dialogs = require('dialogs');
-var dialogs = Dialogs({ok: "inserisci"});
+var dialogs = Dialogs({});
 
 var registration = require('./registration_process');
 
