@@ -1,5 +1,6 @@
 var ipc = require('electron').ipcRenderer;
-var remote = require('remote');
+
+var remote = require('electron').remote;
 
 var dbHelper = require('./DBHelper');
 
