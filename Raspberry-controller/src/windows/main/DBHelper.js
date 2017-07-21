@@ -62,10 +62,12 @@ function insertDeviceIntoDB(id,type){
   .insert({Address: id,Type: type}).then(function(){});
 }
 
-function insertRoomIntoDB(roomName){
+function insertRoomIntoDB(roomName,windowToReload){
   console.log("Inserting : " + roomName);
   var k = knex('Rooms').withSchema('LoRa')
-  .insert({Description: roomName}).then(function(){});;
+  .insert({Description: roomName}).then(function(){
+    windowToReload.reload();
+  });;
 }
 
 function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
