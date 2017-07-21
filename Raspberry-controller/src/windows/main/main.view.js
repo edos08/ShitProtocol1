@@ -41,5 +41,5 @@ function displayEmptyDBMessage(){
 
 function onRoomClicked(id){
   console.log("Congratulations, you clicked on the room!");
-  DBHelper.fillContentDivWithDevices(document.getElementById('content'),id)
+  dbHelper.fillContentDivWithDevices(document.getElementById('content'),id)
 }
