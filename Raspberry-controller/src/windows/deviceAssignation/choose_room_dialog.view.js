@@ -1,6 +1,6 @@
 var dbHelper = require('../main/DBHelper');
 
-setUpComponents(){
+function setUpComponents(){
    fillRoomsList();
 }
 
