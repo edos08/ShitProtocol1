@@ -5,7 +5,6 @@ var registration = require('./registration_process');
 
 var dbHelper =require('./windows/main/DBHelper');
 
-registration.onEnd = onRegistrationEnd;
 
 
 
@@ -30,6 +29,7 @@ app.on('ready', function(){
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
   registration.start();
+  registration.onEnd = onRegistrationEnd;
   registrationActive = true;
 });
 

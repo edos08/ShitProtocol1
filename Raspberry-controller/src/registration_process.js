@@ -6,7 +6,7 @@ var devicesToRegister = 1; //this should be given from the user (1 - 255)
 var handshakeSucceded = false;
 var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
-var onEnd = null;
+var onEnd;
 
 function start(){
   var portName = '/dev/ttyACM2';
