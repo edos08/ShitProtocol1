@@ -74,19 +74,44 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   .from("Devices")
   .whereNull("Room")
   .then(function(devices){
-    var content = "<ul>";
-    for(var a = 0; a < devices.length; a++){
-
+    var content;
+    if(devices.length > 0){
+      content = "<ul>";
+      for(var a = 0; a < devices.length; a++){
+          content += populateListItemWithDeviceInfo(devices[a]);
+      }
+      content += "</ul>";
+    }else {
+      content = "Nessun dispositivo da collegare ad altre stanze";
     }
-    content += "</ul>";
+    container.innerHTML = content;
   });
 }
 
+function populateListItemWithDeviceInfo(device){
+  var content = "<li id = \"" + device.ID +"\"> " + device.Description + " - " + device.Type
+  + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
+  + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
+  + " </li>";
+}
+
+function renameDevice(id,name){
+  knex('Devices').withSchema('LoRa')
+  .where('ID',id)
+  .update({Description: name})
+  .then(function(result){
+    if(result == 1){
+      console.log("Descrizione aggiornata con successo!");
+    }
+  });
+}
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen,
   fillContentDivWithDevices,
   checkIfIdIsInDB,
   insertDeviceIntoDB,
-  insertRoomIntoDB
+  insertRoomIntoDB,
+  queryAllDevicesWithNoRoomAssignedAndShowIn,
+  renameDevice
 }
