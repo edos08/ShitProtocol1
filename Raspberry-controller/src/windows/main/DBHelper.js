@@ -62,18 +62,11 @@ function insertDeviceIntoDB(id,type){
   .insert({Address: id,Type: type}).then(function(){});
 }
 
-function insertRoomIntoDB(roomName,windowToReload){
-  console.log("Inserting : " + roomName);
-  var k = knex('Rooms').withSchema('LoRa')
-  .insert({Description: roomName}).then(function(){
-    windowToReload.reload();
-  });;
-}
-
 function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   knex.withSchema('LoRa')
-  .select("ID","Description","Type")
+  .select("Devices.ID is id ","Devices.Description as dev_desc ","Devices_types.Descriptio as dev_type")
   .from("Devices")
+  .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .whereNull("Room")
   .then(function(devices){
     var content = "";
@@ -92,21 +85,32 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
 }
 
 function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.ID +"\"> " + device.Description + " - " + device.Type
+  var content = "<li id = \"" + device.ID +"\"> "
+  + (device.dev_desc)?device.dev_desc:"Dispositivo senza nome"
+  + " - " + device.dev_type
   + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
   + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
   + " </li>";
   return content;
 }
 
-function renameDevice(id,name){
+function insertRoomIntoDB(roomName,windowToReload){
+  console.log("Inserting : " + roomName);
+  knex('Rooms').withSchema('LoRa')
+  .insert({Description: roomName}).then(function(){
+    windowToReload.reload();
+  });;
+}
+
+function renameDevice(id,name,windowToReload){
   knex('Devices').withSchema('LoRa')
-  .where('ID',id)
-  .update({Description: name})
+  .where('ID','=',id)
+  .update('Description', name)
   .then(function(result){
     if(result == 1){
       console.log("Descrizione aggiornata con successo!");
     }
+    windowToReload.reload();
   });
 }
 module.exports = {
