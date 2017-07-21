@@ -184,6 +184,7 @@ int readSerialContent(){
     serialBuffer[serialIndex] = (char)Serial.read();
     serialIndex++;
   }
+  return serialIndex;
 }
 
 void addIDToValidIDsList(){
