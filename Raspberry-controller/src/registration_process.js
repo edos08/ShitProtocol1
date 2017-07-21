@@ -1,4 +1,6 @@
 var helpers = require('./SerialHelpers');
+var dbHelper = require('./windows/main/DBHelper');
+
 
 var devicesToRegister = 1; //this should be given from the user (1 - 255)
 var handshakeSucceded = false;
@@ -44,10 +46,8 @@ function handleIDCheckRequest(id){
     console.log("Warning: received ID check request while id submission stream is open [All IDs were already checked]");
     return;
   }
-  console.log("Received ID to check: " + id.toString(16));
-  //query mongodb here
-  //"SELECT ID FROM devices WHERE ID = \"" + _id + ""\""
-  helpers.answerToIDCheckRequest(0);//Number of lines found in mongo*/
+  console.log("Received ID to check: " + (id >>> 0).toString(16));
+  dbHelper.checkIfIdIsInDB(id,helpers.answerToIDCheckRequest);
 }
 
 function handleIDStreamStartMessage(){
@@ -69,8 +69,7 @@ function handleIDStreamValueMessage(id,type){
     return;
   }
   console.log("\t Device-> ID: " + id + " type: " + type);
-  //write data to database
-  //LoRa/devices "{\"ID\" : \"" + _id + "\", \"type\" : \"" + type + "\"}"
+  dbHelper.insertDeviceIntoDB("0x" + (id >>> 0).toString(16)),type);
   accepted_ids++;
 }
 
