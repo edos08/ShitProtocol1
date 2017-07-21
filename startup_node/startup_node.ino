@@ -1,3 +1,4 @@
+
 #include <SPI.h>
 #include <LoRa.h>
 #include <RegistrationProtocol.h>
@@ -68,9 +69,12 @@ void loop() {
                   sendDevicesStreamStartMessage();
                   stream_started = true;
                 }
-                int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
-                sendDeviceTypeToSerial();
-                if(identified_devices == devices_to_register){
+                if(identified_devices < devices_to_register){
+                  int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
+                  sendDeviceTypeToSerial();
+                  delay(50);
+                  return;
+                }else{
                   sendDevicesStreamEndMessage();
                   stream_ended = true;
                   while(true);
@@ -156,13 +160,14 @@ void serialEvent(){
       hasReceivedNumberOfDevicesToRegister = true;
       devices_to_register = (uint8_t)serialBuffer[1];
       devices_ids = new uint32_t[devices_to_register];
+      devices_types = new uint8_t[devices_to_register];
     }
     return;
   } else if(isWaitingForDeviceIDCheck){
     if(isIDCheckResponse(serialBuffer,serialMessageLength)){
       isWaitingForDeviceIDCheck = false;
       int idCheckResult = serialBuffer[1];
-      if(idCheckResult == MESSAGE_ID_VALID){
+      if(idCheckResult == 0){
         addIDToValidIDsList();
       } else{
         doubled_ID = idToCheck;
@@ -185,6 +190,7 @@ void addIDToValidIDsList(){
     devices_ids[devices_ids_index] = idToCheck;
     devices_types[devices_ids_index] = typeOfIdToCheck;
     devices_ids_index++;
-    if(devices_ids_index >= devices_to_register)
+    if(devices_ids_index >= devices_to_register){
       notifyDevicesIDsAcceptedTrigger = true;
+    }
 }
