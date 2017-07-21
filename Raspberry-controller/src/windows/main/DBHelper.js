@@ -85,7 +85,7 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
 
 function populateListItemWithDeviceInfo(device){
   var content = "<li id = \"" + device.id +"\"> "
-  + (device.dev_desc)?device.dev_desc:"Dispositivo senza nome"
+  + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
   + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
   + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
