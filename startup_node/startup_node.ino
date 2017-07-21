@@ -11,35 +11,10 @@
 
 char serialBuffer[SERIAL_BUFFER_SIZE];
 
-uint8_t devices_to_register = 0;
-uint32_t* devices_ids;
-uint8_t* devices_types;
-int devices_ids_index = 0;
-
-
-bool handshakeCompleted = false;
-bool hasReceivedNumberOfDevicesToRegister = false;
-bool isWaitingForDeviceIDCheck = false;
-uint32_t idToCheck = 0;
-uint8_t typeOfIdToCheck = -1;
-
-bool alertDoubledDevicesTrigger = false;
-uint32_t doubled_ID;
-bool notifyDevicesIDsAcceptedTrigger = false;
-
-bool hasReceivedType = false;
-uint8_t type_received = -1;
-
-bool stream_started = false;
-bool waitingForType = false;
-bool stream_ended = false;
-
-uint8_t identified_devices = 0;
-
 void setup() {
   Serial.begin(9600);
   while(!Serial);
-  sendHandshakeMessage();
+  enterRegistrationMode();
   initLoRa(NODE_ADDRESS, 8,4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
 }
@@ -52,6 +27,7 @@ void loop() {
   if(handshakeCompleted){
 
     if(hasReceivedNumberOfDevicesToRegister){
+      if(!stream_ended){
 
               // ID denied block
 
@@ -79,9 +55,9 @@ void loop() {
                 }else{
                   sendDevicesStreamEndMessage();
                   stream_ended = true;
-                  while(true);
                 }
             }
+      }
     }
   }
 }
@@ -176,6 +152,8 @@ void serialEvent(){
         alertDoubledDevicesTrigger = true;
       }
     }
+  } else if(isEnterRagistrationModeMessage(serialBuffer,serialMessageLength)){
+    enterRegistrationMode();
   }
 }
 
