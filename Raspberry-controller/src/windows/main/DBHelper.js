@@ -87,8 +87,8 @@ function populateListItemWithDeviceInfo(device){
   var content = "<li id = \"" + device.id +"\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
-  + "<button onClick=\"onDeviceRenameButtonClick(this.id)\"> Rinomina dispositivo </button>"
-  + "<button onClick=\"onDeviceAssignToRoomButton(this.id)\"> Assegna ad una stanza </button>"
+  + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
+  + "<button onClick=\"onDeviceAssignToRoomButton(this)\"> Assegna ad una stanza </button>"
   + " </li>";
   console.log(device);
   return content;

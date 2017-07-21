@@ -9,10 +9,10 @@ function setUpComponents(){
   dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn(document.getElementById('devicesContainer'));
 }
 
-function onDeviceRenameButtonClick(id){
+function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
     if(name != null && name != undefined && name != "" && name != " "){
-      dbHelper.renameDevice(id,name,remote.getCurrentWindow());
+      dbHelper.renameDevice(button.parentNode.id,name,remote.getCurrentWindow());
     }
   });
 }
