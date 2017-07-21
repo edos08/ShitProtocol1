@@ -47,7 +47,6 @@ Descrizione del byte riservato per il tipo di messaggio:
  **[Nota]: Valori di tipologia del pacchetto:
 
 * 1: [Pacchetti di registrazione](Registrazione.html)
-* 2: [Pacchetti di invio del tipo di dispositivo](Submission.html)
 
 ### Payload
 
