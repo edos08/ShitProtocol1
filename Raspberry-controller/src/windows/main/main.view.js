@@ -3,6 +3,7 @@ var DBHelper = require('./DBHelper');
 
 function setUpElements(){
   setupRegisterDevicesButton();
+  setupInsertRoomButton();
   DBHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
   DBHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
 }
