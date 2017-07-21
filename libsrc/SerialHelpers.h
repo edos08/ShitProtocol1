@@ -13,7 +13,7 @@
 #define MESSAGE_ID_INVALID 1
 
 #define MESSAGE_DEVICES_STREAM_START 0
-#define MESSAGE_DEVICE_STREAM_END 255
+#define MESSAGE_DEVICES_STREAM_END 255
 
 typedef struct SerialHelpers{
   static void write32bitIntegerIntoBuffer(char* buffer,uint32_t valueToWrite){
@@ -54,14 +54,14 @@ static void sendIDCheckMessage(uint32_t ID){
 static void sendDevicesStreamStartMessage(){
   char buffer[2];
   buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
-  buffer[1] = MESSAGE_DEVICE_STREAM_START;
+  buffer[1] = MESSAGE_DEVICES_STREAM_START;
   Serial.write(buffer,2);
 }
 
 static void sendDevicesStreamEndMessage(){
   char buffer[2];
   buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
-  buffer[1] = MESSAGE_DEVICE_STREAM_END;
+  buffer[1] = MESSAGE_DEVICES_STREAM_END;
   Serial.write(buffer,2);
 }
 
