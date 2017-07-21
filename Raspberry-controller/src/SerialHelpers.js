@@ -70,7 +70,7 @@ function onPortOpened(err){
         idStreamEndHandler();
     } else if (isIDStreamValuePacket(data)) {
       if(idStreamValueHandler){
-        var _id = globals.read32bitInt(data,1);
+        var _id = read32bitInt(data,1);
         var _type = data[5];
         idStreamValueHandler(_id,_type);
       }
