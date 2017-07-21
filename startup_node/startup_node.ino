@@ -68,6 +68,8 @@ void loop() {
                 if(!stream_started){
                   sendDevicesStreamStartMessage();
                   stream_started = true;
+                  delay(50);
+                  return;
                 }
                 if(identified_devices < devices_to_register){
                   int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
