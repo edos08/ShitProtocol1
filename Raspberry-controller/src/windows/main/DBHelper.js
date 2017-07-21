@@ -87,5 +87,6 @@ module.exports = {
   fillRoomsScreen,
   fillContentDivWithDevices,
   checkIfIdIsInDB,
-  insertDeviceIntoDB
+  insertDeviceIntoDB,
+  insertRoomIntoDB
 }
