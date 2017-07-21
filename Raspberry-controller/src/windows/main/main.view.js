@@ -35,6 +35,10 @@ function setupInsertRoomButton(){
   });
 }
 
+function onAssignButtonCLick(){
+    ipc.send('assign_devices_button_pressed');  
+}
+
 function displayEmptyDBMessage(){
   document.getElementById('empty_db_message').innerHTML = "Non ci sono ancora dispositivi registrati. Premi il pulsante sottostante per iniziare il processo di registrazione dei dispositivi";
 }
