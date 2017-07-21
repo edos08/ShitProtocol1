@@ -28,8 +28,7 @@ app.on('ready', function(){
 
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
-  registration.start();
-  registration.onEnd = onRegistrationEnd;
+  registration.start(onRegistrationEnd);
   registrationActive = true;
 });
 
