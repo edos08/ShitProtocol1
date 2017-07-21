@@ -12,7 +12,7 @@ function start(){
     handshakeHandler: handleHandshake,
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
-    dStreamValueHandler: handleIDStreamValueMessage,
+    idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
     handshakeEndHandler: handleHandshakeEnd
   };
