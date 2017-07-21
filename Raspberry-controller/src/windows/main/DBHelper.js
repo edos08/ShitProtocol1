@@ -57,8 +57,9 @@ function checkIfIdIsInDB(id,resultHandler){
 }
 
 function insertDeviceIntoDB(id,type){
-  knex.withschema('LoRa')
-  .insert({Address: id,Type: type});
+  console.log("Inserting : " + id + " - " + type);
+  knex.withSchema('LoRa')
+  .insert({ID: 0,Address: id,Type: type});
 }
 
 module.exports = {
