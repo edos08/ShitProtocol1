@@ -49,9 +49,8 @@ typedef struct SerialHelpers{
   }
 };
 
-
-static void sendHandShakeEndMessage(){
-  Serial.write(HANDSHAKE_END_MESSAGE);
+static void sendHandshakeMessage(){
+  Serial.write(HANDSHAKE_MESSAGE);
 }
 
 void enterRegistrationMode(){
@@ -76,8 +75,8 @@ static bool isHandshakeResponseMessage(char dataBuffer[], int buffer_size){
  return buffer_size == 1 && dataBuffer[0] == HANDSHAKE_VALID_RESPONSE;
 }
 
-static void sendHandshakeMessage(){
-  Serial.write(HANDSHAKE_MESSAGE);
+static void sendHandShakeEndMessage(){
+  Serial.write(HANDSHAKE_END_MESSAGE);
 }
 
 static bool isDevicesCountMessage(char dataBuffer[], int buffer_size){
