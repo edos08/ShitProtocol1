@@ -1,7 +1,9 @@
 var ipc = require('electron').ipcRenderer;
 var DBHelper = require('./DBHelper');
-var smalltalk = require('smalltalk');
 
+var Dialogs = require('dialogs');
+
+var dialogs = Dialogs();
 
 function setUpElements(){
   setupRegisterDevicesButton();
@@ -21,9 +23,8 @@ function setupInsertRoomButton(){
   var insertRoomButton = document.getElementById('insert_room_button');
   insertRoomButton.addEventListener('click',function(){
     ipc.send('insert_room_button_pressed');
-    smalltalk.prompt("Nuova stanza","Inserisci il nome della nuova pagina").then(function(name){
-      console.log("Nome inserito " + name);
-      dbHelper.insertRoomIntoDB(name);
+    dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
+      
     });
   });
 }
