@@ -16,3 +16,19 @@ function onDeviceRenameButtonClick(button){
     }
   });
 }
+
+function onDeviceAssignToRoomButton(button){
+  openModal();
+}
+
+function openModal() {
+  let win = new remote.BrowserWindow({
+    parent: remote.getCurrentWindow(),
+    modal: true
+  })
+
+  var theUrl = 'file://' + __dirname + '/choose_room_dialog.html'
+  console.log('url', theUrl);
+
+  win.loadURL(theUrl);
+}
