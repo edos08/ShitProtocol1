@@ -56,6 +56,10 @@ static void sendHandshakeMessage(){
   Serial.write(HANDSHAKE_MESSAGE);
 }
 
+static void sendRegistrationModeStartedMessage(){
+  Serial.write(MESSAGE_TYPE_ENTER_REGISTRATION_MODE);
+}
+
 void enterRegistrationMode(){
   hasReceivedNumberOfDevicesToRegister = false;
   devices_to_register = 0;
@@ -89,10 +93,6 @@ static bool isHandshakeResponseMessage(char dataBuffer[], int buffer_size){
 
 static void sendHandShakeEndMessage(){
   Serial.write(HANDSHAKE_END_MESSAGE);
-}
-
-static void sendRegistrationModeStartedMessage(){
-  Serial.write(MESSAGE_TYPE_ENTER_REGISTRATION_MODE);
 }
 
 static bool isDevicesCountMessage(char dataBuffer[], int buffer_size){
