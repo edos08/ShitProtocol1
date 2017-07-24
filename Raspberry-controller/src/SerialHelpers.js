@@ -26,7 +26,7 @@ var listRequestHandler;
 function init(handlers){
   connectHandlers(handlers);
 
-  if(port != null && port.isOpen())
+  if(port != null && port.isOpen)
       return;
 
   var portPath = '/dev/ttyACM0';
@@ -190,7 +190,7 @@ function sendEntrerRegistrationModeMessage(){
 }
 
 function startRegistration(){
-  if(port != null && port.isOpen()){
+  if(port != null && port.isOpen){
     sendEntrerRegistrationModeMessage();
   }
 }
