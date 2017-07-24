@@ -222,8 +222,22 @@ function fillRoomNameContainer(roomID,roomNameContainer){
   })
 }
 
+function retreiveDevicesList(id,list,sendDevice){
+  knex.withSchema('LoRa')
+  .select("Address")
+  .from('Devices')
+  .where('Sensor',id)
+  .then(function(devices){
+    list = [];
+    for(var a = 0; a < devices.length; a++){
+      list.push(devices[a].Address);
+    }
+    sendDevice();
+  });
+}
+
 module.exports = {
-  checkFirstStartupOfSystem: checkFirstStartupOfSystem,
+  checkFirstStartupOfSystem,
   fillRoomsScreen,
   fillContentDivWithDevices,
   checkIfIdIsInDB,
@@ -237,5 +251,6 @@ module.exports = {
   checkIfHasRoomAssignedAndSelectSensor,
   fillSensorsList,
   fillRoomNameContainer,
-  queryAllDevicesWithRoomAssignedButNoSensorAndShowIn
+  queryAllDevicesWithRoomAssignedButNoSensorAndShowIn,
+  retreiveDevicesList
 }
