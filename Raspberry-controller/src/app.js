@@ -61,7 +61,7 @@ ipc.on('assign_devices_button_pressed',function(){
 });
 
 ipc.on('room_assignation_button_pressed',function(event,deviceID){
-  selectRoomFunction(deviceID,false;);
+  selectRoomFunction(deviceID,false);
 })
 
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
