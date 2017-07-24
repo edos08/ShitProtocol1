@@ -37,6 +37,10 @@ function listHasEnded(){
 function sendDeviceDeletedMessage(sensorID, deviceID){
 }
 
+function sendDeviceAddedMessage(){
+  
+}
+
 module.exports = {
   init,
   sendDeviceDeletedMessage,
