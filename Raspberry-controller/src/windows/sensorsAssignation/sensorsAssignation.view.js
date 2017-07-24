@@ -1,5 +1,8 @@
 var dbHelper = require('../main/DBHelper');
 
+var Dialogs = require('dialogs');
+var dialogs = Dialogs();
+
 var remote = require('electron').remote;
 var ipc = require('electron').ipcRenderer;
 
