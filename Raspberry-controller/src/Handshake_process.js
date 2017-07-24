@@ -11,11 +11,8 @@ function init(){
 }
 
 function handleHandshake(){
-  if(!handshakeSucceded){
-    helpers.answerToHandshake();
-    return;
-  }
-  console.log("Warning: unexpected handshake attempt");
+  helpers.answerToHandshake();
+  return;
 }
 
 function handleHandshakeEnd(){
