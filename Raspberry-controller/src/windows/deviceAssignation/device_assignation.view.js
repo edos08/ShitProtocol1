@@ -3,6 +3,7 @@ var Dialogs = require('dialogs');
 var dialogs = Dialogs();
 
 var remote = require('electron').remote;
+var ipc = require('electron').ipcRenderer;
 
 function setUpComponents(){
   console.log("Setting components up");
@@ -18,17 +19,5 @@ function onDeviceRenameButtonClick(button){
 }
 
 function onDeviceAssignToRoomButton(button){
-  openModal();
-}
-
-function openModal() {
-  let win = new remote.BrowserWindow({
-    parent: remote.getCurrentWindow(),
-    modal: true
-  })
-
-  var theUrl = 'file://' + __dirname + '/choose_room_dialog.html'
-  console.log('url', theUrl);
-
-  win.loadURL(theUrl);
+  ipc.send('room_assignation_button_pressed',button.parentNode.id);
 }
