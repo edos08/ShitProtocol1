@@ -96,11 +96,11 @@ ipc.on('sensor_assignation_button_pressed',function(event,deviceID){
 
 ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
-  var w = chooseSensorWindow.getParentWindow();
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    w.reload();
+    if(sensorsAssignationWindow != null)
+      deviceAssignationWindow.reload();
   });
   chooseSensorWindow.close();
 })
