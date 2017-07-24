@@ -18,6 +18,10 @@ function onDeviceRenameButtonClick(button){
   });
 }
 
-function onDeviceAssignToRoomButton(button){
+function onDeviceAssignToRoomButtonClick(button){
   ipc.send('room_assignation_button_pressed',button.parentNode.id);
+}
+
+function onDeviceAssignSensorButtonClick(button){
+  ipc.send('sensor_assignation_button_pressed',button.parentNode.id);
 }
