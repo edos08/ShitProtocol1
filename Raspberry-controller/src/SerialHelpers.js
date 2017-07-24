@@ -154,9 +154,16 @@ function sendEntrerRegistrationModeMessage(){
   port.write(buf);
 }
 
+function terminate(){
+  if(port != null){
+    port.close();
+  }
+}
+
 module.exports = {
   init: init,
   answerToHandshake: answerToHandshake,
   sendDevicesNumberPacket: sendDevicesNumberPacket,
-  answerToIDCheckRequest: answerToIDCheckRequest
+  answerToIDCheckRequest: answerToIDCheckRequest,
+  terminate
 }

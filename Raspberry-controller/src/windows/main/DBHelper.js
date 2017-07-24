@@ -129,6 +129,17 @@ function fillRoomsList(container){
   });
 }
 
+function assignDeviceToRoom(deviceID,roomID){
+  knex('Devices').withSchema('LoRa')
+  .where('ID',deviceID)
+  .update('Room',roomID)
+  .then(function(result){
+    if(result == 1){
+      console.log("Dispositivo assegnato alla stanza con successo!");
+    }
+  })
+}
+
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen,
