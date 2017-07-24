@@ -96,6 +96,10 @@ ipc.on('room_id_request',function(event){
   event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
 })
 
+ipc.on('assign_sensor_button_pressed',function{
+  
+})
+
 function selectRoomFunction(deviceID,selectSensorAfterwards){
     chooseRoomWindow = new BrowserWindow({
       parent: deviceAssignationWindow,
