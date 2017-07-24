@@ -37,11 +37,18 @@ function fillContentDivWithDevices(container,roomID){
   .then(function(devices){
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
-        content += "<li> " + devices[a].desc + " (" + devices[a].dev_type + ")</li>";
+      content += createDeviceItemForList(devices[a]);
     }
     content += "</ul>"
     container.innerHTML = content;
   });
+}
+
+function createDeviceItemForList(device){
+    return "<li> "
+    + ((device.desc != null)?device.desc:"Dispositivo senza nome")
+    + " ("
+    + device.dev_type + ")</li>";
 }
 
 function checkIfIdIsInDB(id,resultHandler){

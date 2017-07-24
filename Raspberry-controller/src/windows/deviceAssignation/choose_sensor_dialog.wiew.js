@@ -7,8 +7,7 @@ function setUpComponents(){
 }
 
 function fillDevicesListAndRoomName(){
-    var roomID = ipc.sendSync('room_id_request');
-    dbHelper.fillRoomNameContainer(roomID,document.getElementById('room_name'));
+    ipc.send('room_id_request');
     dbHelper.fillSensorsList(document.getElementById('sensors_list'));
 }
 
@@ -21,3 +20,8 @@ function addOkButtonClickListener(){
     console.log('ok button clicked');
   });
 }
+
+ipc.on('room_response',function(event,room){
+  console.log('Room ID received');
+  dbHelper.fillRoomNameContainer(room,document.getElementById('room_name'));
+})
