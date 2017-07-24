@@ -18,11 +18,6 @@ static Packet RegistrationPacket(uint32_t dest, uint32_t sender,uint8_t type) {
 	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, body, 1);
 }
 
-/*static Packet TypeSubmissionPacket(uint32_t dest, uint32_t sender, uint8_t device_type) {
-	char body[1];
-	body[0] = device_type;
-	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REQUESTS_ACK | PACKET_TYPE_DEVICE_SUBMISSION, packetCounter, body, 1);
-}*/
 static Packet RegistrationIDDeniedPacket(uint32_t dest, uint32_t sender) {
 	char body[1];
 	body[0] = REGISTRATION_RESPONSE_ID_DENIED;

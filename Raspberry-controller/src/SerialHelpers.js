@@ -9,8 +9,10 @@ const HANDSHAKE_RESPONSE = 'W';
 const HANDSHAKE_END = 'A';
 const HANDSHAKE_MESSAGE = 'H';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
+const LIST_REQUEST_PACKET = 6;
 
-var port;
+let port;
+var registrationMode = false;
 
 var handshakeHandler;
 var handshakeEndHandler;
@@ -18,73 +20,90 @@ var idCheckRequestHandler;
 var idStreamStartHandler;
 var idStreamValueHandler;
 var idStreamEndHandler;
+var registrationModeEnteredHandler;
+var listRequestHandler;
 
-function init(portPath,handlers){
-  if(port != null){
-    sendEntrerRegistrationModeMessage();
-    return;
-  }
-  if(portPath != ''){
-    console.log("Testing " + portPath);
+function init(handlers){
+  connectHandlers(handlers);
 
+  if(port != null && port.isOpen())
+      return;
+
+  var portPath = '/dev/ttyACM0';
+
+  console.log("Testing " + portPath);
+
+  port = new SerialPort(portPath,{
+    baudRate: 9600,
+    autoOpen: false
+  });
+
+  port.open(onPortOpened);
+}
+
+function connectHandlers(handlers){
+  if(handlers.handshakeHandler)
     handshakeHandler = handlers.handshakeHandler;
+  if(handlers.idCheckRequestHandler)
     idCheckRequestHandler = handlers.idCheckRequestHandler;
+  if(handlers.idStreamStartHandler)
     idStreamStartHandler = handlers.idStreamStartHandler;
+  if(handlers.idStreamValueHandler)
     idStreamValueHandler = handlers.idStreamValueHandler;
+  if(handlers.idStreamEndHandler)
     idStreamEndHandler = handlers.idStreamEndHandler;
+  if(handlers.handshakeEndHandler)
     handshakeEndHandler = handlers.handshakeEndHandler;
-
-    port = new SerialPort(portPath,{
-      baudRate: 9600,
-      autoOpen: false
-    });
-
-    port.open(onPortOpened);
-  }
+  if(handlers.registrationModeEnteredHandler)
+    registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
+  if(handlers.listRequestHandler)
+    listRequestHandler = handlers.listRequestHandler;
 }
 
 function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
       port = null;
-      return -1;
+      return;
   }
+
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
     console.log('Received: \"' + data + "\"");
-    if(Buffer.isBuffer(data))
-      console.log('lenght = ' + Buffer.byteLength(data));
-    if(isHandshakePacket(data)){
-      if(handshakeHandler){
-        handshakeHandler();
-      }
-    } else if(isHandshakeEndPacket(data)){
-      if(handshakeEndHandler){
-        handshakeEndHandler();
-      }
-    }else if(isIDCheckRequest(data)){
-      if(idCheckRequestHandler){
-        var _id = read32bitInt(data,1);
-        idCheckRequestHandler(_id);
-      }
-    }else if (isIDStreamStartPacket(data)) {
-      if(idStreamStartHandler)
-        idStreamStartHandler();
-    } else if (isIDStreamEndPacket(data)) {
-      if(idStreamEndHandler)
-        idStreamEndHandler();
-    } else if (isIDStreamValuePacket(data)) {
-      if(idStreamValueHandler){
-        var _id = read32bitInt(data,1);
-        var _type = data[5];
-        idStreamValueHandler(_id,_type);
-      }
+    console.log('lenght = ' + Buffer.byteLength(data));
+
+    if(isHandshakePacket(data) && handshakeHandler){
+      handshakeHandler();
+    } else if(isHandshakeEndPacket(data) && handshakeEndHandler){
+      handshakeEndHandler();
+    }else if(isIDCheckRequest(data) && idCheckRequestHandler){
+      var _id = read32bitInt(data,1);
+      idCheckRequestHandler(_id);
+    }else if (isIDStreamStartPacket(data) && idStreamStartHandler) {
+      idStreamStartHandler();
+    } else if (isIDStreamEndPacket(data) && idStreamEndHandler) {
+      idStreamEndHandler();
+    } else if (isIDStreamValuePacket(data) && idStreamValueHandler) {
+      var _id = read32bitInt(data,1);
+      var _type = data[5];
+      idStreamValueHandler(_id,_type);
+    } else if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
+      registrationModeEnteredHandler();
+    } else if(isListRequestPacket(data) && listRequestHandler){
+      var _id = read32bitInt(data,1);
+      listRequestHandler(_id);
     }
+
   });
+
   this.on('error',(error) =>{
-    Console.log('Errore di connessione seriale');
+    Console.log('Errore di connessione seriale ' + error);
   });
-  return 1;
+
+  this.on('close',(error) =>{
+    port = null;
+  });
+
 }
 
 
@@ -114,6 +133,14 @@ function read32bitInt(data,startIndex){
   return _id;
 }
 
+function write32BitInt(buffer,offset,address){
+  var mask = 0xFF
+  for(var a = 0; a < 4; a++){
+    var currMask = mask >>  (8 * a);
+    buffer[offset + a] = ((address && currMask) >> (8 * (3-a)))
+  }
+}
+
 function isHandshakePacket(data){
   return data == HANDSHAKE_MESSAGE;
 }
@@ -138,6 +165,14 @@ function isHandshakeEndPacket(data){
   return data == HANDSHAKE_END;
 }
 
+function isRegistrationModeEnteredPacket(data){
+  return data == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+}
+
+function isListRequestPacket(data){
+  return Buffer.byteLength(data) == 5 && data[0] == LIST_REQUEST_PACKET;
+}
+
 function answerToIDCheckRequest(result){
   var buf = Buffer.alloc(2);
   buf[0] = ID_CHECK_PACKET;
@@ -154,6 +189,26 @@ function sendEntrerRegistrationModeMessage(){
   port.write(buf);
 }
 
+function startRegistration(){
+  if(port != null && port.isOpen()){
+    sendEntrerRegistrationModeMessage();
+  }
+}
+
+function sendDeviceListItem(deviceAddress){
+  var buf = Buffer.alloc(5);
+  buf[0] = LIST_REQUEST_PACKET;
+  write32BitInt(buf,1,deviceAddress);
+  port.write(buf);
+}
+
+function sendDeviceListEndMessage(){
+  var buf = Buffer.alloc(2);
+  buf[0] = LIST_REQUEST_PACKET;
+  buf[1] = 0;
+  port.write(buf);
+}
+
 function terminate(){
   if(port != null){
     port.close();
@@ -165,5 +220,8 @@ module.exports = {
   answerToHandshake: answerToHandshake,
   sendDevicesNumberPacket: sendDevicesNumberPacket,
   answerToIDCheckRequest: answerToIDCheckRequest,
-  terminate
+  terminate,
+  startRegistration,
+  sendDeviceListItem,
+  sendDeviceListEndMessage
 }
