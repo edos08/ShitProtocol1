@@ -24,7 +24,7 @@ function handleListRequest(id){
 function sendDevice(){
   if(list.length != 0 && listIndex < list.length){
     serialHelpers.sendDeviceListItem(list[listIndex]);
-    listIndex++:
+    listIndex++;
   }else{
     serialHelpers.sendDeviceListEndMessage(sensorToInform);
   }
