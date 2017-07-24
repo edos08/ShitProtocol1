@@ -188,7 +188,7 @@ function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selec
   .where('ID',deviceID)
   .then(function(result){
     if(result[0].Room != null){
-      selectDeviceFunction();
+      selectDeviceFunction(deviceID,result[0].room);
     }else{
       selectRoomFunction(deviceID,true);
     }
