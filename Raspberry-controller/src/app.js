@@ -9,6 +9,7 @@ let window;
 let deviceAssignationWindow;
 let chooseRoomWindow;
 let chooseSensorWindow;
+let sensorsAssignationWindow;
 
 let registrationActive = false;
 let currentDeviceForWhichTheRoomIsBeingChosen = -1;
@@ -60,6 +61,16 @@ ipc.on('assign_devices_button_pressed',function(){
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 });
 
+
+ipc.on('assign_sensor_button_pressed',function(){
+  sensorsAssignationWindow = new BrowserWindow({
+    parent: window,
+    modal: true,
+  });
+  var sensorsAssignationURL = 'file://' + __dirname + '/windows/sensorsAssignation.html';
+  sensorsAssignationWindow.loadURL(sensorsAssignationURL);
+})
+
 ipc.on('room_assignation_button_pressed',function(event,deviceID){
   selectRoomFunction(deviceID,false);
 })
@@ -94,10 +105,6 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 ipc.on('room_id_request',function(event){
   event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
-})
-
-ipc.on('assign_sensor_button_pressed',function{
-  
 })
 
 function selectRoomFunction(deviceID,selectSensorAfterwards){
