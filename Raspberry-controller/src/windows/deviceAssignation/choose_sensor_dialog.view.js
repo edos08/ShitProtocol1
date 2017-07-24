@@ -25,3 +25,7 @@ ipc.on('room_response',function(event,room){
   dbHelper.fillRoomNameContainer(room,document.getElementById('room_name'));
   dbHelper.fillSensorsList(document.getElementById('sensors_list'),room);
 })
+
+function calcel(){
+  ipc.send('cancel');
+}

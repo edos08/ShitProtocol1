@@ -19,3 +19,7 @@ function addOkButtonClickListener(){
     console.log('ok button clicked');
   });
 }
+
+function cancel(){
+  ipc.send('cancel');
+}
