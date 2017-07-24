@@ -174,10 +174,7 @@ function fillSensorsList(sensorsListContainer,roomID){
   knex.withSchema('LoRa')
   .select('ID','Description')
   .from('Devices')
-  .where({
-    'Type': 3,
-    'Room': roomID
-  })
+  .where('Type',3)
   .then(function(sensors){
     console.log("sensors: " + sensors);
     var content = "";
@@ -191,12 +188,12 @@ function fillSensorsList(sensorsListContainer,roomID){
 function fillRoomNameContainer(roomID,roomNameContainer){
   console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
-  .select('Description')
+  .select('Description as desc')
   .from('Rooms')
   .where('ID',"=",roomID)
   .then(function(room){
     console.log("r: " + room);
-    roomNameContainer.innerHTML += room;
+    roomNameContainer.innerHTML += room.desc;
   })
 }
 
