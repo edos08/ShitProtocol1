@@ -14,7 +14,7 @@ function addOkButtonClickLIstener(){
   var okButton = document.getElementById('ok_button');
   okButton.addEventListener('click',function(){
     var roomList = document.getElementById('rooms_list');
-    var roomID = roomList.options[roomList.selectedIdex].value;
+    var roomID = roomList[roomList.selectedIdex].value;
     ipc.send('room_assignation_ok_button_pressed',roomID);
     console.log('ok button clicked');
   });
