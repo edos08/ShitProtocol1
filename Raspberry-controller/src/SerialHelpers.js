@@ -166,7 +166,10 @@ function isHandshakeEndPacket(data){
 }
 
 function isRegistrationModeEnteredPacket(data){
-  return data == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+  if(Buffer.isBuffer(data))
+    return data[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+  else
+    return data == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
 }
 
 function isListRequestPacket(data){
