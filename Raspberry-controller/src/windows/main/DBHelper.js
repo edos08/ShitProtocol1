@@ -151,7 +151,7 @@ function assignSensorToController(controllerID,sensorID){
   .update('Sensor',sensorID)
   .then(function(result){
     if(result == 1){
-      console.console.log("Sensore assegnato al dispositivo con successo");
+      console.log("Sensore assegnato al dispositivo con successo");
     }
   })
 }
@@ -175,6 +175,7 @@ function fillSensorsList(sensorsListContainer,roomID){
   .select('ID','Description')
   .from('Devices')
   .where('Type',3)
+  .andWhere('Room', roomID)
   .then(function(sensors){
     console.log("sensors: " + sensors);
     var content = "";
@@ -188,12 +189,11 @@ function fillSensorsList(sensorsListContainer,roomID){
 function fillRoomNameContainer(roomID,roomNameContainer){
   console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
-  .select('Description as desc')
+  .select('Description')
   .from('Rooms')
   .where('ID',"=",roomID)
-  .then(function(room){
-    console.log("r: " + room);
-    roomNameContainer.innerHTML += room.desc;
+  .then(function(rooms){
+    roomNameContainer.innerHTML += rooms[0].Description;
   })
 }
 
