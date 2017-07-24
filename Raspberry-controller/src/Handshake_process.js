@@ -2,11 +2,12 @@ var helpers = require('./SerialHelpers');
 
 var onEnd;
 
-function init(){
+function init(onEndHandler){
   var handlers = {
     handshakeHandler: handleHandshake,
     handshakeEndHandler: handleHandshakeEnd
   };
+  onEnd = onEndHandler;
   helpers.init(handlers);
 }
 
@@ -23,6 +24,5 @@ function handleHandshakeEnd(){
 
 
 module.exports = {
-  init,
-  onEnd
+  init
 }

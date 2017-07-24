@@ -19,8 +19,7 @@ let currentRoomInWhichTheSensorsAreHeld = -1;
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
-  handshake.init();
-  handshake.onEnd = initMain;
+  handshake.init(initMain);
 });
 
 function initMain(){
