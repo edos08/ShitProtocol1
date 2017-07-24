@@ -3,6 +3,7 @@ var dbHelper = require('../main/DBHelper');
 
 function setUpComponents(){
    fillRoomsList();
+   addOkButtonClickLIstener();
 }
 
 function fillRoomsList(){

@@ -74,4 +74,6 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   console.log("Ok button pressed with device = " + currentDeviceForWhichTheRoomIsBeingChosen + " and room " + roomID);
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+  currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  chooseRoomWindow.close();
 })
