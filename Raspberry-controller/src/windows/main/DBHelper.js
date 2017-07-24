@@ -236,5 +236,6 @@ module.exports = {
   assignSensorToController,
   checkIfHasRoomAssignedAndSelectSensor,
   fillSensorsList,
-  fillRoomNameContainer
+  fillRoomNameContainer,
+  queryAllDevicesWithRoomAssignedButNoSensorAndShowIn
 }
