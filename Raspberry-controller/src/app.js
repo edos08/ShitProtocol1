@@ -53,7 +53,7 @@ ipc.on('assign_devices_button_pressed',function(){
     parent: window,
     modal: true
   });
-  deviceAssignationWindow.openDevTools();
+  //deviceAssignationWindow.openDevTools();
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 });
 
