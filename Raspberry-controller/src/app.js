@@ -12,7 +12,7 @@ let chooseSensorWindow;
 
 let registrationActive = false;
 let currentDeviceForWhichTheRoomIsBeingChosen = -1;
-let currentRoomInWichTheSensorsAreHeld = -1;
+let currentRoomInWhichTheSensorsAreHeld = -1;
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
@@ -70,8 +70,7 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   chooseRoomWindow.on('closed',() =>{
       deviceAssignationWindow.reload();
       if(selectSensorAfterwardsTrigger){
-        currentRoomInWichTheSensorsAreHeld = roomID;
-        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen);
+        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
       }else {
         currentDeviceForWhichTheRoomIsBeingChosen = -1;
       }
@@ -88,13 +87,13 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
-    currentRoomInWichTheSensorsAreHeld = -1;
+    currentRoomInWhichTheSensorsAreHeld = -1;
   });
   chooseSensorWindow.close();
 })
 
 ipc.on('room_id_request',function(event){
-  event.returnValue = currentRoomInWichTheSensorsAreHeld;
+  event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
 })
 
 function selectRoomFunction(deviceID,selectSensorAfterwards){
@@ -111,7 +110,7 @@ function selectRoomFunction(deviceID,selectSensorAfterwards){
     selectSensorAfterwardsTrigger = selectSensorAfterwards;
 }
 
-function selectSensorFunction(deviceID){
+function selectSensorFunction(deviceID,roomID){
     chooseSensorWindow = new BrowserWindow({
       parent: deviceAssignationWindow,
       modal: true,
@@ -122,4 +121,5 @@ function selectSensorFunction(deviceID){
     var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
     chooseSensorWindow.loadURL(chooseSensorWindowURL);
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
+    currentRoomInWhichTheSensorsAreHeld = roomID;
 }
