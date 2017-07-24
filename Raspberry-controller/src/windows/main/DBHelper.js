@@ -96,7 +96,7 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(container){
   .from("Devices")
   .whereNull("Devices.Sensor")
   .whereNotNull("Devices.Room")
-  .andWhere("Device.Type",2)
+  .andWhere("Devices.Type",2)
   .orderBy('id','asc')
   .then(function(devices){
     var content = "";
