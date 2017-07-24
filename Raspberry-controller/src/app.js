@@ -56,10 +56,9 @@ function onRegistrationEnd(result){
 
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
-  if(handshake.hasEnded()){
-    registration.start(onRegistrationEnd);
-    registrationActive = true;
-  }
+  registration.start(onRegistrationEnd);
+  registrationActive = true;
+
 });
 
 ipc.on("insert_room_button_pressed", function(){
