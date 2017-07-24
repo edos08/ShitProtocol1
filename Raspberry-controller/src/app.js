@@ -99,7 +99,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow != null)
+    if(sensorsAssignationWindow != null && sensorsAssignationWindow != undefined)
       sensorsAssignationWindow.reload();
   });
   chooseSensorWindow.close();
@@ -107,6 +107,10 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 ipc.on('room_id_request',function(event){
   event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
+})
+
+ipc.on('cancel',function(){
+  BrowserWindow.getFocusedWindow().close();
 })
 
 function selectRoomFunction(deviceID,selectSensorAfterwards){
