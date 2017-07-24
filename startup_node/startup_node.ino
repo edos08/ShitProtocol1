@@ -14,7 +14,6 @@ char serialBuffer[SERIAL_BUFFER_SIZE];
 void setup() {
   Serial.begin(9600);
   while(!Serial);
-  //enterRegistrationMode();
   sendHandshakeMessage();
   initLoRa(NODE_ADDRESS, 8,4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
@@ -88,7 +87,7 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
     if(!isWaitingForDeviceIDCheck){
       if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
         if(devices_ids_index >= devices_to_register){ //redundant packet, already have al that i need
-          Serial.println("Ridondante");
+          //Serial.println("Ridondante");
           notifyDevicesIDsAcceptedTrigger = true;
           return;
         }
@@ -102,14 +101,7 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
           doubled_ID = idSubmissionPacket.sender;
           alertDoubledDevicesTrigger = true;
         }
-      }else{
-        /*Serial.println("Received packet");
-        if(notifyDevicesIDsAcceptedTrigger && isTypeSubmissionPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
-          Serial.println("TYPE");
-          hasReceivedType = true;
-          type_received = idSubmissionPacket.body[0];
-        }*/
-     }
+      }
    }
 }
 
@@ -153,9 +145,7 @@ void serialEvent(){
         alertDoubledDevicesTrigger = true;
       }
     }
-  }
-
-  if(isEnterRagistrationModeMessage(serialBuffer,serialMessageLength)){
+  } else if(isEnterRagistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
   }
 }
