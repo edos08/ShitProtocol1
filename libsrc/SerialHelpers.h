@@ -67,6 +67,10 @@ void enterRegistrationMode(){
   stream_ended = false;
 }
 
+static bool isMessageListPacket(char dataBuffer[], int buffer_size){
+
+}
+
 static bool isEnterRagistrationModeMessage(char dataBuffer[], int buffer_size){
   return buffer_size == 1 && dataBuffer[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
 }
