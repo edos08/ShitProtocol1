@@ -129,8 +129,9 @@ function selectSensorFunction(deviceID,roomID){
       height: 200
     });
 
-    var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
-    chooseSensorWindow.loadURL(chooseSensorWindowURL);
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     currentRoomInWhichTheSensorsAreHeld = roomID;
+
+    var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
+    chooseSensorWindow.loadURL(chooseSensorWindowURL);
 }
