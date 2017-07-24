@@ -114,7 +114,7 @@ function selectRoomFunction(deviceID,selectSensorAfterwards){
 function selectSensorFunction(deviceID){
     chooseSensorWindow = new BrowserWindow({
       parent: deviceAssignationWindow,
-      modal = true,
+      modal: true,
       width: 600,
       height: 200
     });
