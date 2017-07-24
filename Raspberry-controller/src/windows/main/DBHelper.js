@@ -174,8 +174,10 @@ function fillSensorsList(sensorsListContainer,roomID){
   knex.withSchema('LoRa')
   .select('ID','Description')
   .from('Devices')
-  .where('Type',3)
-  .andWhere('Room',roomID)
+  .where({
+    'Type': 3,
+    'Room': roomID
+  })
   .then(function(sensors){
     console.log("sensors: " + sensors.length);
     var content = "";
