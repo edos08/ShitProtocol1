@@ -11,7 +11,6 @@ var knex = require('knex')({
 
 function checkFirstStartupOfSystem(action){
   knex.withSchema('LoRa').select().table('Devices').then(function(devices){
-    console.log("devices: " + devices);
     if(devices.length == 0)
         action();
   });
@@ -36,7 +35,6 @@ function fillContentDivWithDevices(container,roomID){
   .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type')
   .from('Devices')
   .then(function(devices){
-    console.log(devices[0]);
     var content = "<ul>";
     for(var a = 0; a < devices.length; a++){
         content += "<li> " + devices[a].desc + " (" + devices[a].dev_type + ")</li>";
@@ -91,7 +89,6 @@ function populateListItemWithDeviceInfo(device){
   + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
   + "<button onClick=\"onDeviceAssignToRoomButton(this)\"> Assegna ad una stanza </button>"
   + " </li>";
-  console.log(device);
   return content;
 }
 
@@ -149,5 +146,6 @@ module.exports = {
   insertRoomIntoDB,
   queryAllDevicesWithNoRoomAssignedAndShowIn,
   renameDevice,
-  fillRoomsList
+  fillRoomsList,
+  assignDeviceToRoom
 }
