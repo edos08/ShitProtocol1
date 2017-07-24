@@ -147,6 +147,8 @@ void serialEvent(){
     }
   } else if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
+  } else {
+    Serial.println("unrecognized");
   }
 }
 
