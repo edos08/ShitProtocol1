@@ -36,7 +36,11 @@ function setupInsertRoomButton(){
 }
 
 function onAssignButtonCLick(){
-    ipc.send('assign_devices_button_pressed');  
+    ipc.send('assign_devices_button_pressed');
+}
+
+function onSensorAssignButtonClick(){
+  ipc.send('assign_sensor_button_pressed');
 }
 
 function displayEmptyDBMessage(){
