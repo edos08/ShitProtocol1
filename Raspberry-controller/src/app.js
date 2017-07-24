@@ -2,6 +2,8 @@ const {app,BrowserWindow} = require('electron');
 var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
+var handshake = require('./Handshake_process');
+var list_request = require('./list_request_process');
 
 var dbHelper =require('./windows/main/DBHelper');
 
@@ -17,6 +19,12 @@ let currentRoomInWhichTheSensorsAreHeld = -1;
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
+  handshake.init();
+  handshake.onEnd = initMain;
+});
+
+function initMain(){
+  list_request.init();
   window = new BrowserWindow({
     width: 1024,
     height: 768
@@ -28,11 +36,16 @@ app.on('ready', function(){
   window.on('closed',() =>{
     window = null;
   });
+}
 
-  window.on('will-quit',() =>{
-    registration.terminate();
-  });
+app.on('window-all-closed', () => {
+  app.quit()
 });
+
+app.on('quit',()=>{
+    registration.terminate();
+})
+
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
@@ -44,8 +57,10 @@ function onRegistrationEnd(result){
 
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
-  registration.start(onRegistrationEnd);
-  registrationActive = true;
+  if(handshake.hasEnded()){
+    registration.start(onRegistrationEnd);
+    registrationActive = true;
+  }
 });
 
 ipc.on("insert_room_button_pressed", function(){

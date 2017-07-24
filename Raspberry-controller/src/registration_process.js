@@ -3,41 +3,26 @@ var dbHelper = require('./windows/main/DBHelper');
 
 
 var devicesToRegister = 1; //this should be given from the user (1 - 255)
-var handshakeSucceded = false;
 var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
 
 function start(processEndHandler){
-  var portName = '/dev/ttyACM0';
-  var handlers = {
-    handshakeHandler: handleHandshake,
+
+  helpers.init({
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
-    handshakeEndHandler: handleHandshakeEnd
-  };
-  helpers.init(portName,handlers);
+    registrationModeEnteredHandler: handleRegistrationModeEntered
+  })
+
+  helpers.startRegistration();
   onEnd = processEndHandler;
 }
 
-function handleHandshake(){
-  if(!handshakeSucceded){
-    helpers.answerToHandshake();
-    return;
-  }
-  console.log("Warning: unexpected handshake attempt");
-}
-
-function handleHandshakeEnd(){
-  if(!handshakeSucceded){
-      console.log("Handshake ended!");
-      handshakeSucceded = true;
-      helpers.sendDevicesNumberPacket(devicesToRegister);
-  }else{
-    console.log("Warning: unexpected handshake attempt");
-  }
+function handleRegistrationModeEntered(){
+  helpers.sendDevicesNumberPacket(devicesToRegister);
 }
 
 function handleIDCheckRequest(id){
@@ -103,7 +88,12 @@ function checkHandshakeState(){
   return true;
 }
 
+function terminate(){
+  helpers.terminate();
+}
+
 module.exports = {
   start,
-  onEnd
+  onEnd,
+  terminate
 }
