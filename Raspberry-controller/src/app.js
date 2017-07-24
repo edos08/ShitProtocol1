@@ -99,7 +99,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    BrowserWindow.getFocusedWindow().reload();
+    chooseSensorWindow.getParentWindow().reload();
   });
   chooseSensorWindow.close();
 })
