@@ -71,6 +71,6 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
   currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
 })
 
-ipc.on('room_assignation_ok_button_pressed',function(event,roomID)){
+ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-}
+})
