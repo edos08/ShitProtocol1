@@ -19,7 +19,7 @@ app.on('ready', function(){
   });
 
   window.loadURL('file://' + __dirname + '/windows/main/main.html');
-  window.openDevTools();
+  //window.openDevTools();
 
   window.on('closed',() =>{
     window = null;
@@ -34,7 +34,7 @@ function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
   registrationActive = false;
   deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
-  deviceAssignationWindow.openDevTools();
+  //deviceAssignationWindow.openDevTools();
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 }
 
