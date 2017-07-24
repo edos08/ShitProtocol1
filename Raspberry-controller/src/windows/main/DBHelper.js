@@ -179,7 +179,7 @@ function fillSensorsList(sensorsListContainer,roomID){
     'Room': roomID
   })
   .then(function(sensors){
-    console.log("sensors: " + sensors.length);
+    console.log("sensors: " + sensors);
     var content = "";
     for(var a = 0; a < sensors.length; a++){
       content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
@@ -189,12 +189,14 @@ function fillSensorsList(sensorsListContainer,roomID){
 }
 
 function fillRoomNameContainer(roomID,roomNameContainer){
+  console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
   .select('Description')
   .from('Rooms')
-  .where('ID',roomID)
+  .where('ID',"=",roomID)
   .then(function(room){
-    roomNameContainer.innerHTML += room.Description;
+    console.log("r: " + room);
+    roomNameContainer.innerHTML += room;
   })
 }
 
