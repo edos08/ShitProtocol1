@@ -116,7 +116,7 @@ function selectSensorFunction(deviceID){
       parent: deviceAssignationWindow,
       modal = true,
       width: 600,
-      height, 200
+      height: 200
     });
 
     var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
