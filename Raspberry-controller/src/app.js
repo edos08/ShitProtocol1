@@ -67,7 +67,7 @@ ipc.on('assign_sensor_button_pressed',function(){
     parent: window,
     modal: true,
   });
-  var sensorsAssignationURL = 'file://' + __dirname + '/windows/sensorsAssignation/sensorAssignation.html';
+  var sensorsAssignationURL = 'file://' + __dirname + '/windows/sensorsAssignation/sensorsAssignation.html';
   sensorsAssignationWindow.loadURL(sensorsAssignationURL);
 })
 
