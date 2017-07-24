@@ -8,9 +8,12 @@ var dbHelper =require('./windows/main/DBHelper');
 let window;
 let deviceAssignationWindow;
 let chooseRoomWindow;
+let chooseSensorWindow;
 
-var registrationActive = false;
-var currentDeviceForWhichTheRoomIsBeingChosen = -1;
+let registrationActive = false;
+let currentDeviceForWhichTheRoomIsBeingChosen = -1;
+let currentRoomInWichTheSensorsAreHeld = -1;
+let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
   window = new BrowserWindow({
@@ -58,22 +61,65 @@ ipc.on('assign_devices_button_pressed',function(){
 });
 
 ipc.on('room_assignation_button_pressed',function(event,deviceID){
-
-  chooseRoomWindow = new BrowserWindow({
-    parent: deviceAssignationWindow,
-    modal: true,
-    width:600,
-    height: 200
-  })
-
-  var chooseRoomWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_room_dialog.html';
-  chooseRoomWindow.loadURL(chooseRoomWindowURL);
-  currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
+  selectRoomFunction(deviceID,false;);
 })
 
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   console.log("Ok button pressed with device = " + currentDeviceForWhichTheRoomIsBeingChosen + " and room " + roomID);
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-  currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  chooseRoomWindow.on('closed',() =>{
+      deviceAssignationWindow.reload();
+      if(selectSensorAfterwardsTrigger){
+        currentRoomInWichTheSensorsAreHeld = roomID;
+        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen);
+      }else {
+        currentDeviceForWhichTheRoomIsBeingChosen = -1;
+      }
+  })
   chooseRoomWindow.close();
+
 })
+
+ipc.on('sensor_assignation_button_pressed',function(event,deviceID){
+  dbHelper.checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selectSensorFunction);
+})
+
+ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
+  dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
+  chooseSensorWindow.on('closed',() =>{
+    currentDeviceForWhichTheRoomIsBeingChosen = -1;
+    currentRoomInWichTheSensorsAreHeld = -1;
+  });
+  chooseSensorWindow.close();
+})
+
+ipc.on('room_id_request',function(event){
+  event.returnValue = currentRoomInWichTheSensorsAreHeld;
+})
+
+function selectRoomFunction(deviceID,selectSensorAfterwards){
+    chooseRoomWindow = new BrowserWindow({
+      parent: deviceAssignationWindow,
+      modal: true,
+      width:600,
+      height: 200
+    })
+
+    var chooseRoomWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_room_dialog.html';
+    chooseRoomWindow.loadURL(chooseRoomWindowURL);
+    currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
+    selectSensorAfterwardsTrigger = selectSensorAfterwards;
+}
+
+function selectSensorFunction(deviceID){
+    chooseSensorWindow = new BrowserWindow({
+      parent: deviceAssignationWindow,
+      modal = true,
+      width: 600,
+      height, 200
+    });
+
+    var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
+    chooseSensorWindow.loadURL(chooseSensorWindowURL);
+    currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
+}

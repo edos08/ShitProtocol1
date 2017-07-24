@@ -3,14 +3,14 @@ var dbHelper = require('../main/DBHelper');
 
 function setUpComponents(){
    fillRoomsList();
-   addOkButtonClickLIstener();
+   addOkButtonClickListener();
 }
 
 function fillRoomsList(){
     dbHelper.fillRoomsList(document.getElementById('rooms_list'));
 }
 
-function addOkButtonClickLIstener(){
+function addOkButtonClickListener(){
   var okButton = document.getElementById('ok_button');
   okButton.addEventListener('click',function(){
     var roomsList = document.getElementById('rooms_list');

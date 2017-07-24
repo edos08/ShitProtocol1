@@ -1,4 +1,4 @@
-var knex = require('knex')({
+let knex = require('knex')({
   client: 'pg',
   version: '9.4',
   connection: {
@@ -62,7 +62,7 @@ function insertDeviceIntoDB(id,type){
 
 function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   knex.withSchema('LoRa')
-  .select("Devices.ID as id ","Devices.Description as dev_desc ","Device_types.Description as dev_type")
+  .select("Devices.ID as id ","Devices.Description as dev_desc ","Device_types.Description as dev_type","Device_types.ID as dev_type_id")
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .from("Devices")
   .whereNull("Room")
@@ -87,7 +87,8 @@ function populateListItemWithDeviceInfo(device){
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
   + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
-  + "<button onClick=\"onDeviceAssignToRoomButton(this)\"> Assegna ad una stanza </button>"
+  + "<button onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Assegna ad una stanza </button>"
+  + ((device.dev_type_id == 2)?"<button onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
   + " </li>";
   return content;
 }
@@ -137,6 +138,55 @@ function assignDeviceToRoom(deviceID,roomID){
   })
 }
 
+function assignSensorToController(controllerID,sensorID){
+  knex('Devices').withSchema('LoRa')
+  .where('ID',controllerID)
+  .update('Sensor',sensorID)
+  .then(function(result){
+    if(result == 1){
+      console.console.log("Sensore assegnato al dispositivo con successo");
+    }
+  })
+}
+
+function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selectDeviceFunction){
+  knex.withSchema('LoRa')
+  .select('Room')
+  .from('Devices')
+  .where('ID',deviceID)
+  .then(function(result){
+    if(result.Room != null){
+      selectDeviceFunction();
+    }else{
+      selectRoomFunction(deviceID,true);
+    }
+  })
+}
+
+function fillSensorsList(sensorsListContainer){
+  knex.withSchema('LoRa')
+  .select('ID','Description')
+  .table('Devices')
+  .where('Type',3)
+  .then(function(sensors){
+    var content = "";
+    for(var a = 0; a < sensors.length; a++){
+      content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
+    }
+    container.innerHTML = content;
+  });
+}
+
+function fillRoomNameContainer(roomID,roomNameContainer){
+  knex.withSchema('LoRa')
+  .select('Description')
+  .from('Rooms')
+  .where('ID',roomID)
+  .then(function(room){
+    roomNameContainer.innerHTML += room.Description;
+  })
+}
+
 module.exports = {
   checkFirstStartupOfSystem: checkFirstStartupOfSystem,
   fillRoomsScreen,
@@ -147,5 +197,9 @@ module.exports = {
   queryAllDevicesWithNoRoomAssignedAndShowIn,
   renameDevice,
   fillRoomsList,
-  assignDeviceToRoom
+  assignDeviceToRoom,
+  assignSensorToController,
+  checkIfHasRoomAssignedAndSelectSensor,
+  fillSensorsList,
+  fillRoomNameContainer
 }
