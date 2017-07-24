@@ -8,7 +8,6 @@ function setUpComponents(){
 
 function fillDevicesListAndRoomName(){
     ipc.send('room_id_request');
-    dbHelper.fillSensorsList(document.getElementById('sensors_list'));
 }
 
 function addOkButtonClickListener(){
@@ -24,4 +23,5 @@ function addOkButtonClickListener(){
 ipc.on('room_response',function(event,room){
   console.log('Room ID received');
   dbHelper.fillRoomNameContainer(room,document.getElementById('room_name'));
+  dbHelper.fillSensorsList(document.getElementById('sensors_list'));
 })

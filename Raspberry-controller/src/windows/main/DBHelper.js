@@ -170,17 +170,19 @@ function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selec
   })
 }
 
-function fillSensorsList(sensorsListContainer){
+function fillSensorsList(sensorsListContainer,roomID){
   knex.withSchema('LoRa')
   .select('ID','Description')
-  .table('Devices')
+  .from('Devices')
   .where('Type',3)
+  .andWhere('Room',roomID)
   .then(function(sensors){
+    console.log("sensors: " + sensors.length);
     var content = "";
     for(var a = 0; a < sensors.length; a++){
       content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
     }
-    container.innerHTML = content;
+    sensorsListContainer.innerHTML = content;
   });
 }
 
