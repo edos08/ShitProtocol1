@@ -21,7 +21,7 @@ function addOkButtonClickListener(){
 }
 
 ipc.on('room_response',function(event,room){
-  console.log('Room ID received');
+  console.log('Room ID received ' + room);
   dbHelper.fillRoomNameContainer(room,document.getElementById('room_name'));
   dbHelper.fillSensorsList(document.getElementById('sensors_list'));
 })
