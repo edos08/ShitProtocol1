@@ -145,7 +145,7 @@ void serialEvent(){
         alertDoubledDevicesTrigger = true;
       }
     }
-  } else if(isEnterRagistrationModeMessage(serialBuffer,serialMessageLength)){
+  } else if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
   }
 }

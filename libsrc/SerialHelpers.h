@@ -68,6 +68,7 @@ void enterRegistrationMode(){
   identified_devices = 0;
   stream_started = false;
   stream_ended = false;
+  sendRegistrationModeStartedMessage();
 }
 
 static bool isMessageListPacket(char dataBuffer[], int buffer_size){
@@ -78,7 +79,7 @@ static bool isMessageListEndPacket(char dataBuffer[], int buffer_size){
   return buffer_size == 2 && dataBuffer[0] == MESSAGE_TYPE_LIST_ITEM && dataBuffer[1] == MESSAGE_LIST_ENDED;
 }
 
-static bool isEnterRagistrationModeMessage(char dataBuffer[], int buffer_size){
+static bool isEnterRegistrationModeMessage(char dataBuffer[], int buffer_size){
   return buffer_size == 1 && dataBuffer[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
 }
 
