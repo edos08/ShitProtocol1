@@ -10,9 +10,12 @@
 #define MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE 1
 #define MESSAGE_TYPE_DEVICES_SUBMISSION 2
 #define MESSAGE_TYPE_ENTER_REGISTRATION_MODE 3
+#define MESSAGE_TYPE_LIST_ITEM
 
 #define MESSAGE_ID_VALID 0
 #define MESSAGE_ID_INVALID 1
+
+#define MESSAGE_LIST_ENDED 0
 
 #define MESSAGE_DEVICES_STREAM_START 0
 #define MESSAGE_DEVICES_STREAM_END 255
@@ -68,7 +71,11 @@ void enterRegistrationMode(){
 }
 
 static bool isMessageListPacket(char dataBuffer[], int buffer_size){
+  return buffer_size == 5 && dataBuffer[0] == MESSAGE_TYPE_LIST_ITEM;
+}
 
+static bool isMessageListEndPacket(char dataBuffer[], int buffer_size){
+  return buffer_size == 2 && dataBuffer[0] == MESSAGE_TYPE_LIST_ITEM && dataBuffer[1] == MESSAGE_LIST_ENDED;
 }
 
 static bool isEnterRagistrationModeMessage(char dataBuffer[], int buffer_size){
@@ -122,6 +129,13 @@ static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   buffer[5] = type;
   Serial.write(buffer,6);
+}
+
+static void sendListRequestMessage(uint32_t sensorID){
+  char buffer[5];
+  buffer[0] = MESSAGE_TYPE_LIST_ITEM;
+  SerialHelpers::write32bitIntegerIntoBuffer(buffer,sensorID);
+  Serial.write(buffer,5);
 }
 
 
