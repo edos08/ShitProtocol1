@@ -26,5 +26,6 @@ function handleHandshakeEnd(){
 
 
 module.exports = {
+  init,
   onEnd
 }
