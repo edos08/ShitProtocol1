@@ -13,8 +13,8 @@ function fillRoomsList(){
 function addOkButtonClickLIstener(){
   var okButton = document.getElementById('ok_button');
   okButton.addEventListener('click',function(){
-    var roomList = document.getElementById('rooms_list');
-    var roomID = roomList[roomList.selectedIdex].value;
+    var roomsList = document.getElementById('rooms_list');
+    var roomID = roomsList.options[roomsList.selectedIdex];
     ipc.send('room_assignation_ok_button_pressed',roomID);
     console.log('ok button clicked');
   });
