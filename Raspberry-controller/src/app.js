@@ -54,6 +54,22 @@ function onRegistrationEnd(result){
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 }
 
+ipc.on('check-first-startup',function(event,action){
+  dbHelper.checkFirstStartupOfSystem(action);
+})
+
+ipc.on('fill-rooms-screen',function(event,container,clickAction){
+  dbHelper.fillRoomsScreen(container,action);
+})
+
+ipc.on('insert_new_room',function(event,roomName){
+  dbHelper.insertRoomIntoDB(roomName,window);
+})
+
+ipc.on('fill_room_view',(event,container,roomID) => {
+  dbHelper.fillContentDivWithDevices(container,roomID);
+});
+
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
   registration.start(onRegistrationEnd);
