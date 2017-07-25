@@ -22,7 +22,6 @@ app.on('ready', function(){
 });
 
 function initMain(){
-  list_request.init();
   window = new BrowserWindow({
     width: 1024,
     height: 768
