@@ -54,8 +54,8 @@ function onRegistrationEnd(result){
   deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
 }
 
-ipc.on('check-first-startup',function(event,action){
-  dbHelper.checkFirstStartupOfSystem(action);
+ipc.on('check-first-startup',function(event,filler){
+  dbHelper.checkFirstStartupOfSystem(filler);
 })
 
 ipc.on('fill-rooms-screen',function(event,container,clickAction){
