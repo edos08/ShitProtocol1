@@ -12,10 +12,17 @@ function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
   ipc.send('check-first-startup',displayEmptyDBMessage);
-  dbHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
+  ipc.send('fill-rooms-screen',document.getElementById('rooms_container'),"onRoomClicked");
   //
   //dbHelper.fillRoomsScreen();
 }
+
+ipc.on('rooms-filled',(event) =>{
+  console.log("refresh");
+  var container = document.getElementById('rooms_container');
+  var content = container.innerHTML;
+  container.innerHTML = content;
+})
 
 function setupRegisterDevicesButton(){
   var registerDevicesButton = document.getElementById('register_devices_button');
