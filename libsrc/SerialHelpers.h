@@ -20,13 +20,10 @@
 #define MESSAGE_DEVICES_STREAM_START 0
 #define MESSAGE_DEVICES_STREAM_END 255
 
-
-
-uint8_t devices_to_register = 0;
+uint8_t devices_to_register = 1;
 uint32_t* devices_ids;
 uint8_t* devices_types;
 int devices_ids_index = 0;
-
 
 bool isWaitingForDeviceIDCheck = false;
 uint32_t idToCheck = 0;
@@ -61,8 +58,12 @@ static void sendRegistrationModeStartedMessage(){
 }
 
 void enterRegistrationMode(){
+  if(devices_ids != null)
+      delete[] devices_ids;
+  if(devices_types != null)
+    delete[] devices_types;
   hasReceivedNumberOfDevicesToRegister = false;
-  devices_to_register = 0;
+  devices_to_register = -1;
   devices_ids_index = 0;
   isWaitingForDeviceIDCheck = false;
   idToCheck = 0;

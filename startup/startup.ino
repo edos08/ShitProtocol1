@@ -4,7 +4,7 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
-#define TYPE DEVICE_TYPE_CONTROLLER
+#define TYPE DEVICE_TYPE_SENSOR
 
 bool idSent = false;
 bool idAccepted = false;
