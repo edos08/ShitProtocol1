@@ -49,7 +49,7 @@ function insertDeviceIntoDB(id,type){
   .insert({Address: id,Type: type}).then(function(){});
 }
 
-function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
+function queryAllDevicesWithNoRoomAssignedAndShowIn(after){
   knex.withSchema('LoRa')
   .select("Devices.ID as id ","Devices.Description as dev_desc ","Device_types.Description as dev_type","Device_types.ID as dev_type_id")
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
@@ -57,17 +57,7 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(container){
   .whereNull("Room")
   .orderBy('id','asc')
   .then(function(devices){
-    var content = "";
-    if(devices.length > 0){
-      content = "<ul>";
-      for(var a = 0; a < devices.length; a++){
-          content += populateListItemWithDeviceInfo(devices[a],true);
-      }
-      content += "</ul>";
-    }else {
-      content = "Nessun dispositivo da collegare ad altre stanze";
-    }
-    container.innerHTML = content;
+    after(devices);
   });
 }
 
@@ -93,18 +83,6 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(container){
     }
     container.innerHTML = content;
   });
-}
-
-
-function populateListItemWithDeviceInfo(device,roomAssignation){
-  var content = "<li id = \"" + device.id +"\"> "
-  + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
-  + " - " + device.dev_type
-  + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
-  + ((roomAssignation)?"<button onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Assegna ad una stanza </button>":"")
-  + ((device.dev_type_id == 2)?"<button onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
-  + " </li>";
-  return content;
 }
 
 function insertRoomIntoDB(roomName,windowToReload){

@@ -7,7 +7,32 @@ var ipc = require('electron').ipcRenderer;
 
 function setUpComponents(){
   console.log("Setting components up");
-  dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn(document.getElementById('devicesContainer'));
+  ipc.send('devices-with-no-room-request');
+}
+
+ipc.on('devices-with-no-room-response'(event,devices) => {
+    var content = "";
+    if(devices.length > 0){
+      content = "<ul>";
+      for(var a = 0; a < devices.length; a++){
+          content += populateListItemWithDeviceInfo(devices[a]);
+      }
+      content += "</ul>";
+    }else {
+      content = "Nessun dispositivo da collegare ad altre stanze";
+    }
+    document.getElementById('devicesContainer').innerHTML = content;
+})
+
+function populateListItemWithDeviceInfo(device){
+  var content = "<li id = \"" + device.id +"\"> "
+  + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
+  + " - " + device.dev_type
+  + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
+  + "<button onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Assegna ad una stanza </button>"
+  + ((device.dev_type_id == 2)?"<button onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
+  + " </li>";
+  return content;
 }
 
 function onDeviceRenameButtonClick(button){
