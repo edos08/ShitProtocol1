@@ -60,6 +60,7 @@ ipc.on('check-first-startup',function(event,filler){
 
 ipc.on('fill-rooms-screen',function(event,container,clickAction){
   dbHelper.fillRoomsScreen(container,clickAction);
+  window.reload();
 })
 
 ipc.on('insert_new_room',function(event,roomName){
