@@ -132,7 +132,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow && !sensorsAssignationWindow.isDestroyed())
+    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
   });
   chooseSensorWindow.close();
@@ -172,9 +172,9 @@ ipc.on('devices-with-no-sensor-request',(event) => {
 
 ipc.on('rename-device',(event,deviceID,name) => {
   dbHelper.renameDevice(deviceID,name,() => {
-    if(chooseRoomWindow  && !chooseRoomWindow.isDestroyed())
+    if(chooseRoomWindow != null && !chooseRoomWindow.isDestroyed())
       chooseRoomWindow.reload();
-    if(chooseSensorWindow && !chooseSensorWindow.isDestroyed())
+    if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
       chooseSensorWindow.reload();
   });
 })
