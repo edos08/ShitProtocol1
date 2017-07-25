@@ -1,4 +1,3 @@
-
 #include <SPI.h>
 #include <LoRa.h>
 #include <RegistrationProtocol.h>
@@ -8,6 +7,8 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
+
+bool packetReceived = false;
 
 char serialBuffer[SERIAL_BUFFER_SIZE];
 
@@ -24,6 +25,13 @@ void loop() {
   if(Serial.available()){
     serialEvent();
   }
+
+  if(packetReceived){  
+    packetReceived = false;
+    Serial.println("Packet received");
+    Serial.flush();
+  }
+  
   if(handshakeCompleted){
 
     if(hasReceivedNumberOfDevicesToRegister){
@@ -84,9 +92,10 @@ void sendDeviceTypeToSerial(){
 
 
 void handleSubmissionPacket(Packet idSubmissionPacket){
+    packetReceived=true;
     if(!isWaitingForDeviceIDCheck){
       if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
-        if(devices_ids_index >= devices_to_register){ //redundant packet, already have al that i need
+        if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have al that i need
           Serial.println("Ridondante");
           notifyDevicesIDsAcceptedTrigger = true;
           return;
@@ -102,6 +111,8 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
           alertDoubledDevicesTrigger = true;
         }
       }
+   } else {
+    Serial.println("Waitinn");
    }
 }
 
@@ -126,18 +137,22 @@ void serialEvent(){
       sendHandShakeEndMessage();
     }
     return;
-  }else if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
+  }
+  if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
     return;
-  } else if(!hasReceivedNumberOfDevicesToRegister){
+  } 
+  if(!hasReceivedNumberOfDevicesToRegister){
     if(isDevicesCountMessage(serialBuffer,serialMessageLength)){
       hasReceivedNumberOfDevicesToRegister = true;
       devices_to_register = (uint8_t)serialBuffer[1];
       devices_ids = new uint32_t[devices_to_register];
       devices_types = new uint8_t[devices_to_register];
+      Serial.println("Dev no received");
     }
     return;
-  } else if(isWaitingForDeviceIDCheck){
+  }
+  if(isWaitingForDeviceIDCheck){
     if(isIDCheckResponse(serialBuffer,serialMessageLength)){
       isWaitingForDeviceIDCheck = false;
       int idCheckResult = serialBuffer[1];
