@@ -132,6 +132,7 @@ ipc.on('sensor_assignation_button_pressed',function(event,deviceID){
 
 ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
+  registration.sendSensorSubmissionPacket(currentDeviceForWhichTheRoomIsBeingChosen,deviceID);
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
@@ -139,7 +140,6 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
       sensorsAssignationWindow.reload();
   });
   chooseSensorWindow.close();
-
   //TODO: serial send info to device
 
 

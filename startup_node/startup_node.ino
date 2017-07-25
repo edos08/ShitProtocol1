@@ -94,7 +94,7 @@ void sendDeviceTypeToSerial(){
 void handleSubmissionPacket(Packet idSubmissionPacket){
     packetReceived=true;
     if(!isWaitingForDeviceIDCheck){
-      if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLenght)){
+      if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLength)){
         if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have al that i need
           Serial.println("Ridondante");
           notifyDevicesIDsAcceptedTrigger = true;
@@ -164,7 +164,16 @@ void serialEvent(){
       }
       return;
     }
-  }else {
+  }
+
+  if(isSensorSubmissionMessage(serialBuffer,serialMessageLength)){
+    uint32_t controllerAddress = Helpers::read32bitInt(serialBuffer + 1);
+    uint32_t sensorAddress = Helpers::read32bitInt(serialBuffer + 5);
+    Serial.println("Submission: controller: ");
+    Serial.println(controllerAddress,HEX);
+    Serial.println("Submission: sensor: ");
+    Serial.println(sensorAddress,HEX);
+  } else {
     Serial.println("unrecognized");
   }
 }

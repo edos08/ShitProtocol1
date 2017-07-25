@@ -10,7 +10,7 @@
 #define MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE 1
 #define MESSAGE_TYPE_DEVICES_SUBMISSION 2
 #define MESSAGE_TYPE_ENTER_REGISTRATION_MODE 3
-#define MESSAGE_TYPE_LIST_ITEM 6
+#define MESSAGE_TYPE_SENSOR_SUBMISSION 4
 
 #define MESSAGE_ID_VALID 0
 #define MESSAGE_ID_INVALID 1
@@ -102,6 +102,10 @@ static bool isDevicesCountMessage(char dataBuffer[], int buffer_size){
 
 static bool isIDCheckResponse(char dataBuffer[], int buffer_size){
   return buffer_size == 2 &&  dataBuffer[0] == MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE;
+}
+
+static bool isSensorSubmissionMessage(char dataBuffer[],int buffer_size){
+  return buffer_size == 9 && dataBuffer[0] == MESSAGE_TYPE_SENSOR_SUBMISSION;
 }
 
 static void sendIDCheckMessage(uint32_t ID){

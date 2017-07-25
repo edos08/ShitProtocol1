@@ -84,7 +84,7 @@ Attributi:</p>
 <li><code>dest</code> : il destinatario del pacchetto</li>
 <li><code>sender</code> : il mittente del pacchetto</li>
 <li><code>type</code> : il tipo di pacchetto</li>
-<li><code>packetLenght</code>: la lunghezza del payload</li>
+<li><code>packetLength</code>: la lunghezza del payload</li>
 <li><code>packetNumber</code> : il numero di sequenza del pacchetto</li>
 <li><code>body</code> : il payload del pacchetto</li>
 </ul>
@@ -105,9 +105,9 @@ Attributi:</p>
 Helpers::printResponseMessage(result);</code></pre>
 <hr />
 <p>Costruttori di pacchetti predefiniti:</p>
-<p><code>static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght)</code></p>
-<p>Crea un pacchetto di tipo messaggio rivolto al mittente <code>dest</code> dal dispositivo <code>sender</code> contenente il messaggio <code>body</code>. Il valore di packetLenght deve essere al massimo della lunghezza del campo body</p>
-<p><code>static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght)</code></p>
+<p><code>static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength)</code></p>
+<p>Crea un pacchetto di tipo messaggio rivolto al mittente <code>dest</code> dal dispositivo <code>sender</code> contenente il messaggio <code>body</code>. Il valore di packetLength deve essere al massimo della lunghezza del campo body</p>
+<p><code>static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength)</code></p>
 <p>Uguale al metodo soprastante, ma richiede un'ACK in risposta, riprovando ad inviare tre volte il pacchetto in caso di mancata ricezione</p>
 <p><code>static Packet AckPacket(uint32_t dest, uint32_t sender, uint8_t reponsePacketNumber)</code></p>
 <p>Crea un pacchetto di ACK di risposta, utilizzato all'interno della libreria e non deve essere utilizzato all'interno dello sketch</p>
