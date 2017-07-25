@@ -143,7 +143,7 @@ ipc.on('room_id_request',function(event){
   event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
 })
 
-ipc.on('room-request'(event) => {
+ipc.on('room-request',(event) => {
   dbHelper.fillRoomsList((rooms){
     ipc.sender.send('room-response',rooms);
   });
