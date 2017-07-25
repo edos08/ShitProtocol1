@@ -15,7 +15,7 @@ function start(processEndHandler){
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
     registrationModeEnteredHandler: handleRegistrationModeEntered
-  })
+  });
 
   helpers.startRegistration();
   onEnd = processEndHandler;
