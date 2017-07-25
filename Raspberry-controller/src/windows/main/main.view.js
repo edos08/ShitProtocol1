@@ -30,8 +30,6 @@ function setUpElements(){
   setupInsertRoomButton();
   ipc.send('check-first-startup',displayEmptyDBMessage);
   ipc.send('fill-rooms-screen');
-  //
-  //dbHelper.fillRoomsScreen();
 }
 
 
@@ -70,6 +68,22 @@ function displayEmptyDBMessage(){
 
 function onRoomClicked(id){
   console.log("Congratulations, you clicked on the room!");
-  ipc.send('fill_room_view',document.getElementById('content'),id);
-  //dbHelper.fillContentDivWithDevices()
+  ipc.send('fill_room_view',id);
+}
+
+ipc.on('devices-loaded',(event,devices) =>{
+  var content = "<ul>";
+  for(var a = 0; a < devices.length; a++){
+    content += createDeviceItemForList(devices[a]);
+  }
+  content += "</ul>"
+  ,document.getElementById('content').innerHTML = content;
+})
+
+
+function createDeviceItemForList(device){
+    return "<li> "
+    + ((device.desc != null)?device.desc:"Dispositivo senza nome")
+    + " ("
+    + device.dev_type + ")</li>";
 }

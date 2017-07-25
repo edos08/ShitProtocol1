@@ -22,27 +22,15 @@ function fillRoomsScreen(after){
   });
 }
 
-function fillContentDivWithDevices(container,roomID){
+function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .where('Devices.Room',roomID)
   .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type')
   .from('Devices')
   .then(function(devices){
-    var content = "<ul>";
-    for(var a = 0; a < devices.length; a++){
-      content += createDeviceItemForList(devices[a]);
-    }
-    content += "</ul>"
-    container.innerHTML = content;
+    after(devices);
   });
-}
-
-function createDeviceItemForList(device){
-    return "<li> "
-    + ((device.desc != null)?device.desc:"Dispositivo senza nome")
-    + " ("
-    + device.dev_type + ")</li>";
 }
 
 function checkIfIdIsInDB(id,resultHandler){
