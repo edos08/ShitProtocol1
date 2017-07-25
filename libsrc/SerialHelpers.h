@@ -129,12 +129,4 @@ static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   Serial.write(buffer,6);
 }
 
-static void sendListRequestMessage(uint32_t sensorID){
-  char buffer[5];
-  buffer[0] = MESSAGE_TYPE_LIST_ITEM;
-  SerialHelpers::write32bitIntegerIntoBuffer(buffer,sensorID);
-  Serial.write(buffer,5);
-}
-
-
 #endif
