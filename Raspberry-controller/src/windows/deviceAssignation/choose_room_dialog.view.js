@@ -16,7 +16,7 @@ ipc.on('room-response',(event,rooms) => {
       content += "<option value = \"" + rooms[a].ID + "\"> " + rooms[a].Description + "</option>";
     }
     document.getElementById('rooms_list').innerHTML = content;
-});
+})
 
 function addOkButtonClickListener(){
   var okButton = document.getElementById('ok_button');
