@@ -159,7 +159,7 @@ ipc.on('devices-with-no-room-request',(event) => {
 })
 
 ipc.on('rename-device',(event,deviceID,name) => {
-  dbHelper.renameDevice(deviceID,name,(){
+  dbHelper.renameDevice(deviceID,name,() => {
     if(chooseRoomWindow && !chooseRoomWindow.isBroken())
       chooseRoomWindow.reload();
     if(chooseSensorWindow && !chooseSensorWindow.isBroken())
