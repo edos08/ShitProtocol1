@@ -132,7 +132,7 @@ ipc.on('sensor_assignation_button_pressed',function(event,deviceID){
 
 ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
-  registration.sendSensorSubmissionPacket(currentDeviceForWhichTheRoomIsBeingChosen,deviceID);
+  registration.sendSensorSubmissionPacket(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
