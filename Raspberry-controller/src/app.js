@@ -172,10 +172,10 @@ ipc.on('devices-with-no-sensor-request',(event) => {
 
 ipc.on('rename-device',(event,deviceID,name) => {
   dbHelper.renameDevice(deviceID,name,() => {
-    if(chooseRoomWindow != null && !chooseRoomWindow.isDestroyed())
-      chooseRoomWindow.reload();
-    if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
-      chooseSensorWindow.reload();
+    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
+      sensorsAssignationWindow.reload();
+    if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
+      deviceAssignationWindow.reload();
   });
 })
 
