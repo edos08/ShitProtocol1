@@ -106,6 +106,8 @@ void receivePacket(int packetSize) {
   }
 
   if (receivedPacket.requestsAck()) {
+    Serial.println("Responding to ack");
+    Serial.flush();
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
 	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
   }
