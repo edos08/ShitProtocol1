@@ -67,7 +67,7 @@ Attributi:
 * `dest` : il destinatario del pacchetto
 * `sender` : il mittente del pacchetto
 * `type` : il tipo di pacchetto
-* `packetLenght`: la lunghezza del payload
+* `packetLength`: la lunghezza del payload
 * `packetNumber` : il numero di sequenza del pacchetto
 * `body` : il payload del pacchetto
 
@@ -96,11 +96,11 @@ Helpers::printResponseMessage(result);
 
 Costruttori di pacchetti predefiniti:
 
-`static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght)`
+`static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength)`
 
-Crea un pacchetto di tipo messaggio rivolto al mittente `dest` dal dispositivo `sender` contenente il messaggio `body`. Il valore di packetLenght deve essere al massimo della lunghezza del campo body
+Crea un pacchetto di tipo messaggio rivolto al mittente `dest` dal dispositivo `sender` contenente il messaggio `body`. Il valore di packetLength deve essere al massimo della lunghezza del campo body
 
-`static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght)`
+`static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength)`
 
 Uguale al metodo soprastante, ma richiede un'ACK in risposta, riprovando ad inviare tre volte il pacchetto in caso di mancata ricezione
 

@@ -43,16 +43,16 @@ static Packet RegistrationUnavailablePacket(uint32_t dest, uint32_t sender) {
 }
 
 
-static bool isRegistrationResponsePacket(uint8_t type, uint8_t packetLenght){
-	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLenght == 1;
+static bool isRegistrationResponsePacket(uint8_t type, uint8_t packetLength){
+	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLength == 1;
 }
 
-static bool isRegistrationRequestPacket(uint8_t type, uint8_t packetLenght) {
-	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLenght == 1;
+static bool isRegistrationRequestPacket(uint8_t type, uint8_t packetLength) {
+	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLength == 1;
 }
 
-static bool isTypeSubmissionPacket(uint8_t type, uint8_t packetLenght){
-	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_DEVICE_SUBMISSION) && packetLenght == 1;
+static bool isTypeSubmissionPacket(uint8_t type, uint8_t packetLength){
+	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_DEVICE_SUBMISSION) && packetLength == 1;
 }
 
 static int response_result(uint8_t payload) {
