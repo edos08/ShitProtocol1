@@ -93,7 +93,7 @@ function insertRoomIntoDB(roomName,windowToReload){
   });;
 }
 
-function renameDevice(id,name,windowToReload){
+function renameDevice(id,name,after){
   console.log("ID " + id + " name " + name);
   knex('Devices').withSchema('LoRa')
   .where('ID',id)
@@ -102,7 +102,7 @@ function renameDevice(id,name,windowToReload){
     if(result == 1){
       console.log("Descrizione aggiornata con successo!");
     }
-    windowToReload.reload();
+    after();
   });
 }
 
