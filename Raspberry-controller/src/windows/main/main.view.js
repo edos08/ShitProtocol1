@@ -17,7 +17,7 @@ function setUpElements(){
   //dbHelper.fillRoomsScreen();
 }
 
-ipc.on('rooms-filled',(event) =>{
+ipc.on('rooms-filled',(event,arg) =>{
   console.log("refresh");
   var container = document.getElementById('rooms_container');
   var content = container.innerHTML;
