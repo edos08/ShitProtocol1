@@ -8,6 +8,16 @@ var Dialogs = require('dialogs');
 
 var dialogs = Dialogs();
 
+window.onload = setUpElements;
+
+
+ipc.on('rooms-filled',(event,arg) =>{
+  console.log("refresh");
+  var container = document.getElementById('rooms_container');
+  var content = container.innerHTML;
+  container.innerHTML = content;
+})
+
 function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
@@ -17,12 +27,6 @@ function setUpElements(){
   //dbHelper.fillRoomsScreen();
 }
 
-ipc.on('rooms-filled',(event,arg) =>{
-  console.log("refresh");
-  var container = document.getElementById('rooms_container');
-  var content = container.innerHTML;
-  container.innerHTML = content;
-})
 
 function setupRegisterDevicesButton(){
   var registerDevicesButton = document.getElementById('register_devices_button');
