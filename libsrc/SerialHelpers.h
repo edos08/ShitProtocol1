@@ -20,7 +20,7 @@
 #define MESSAGE_DEVICES_STREAM_START 0
 #define MESSAGE_DEVICES_STREAM_END 255
 
-uint8_t devices_to_register = 1;
+uint8_t devices_to_register = -1;
 uint32_t* devices_ids;
 uint8_t* devices_types;
 int devices_ids_index = 0;
