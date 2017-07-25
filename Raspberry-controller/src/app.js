@@ -112,7 +112,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow != null && sensorsAssignationWindow != undefined)
+    if(sensorsAssignationWindow && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
   });
   chooseSensorWindow.close();
