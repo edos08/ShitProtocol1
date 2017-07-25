@@ -58,11 +58,6 @@ ipc.on('check-first-startup',function(event,filler){
   dbHelper.checkFirstStartupOfSystem(filler);
 })
 
-ipc.on('fill-rooms-screen',function(event,container,clickAction){
-  dbHelper.fillRoomsScreen(container,clickAction);
-  window.reload();
-})
-
 ipc.on('insert_new_room',function(event,roomName){
   dbHelper.insertRoomIntoDB(roomName,window);
 })
