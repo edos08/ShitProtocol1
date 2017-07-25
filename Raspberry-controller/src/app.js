@@ -152,6 +152,12 @@ ipc.on('cancel',function(){
   BrowserWindow.getFocusedWindow().close();
 })
 
+ipc.on('devices-with-no-room-request',(event) => {
+  dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+    event.sender.send('devices-with-no-room-response',devices);
+  });
+})
+
 function selectRoomFunction(deviceID,selectSensorAfterwards){
     chooseRoomWindow = new BrowserWindow({
       parent: deviceAssignationWindow,
