@@ -22,8 +22,8 @@ Impossibile caricare sketch su arduino nano atmega328.
 | MISO | MISO (D12) |
 | MOSI | MOSI (D11) |
 | SCK | SCK (D13) |
-| NSS | D10 |
-| RESET | D9 |
+| NSS | D8 |
+| RESET | D4 |
 | DIO0 | D3 |
 
 Il DIO0 deve rimanere sul 3 perchè i pin 2 e 3 sono gli unici a cui ci si può iscrivere per ricevere cambiamenti di stato (callback)
