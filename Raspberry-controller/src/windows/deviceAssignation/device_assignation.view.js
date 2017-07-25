@@ -10,7 +10,7 @@ function setUpComponents(){
   ipc.send('devices-with-no-room-request');
 }
 
-ipc.on('devices-with-no-room-response'(event,devices) => {
+ipc.on('devices-with-no-room-response',(event,devices) => {
     var content = "";
     if(devices.length > 0){
       content = "<ul>";
