@@ -133,13 +133,13 @@ void serialEvent(){
   if(!handshakeCompleted){
     if(isHandshakeResponseMessage(serialBuffer,serialMessageLength)){
       handshakeCompleted = true;
-      int result = sendPacket(RegistrationResumedPacket(BROADCAST,NODE_ADDRESS));
       sendHandShakeEndMessage();
     }
     return;
   }
   if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
+    int result = sendPacket(RegistrationResumedPacket(BROADCAST,NODE_ADDRESS));
     return;
   }
   if(!hasReceivedNumberOfDevicesToRegister){

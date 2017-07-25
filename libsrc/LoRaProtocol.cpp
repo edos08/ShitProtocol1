@@ -107,20 +107,20 @@ void receivePacket(int packetSize) {
 
   if (receivedPacket.requestsAck()) {
     Serial.println("Responding to ack");
-    Serial.flush();
+    //Serial.flush();
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
 	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
   }
-
+  Serial.println("Has responded");
   if (receivedPacket.isAck()) {
 	  ackHolder.hasAck = true;
 	  ackHolder.ack = receivedPacket;
-  }
-
-  if (subscribedFunction != NULL && !receivedPacket.isAck()) {
+  } else if (subscribedFunction != NULL) {
+    Serial.println("Calling subscribed function");
 	  subscribedFunction(receivedPacket);
   }
-  *lastPacket = receivedPacket;
+
+   (*lastPacket) = receivedPacket;
    return;
 }
 
