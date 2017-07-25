@@ -19,7 +19,7 @@ int sendPacketAck(Packet packet, int retries);
 
 //Function bodies
 
-void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin){
+void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
     myAddress = _myAddress;
 	  lastPacket = new Packet();
     LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
@@ -88,6 +88,8 @@ void receivePacket(int packetSize) {
   Packet receivedPacket = Helpers::readInputPacket();
   if(receivedPacket == (*lastPacket)){ Serial.println("Duplicated packet");return;}
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
+    while(LoRa.available())
+        LoRa.read();
     Serial.println("This message is not for me.");
     return;
   }

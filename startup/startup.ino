@@ -6,6 +6,7 @@
 #define RETRY_WAITING_TIME 8000
 #define TYPE DEVICE_TYPE_SENSOR
 
+
 bool idSent = false;
 bool idAccepted = false;
 bool idDenied = false;
@@ -16,6 +17,8 @@ bool waitingTimedOut = false;
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
+bool stopp = false;
+
 void setup() {
   Serial.begin(9600);
   while(!Serial);
@@ -24,16 +27,20 @@ void setup() {
   //Serial.println(readEEPROM(),HEX);
   randomSeed(analogRead(0));
   randomAddress = generateRandomAddress();
-  initLoRa(randomAddress, 8, 4, 3);
+  initLoRa(randomAddress, 9, 4, 3);
+  Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
+  if(stopp)
+     return;
   if(!registrationDenied){
     if(!idAccepted){
 
       if(idDenied){
         Serial.println("Id denied");
+        Serial.flush();
         randomAddress = generateRandomAddress();
         changeAddress(randomAddress);
         idSent = false;
@@ -45,10 +52,13 @@ void loop() {
 
       if(!idSent){
         delay(generateRandomWaitingTime());
+        Serial.println("About to send");
+        Serial.flush();
         int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
         Helpers::printResponseMessage(result);
         Serial.print("My ID 0x");
         Serial.println(randomAddress,HEX);
+        Serial.flush();
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -59,11 +69,11 @@ void loop() {
       Serial.print("My ID 0x");
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
+      Serial.flush();
       //TODO: write to EPROM
       //TODO: send type to NODE
-      /*int result = sendPacket(TypeSubmissionPacket(NODE_ADDRESS,randomAddress,TYPE));
-      Helpers::printResponseMessage(result);*/
-      while(true);
+      //while(true);
+      stopp = true;
     }
   }else{
       if(registrationResumed)
@@ -97,23 +107,28 @@ void handleResponsePacket(Packet response){
   switch(response_result((uint8_t)response.body[0])){
     case REGISTRATION_RESPONSE_ID_DENIED:
       Serial.println("ID denied");
+      Serial.flush();
       idDenied = true;
       break;
     case REGISTRATION_RESPONSE_ID_ACCEPTED:
       Serial.println("ID accepted");
+      Serial.flush();
       idAccepted = true;
       break;
     case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
       Serial.println("Registration denied");
+      Serial.flush();
       registrationDenied = true;
       break;
     case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
       Serial.println("Registration resumed");
+      Serial.flush();
       if(registrationDenied)
         registrationResumed = true;
       break;
   }
 }
+
 
 /*uint32_t readEEPROM(){
     uint32_t result = 0;

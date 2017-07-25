@@ -140,7 +140,7 @@ extern uint8_t packetCounter;
 extern functionCall subscribedFunction;
 
 //exposed functions
-void initLoRa(int _myAddress, int csPin, int resetPin, int irqPin);
+void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin);
 void activateReceiveMode();
 
 int sendPacket(Packet packet);
