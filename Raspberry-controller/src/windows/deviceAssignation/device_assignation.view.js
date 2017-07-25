@@ -23,17 +23,6 @@ ipc.on('devices-with-no-room-response',(event,devices) => {
     document.getElementById('devicesContainer').innerHTML = content;
 })
 
-function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.id +"\"> "
-  + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
-  + " - " + device.dev_type
-  + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
-  + "<button onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Assegna ad una stanza </button>"
-  + ((device.dev_type_id == 2)?"<button onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
-  + " </li>";
-  return content;
-}
-
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
     if(name != null && name != undefined && name != "" && name != " "){
