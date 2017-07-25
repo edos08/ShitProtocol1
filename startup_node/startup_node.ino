@@ -26,12 +26,12 @@ void loop() {
     serialEvent();
   }
 
-  if(packetReceived){  
+  if(packetReceived){
     packetReceived = false;
     Serial.println("Packet received");
     Serial.flush();
   }
-  
+
   if(handshakeCompleted){
 
     if(hasReceivedNumberOfDevicesToRegister){
@@ -141,7 +141,7 @@ void serialEvent(){
   if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
     return;
-  } 
+  }
   if(!hasReceivedNumberOfDevicesToRegister){
     if(isDevicesCountMessage(serialBuffer,serialMessageLength)){
       hasReceivedNumberOfDevicesToRegister = true;
@@ -167,7 +167,6 @@ void serialEvent(){
   }else {
     Serial.println("unrecognized");
   }
-
 }
 
 int readSerialContent(){
