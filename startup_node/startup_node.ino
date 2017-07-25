@@ -126,7 +126,10 @@ void serialEvent(){
       sendHandShakeEndMessage();
     }
     return;
-  }else if(!hasReceivedNumberOfDevicesToRegister){
+  }else if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
+    enterRegistrationMode();
+    return;
+  } else if(!hasReceivedNumberOfDevicesToRegister){
     if(isDevicesCountMessage(serialBuffer,serialMessageLength)){
       hasReceivedNumberOfDevicesToRegister = true;
       devices_to_register = (uint8_t)serialBuffer[1];
@@ -146,13 +149,10 @@ void serialEvent(){
       }
       return;
     }
-  }
-
-  if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
-    enterRegistrationMode();
-  } else {
+  }else {
     Serial.println("unrecognized");
   }
+
 }
 
 int readSerialContent(){
