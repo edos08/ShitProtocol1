@@ -7,8 +7,8 @@ var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
 
-function start(processEndHandler){
-
+function start(processEndHandler,devicesNumber){
+  devicesToRegister = devicesNumber;
   helpers.init({
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,

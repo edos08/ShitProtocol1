@@ -2,9 +2,11 @@
 #include <RegistrationProtocol.h>
 //#include <EEPROM.h>
 
+#include <avr/eeprom.h> 
+
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
-#define TYPE DEVICE_TYPE_SENSOR
+#define TYPE DEVICE_TYPE_CONTROLLER
 
 
 bool idSent = false;
@@ -17,24 +19,36 @@ bool waitingTimedOut = false;
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-bool stopp = false;
+bool isFirstBoot = true;
 
 void setup() {
   Serial.begin(9600);
   while(!Serial);
   //TODO: controllare EPROM
-  //Serial.print("Memory content ");
-  //Serial.println(readEEPROM(),HEX);
-  randomSeed(analogRead(0));
-  randomAddress = generateRandomAddress();
+  uint32_t memoryContent = readEEPROM(); 
+  Serial.print("Memory content ");
+  Serial.println(memoryContent,HEX);
+  if(memoryContent == 0xFFFFFFFF){
+    randomSeed(analogRead(0));
+    randomAddress = generateRandomAddress(); 
+    Serial.println("RANDOM");
+    //writeEEPROM();
+  }else{
+    randomAddress = memoryContent;
+    isFirstBoot = false;
+  }
   initLoRa(randomAddress, 9, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
-  if(stopp)
-     return;
+  if(!isFirstBoot){
+    Serial.print("I have already an ID and it is ");
+    Serial.println(randomAddress,HEX);
+    return;
+  }
+  
   if(!registrationDenied){
     if(!idAccepted){
 
@@ -71,9 +85,8 @@ void loop() {
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
       Serial.flush();
       //TODO: write to EPROM
-      //TODO: send type to NODE
-      //while(true);
-      stopp = true;
+      writeEEPROM();
+      isFirstBoot = false;
     }
   }else{
       if(registrationResumed)
@@ -130,13 +143,26 @@ void handleResponsePacket(Packet response){
 }
 
 
-/*uint32_t readEEPROM(){
-    uint32_t result = 0;
-    int shifter = 24;
-    for(int a = 0; a < 4; a++){
-        uint8_t c_byte = EEPROM.read(a);
-        result |= (((uint32_t)c_byte) << shifter);
-        shifter -= 8;
-    }
-    return result;
-}*/
+uint32_t readEEPROM(){
+  uint32_t result = 0;
+  int shifter = 24;
+  for(int a = 0; a < 4; a++){
+      uint8_t c_byte = /*EEPROM.read(a);*/eeprom_read_word(a);
+      Serial.print("Byte: ");
+      Serial.println(c_byte,HEX);
+      result |= (((uint32_t)c_byte) << shifter);
+      shifter -= 8;
+  }
+  return result;
+}
+
+uint32_t writeEEPROM(){
+  uint8_t byte1 = (randomAddress & 0xFF000000) >> 24;
+  uint8_t byte2 = (randomAddress & 0x00FF0000) >> 16;
+  uint8_t byte3 = (randomAddress & 0x0000FF00) >> 8;
+  uint8_t byte4 = (randomAddress & 0x000000FF) >> 0;
+  eeprom_write_word(0,byte1);
+  eeprom_write_word(1,byte2);
+  eeprom_write_word(2,byte3);
+  eeprom_write_word(3,byte4);
+}

@@ -18,6 +18,12 @@ ipc.on('rooms-filled',(event,rooms) =>{
   document.getElementById('rooms_container').innerHTML = content;
 })
 
+ipc.on('dev-no-dialog',(event) => {
+  dialogs.prompt('Inserisci il numero di dispositivi da registrare','Inserisci',(deviceNumber) => {
+    ipc.send('registration-device-start',deviceNumber);
+  })
+});
+
 function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
