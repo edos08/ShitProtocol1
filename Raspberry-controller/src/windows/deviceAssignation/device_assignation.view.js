@@ -1,4 +1,3 @@
-var dbHelper = require('../main/DBHelper');
 var Dialogs = require('dialogs');
 var dialogs = Dialogs();
 
@@ -38,7 +37,7 @@ function populateListItemWithDeviceInfo(device){
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
     if(name != null && name != undefined && name != "" && name != " "){
-      ipc.send('rename-device',deviceID,name);
+      ipc.send('rename-device',button.parentNode.id,name);
     }
   });
 }
