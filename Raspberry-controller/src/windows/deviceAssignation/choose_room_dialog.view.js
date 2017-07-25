@@ -1,5 +1,4 @@
 var ipc = require('electron').ipcRenderer;
-//var dbHelper = require('../main/DBHelper');
 
 function setUpComponents(){
    fillRoomsList();

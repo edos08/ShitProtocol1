@@ -1,5 +1,4 @@
 var ipc = require('electron').ipcRenderer;
-var dbHelper = require('../main/DBHelper');
 
 function setUpComponents(){
   fillDevicesListAndRoomName();
@@ -20,11 +19,18 @@ function addOkButtonClickListener(){
   });
 }
 
-ipc.on('room_response',function(event,room){
-  console.log('Room ID received ' + room);
-  dbHelper.fillRoomNameContainer(room,document.getElementById('room_name'));
-  dbHelper.fillSensorsList(document.getElementById('sensors_list'),room);
+ipc.on('room_name_response',(event,name) => {
+  document.getElementById('room_name') += name;
 })
+
+ipc.on('sensors-response',(event,sensors) => {
+  var content = "";
+  for(var a = 0; a < sensors.length; a++){
+    content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
+  }
+  document.getElementById('sensors_list').innerHTML = content;
+})
+
 
 function calcel(){
   ipc.send('cancel');
