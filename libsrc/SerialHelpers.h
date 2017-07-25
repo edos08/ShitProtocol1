@@ -76,14 +76,6 @@ void enterRegistrationMode(){
   sendRegistrationModeStartedMessage();
 }
 
-static bool isMessageListPacket(char dataBuffer[], int buffer_size){
-  return buffer_size == 5 && dataBuffer[0] == MESSAGE_TYPE_LIST_ITEM;
-}
-
-static bool isMessageListEndPacket(char dataBuffer[], int buffer_size){
-  return buffer_size == 2 && dataBuffer[0] == MESSAGE_TYPE_LIST_ITEM && dataBuffer[1] == MESSAGE_LIST_ENDED;
-}
-
 static bool isEnterRegistrationModeMessage(char dataBuffer[], int buffer_size){
   return buffer_size == 1 && dataBuffer[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
 }
