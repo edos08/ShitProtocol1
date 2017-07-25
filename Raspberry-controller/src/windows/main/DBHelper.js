@@ -16,7 +16,7 @@ function checkFirstStartupOfSystem(action){
   });
 }
 
-function fillRoomsScreen(container,onClick){
+function fillRoomsScreen(container,onClick,after){
   knex.withSchema('LoRa').select().table('Rooms').then(function(rooms){
     var content = "";
     for(var a = 0; a < rooms.length; a++){
@@ -25,6 +25,7 @@ function fillRoomsScreen(container,onClick){
       content += "<hr>";
     }
     container.innerHTML = content;
+    after();
   });
 }
 
