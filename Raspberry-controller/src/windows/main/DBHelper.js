@@ -128,16 +128,12 @@ function renameDevice(id,name,windowToReload){
   });
 }
 
-function fillRoomsList(container){
+function fillRoomsList(after){
   knex.withSchema('LoRa')
   .select()
   .table('Rooms')
   .then(function(rooms){
-    var content = "";
-    for(var a = 0; a < rooms.length; a++){
-      content += "<option value = \"" + rooms[a].ID + "\"> " + rooms[a].Description + "</option>";
-    }
-    container.innerHTML = content;
+    after(rooms);
   });
 }
 
