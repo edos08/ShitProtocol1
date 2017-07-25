@@ -3,7 +3,6 @@ var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
 var handshake = require('./Handshake_process');
-var list_request = require('./list_request_process');
 
 var dbHelper =require('./windows/main/DBHelper');
 
@@ -142,6 +141,12 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 ipc.on('room_id_request',function(event){
   event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
+})
+
+ipc.on('room-request'(event) => {
+  dbHelper.fillRoomsList((rooms){
+    ipc.sender.send('room-response',rooms);
+  });
 })
 
 ipc.on('cancel',function(){
