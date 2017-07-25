@@ -65,13 +65,16 @@ ipc.on('fill-rooms-screen',function(event){
 
 })
 
+ipc.on('fill_room_view',(event,container,roomID) => {
+  dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
+    event.sender.send('devices-loaded')
+  });
+});
+
 ipc.on('insert_new_room',function(event,roomName){
   dbHelper.insertRoomIntoDB(roomName,window);
 })
 
-ipc.on('fill_room_view',(event,container,roomID) => {
-  dbHelper.fillContentDivWithDevices(container,roomID);
-});
 
 ipc.on("register_devices_pressed",function(){
   console.log("Congratualtions, you have pressed the register devices button");
