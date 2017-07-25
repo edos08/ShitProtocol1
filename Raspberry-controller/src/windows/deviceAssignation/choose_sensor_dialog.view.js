@@ -20,7 +20,7 @@ function addOkButtonClickListener(){
 }
 
 ipc.on('room_name_response',(event,name) => {
-  document.getElementById('room_name') += name;
+  document.getElementById('room_name').innerHTML += name;
 })
 
 ipc.on('sensors-response',(event,sensors) => {
