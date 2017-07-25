@@ -12,7 +12,7 @@ function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
   ipc.send('check-first-startup',displayEmptyDBMessage);
-  ipc.send('fill-rooms-screen',document.getElementById('rooms_container'),"onRoomClicked");
+  dbHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
   //
   //dbHelper.fillRoomsScreen();
 }
