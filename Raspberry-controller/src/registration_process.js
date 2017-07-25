@@ -80,5 +80,6 @@ function terminate(){
 module.exports = {
   start,
   onEnd,
-  terminate
+  terminate,
+  sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket
 }

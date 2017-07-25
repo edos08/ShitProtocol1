@@ -51,8 +51,8 @@ int sendNonAckPacket(Packet packet) {
 	Helpers::write32bitIntToPacket(packet.sender);
 	LoRa.write(packet.type);
 	LoRa.write(packet.packetNumber);
-	LoRa.write(packet.packetLenght);
-	for (int a = 0; a < packet.packetLenght; a++)
+	LoRa.write(packet.packetLength);
+	for (int a = 0; a < packet.packetLength; a++)
 		LoRa.write(packet.body[a]);
 	int result = LoRa.endPacket();
 	if (result == SUCCESFUL_RESPONSE)
@@ -90,7 +90,7 @@ void receivePacket(int packetSize) {
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     while(LoRa.available())
         LoRa.read();
-    Serial.println("This message is not for me.");
+    //Serial.println("This message is not for me.");
     return;
   }
 
@@ -100,28 +100,30 @@ void receivePacket(int packetSize) {
     position++;
   }
 
-  if((receivedPacket.packetLenght) != position){
-      Serial.println("Corrupted message");
+  if((receivedPacket.packetLength) != position){
+      //Serial.println("Corrupted message");
       return;
   }
 
   if (receivedPacket.requestsAck()) {
-    Serial.println("Responding to ack");
-    //Serial.flush();
+    //Serial.println("Responding to ack");
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
 	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
   }
-  Serial.println("Has responded");
+  //Serial.println("Has responded");
   if (receivedPacket.isAck()) {
 	  ackHolder.hasAck = true;
 	  ackHolder.ack = receivedPacket;
   } else if (subscribedFunction != NULL) {
-    Serial.println("Calling subscribed function");
+    //Serial.println("Calling subscribed function");
 	  subscribedFunction(receivedPacket);
   }
 
+    //Serial.println("Copying old packet");
+
    (*lastPacket) = receivedPacket;
-   return;
+
+   //Serial.println("Done");
 }
 
 void subscribeToReceivePacketEvent(functionCall function) {

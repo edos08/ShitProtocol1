@@ -30,24 +30,24 @@ class Packet{
      uint8_t type;
      uint8_t packetNumber;
      char body[245];
-     int packetLenght;
-     Packet(uint32_t _dest, uint32_t _sender, uint8_t _type, uint8_t _packetNumber, char* _body, int _packetLenght){
+     int packetLength;
+     Packet(uint32_t _dest, uint32_t _sender, uint8_t _type, uint8_t _packetNumber, char* _body, int _packetLength){
          dest = _dest;
          sender = _sender;
          type = _type;
          packetNumber = _packetNumber;
-         for(int a = 0; a < _packetLenght; a++)
+         for(int a = 0; a < _packetLength; a++)
             body[a] = _body[a];
-         packetLenght = _packetLenght;
+         packetLength = _packetLength;
      }
      Packet(){
-        dest = -1; sender = 0; type = -1; packetNumber = -1; packetLenght = 0;
+        dest = -1; sender = 0; type = -1; packetNumber = -1; packetLength = 0;
      }
 
     bool operator == ( const Packet &rhs) {
-            if(packetLenght != rhs.packetLenght)
+            if(packetLength != rhs.packetLength)
                 return false;
-            for(int a = 0; a < packetLenght; a++)
+            for(int a = 0; a < packetLength; a++)
                 if(body[a] != rhs.body[a])
                     return false;
 
@@ -120,7 +120,7 @@ typedef struct Helpers {
 		result.sender = read32bitInt(buffer);
 		result.type = (uint8_t)LoRa.read();
 		result.packetNumber = (uint8_t)LoRa.read();
-		result.packetLenght = (uint8_t)LoRa.read();
+		result.packetLength = (uint8_t)LoRa.read();
 		return result;
 	}
 
@@ -154,12 +154,12 @@ void changeAddress(uint32_t newAddress);
 void subscribeToReceivePacketEvent(functionCall function);
 
 //Packet factory
-static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght) {
-	return Packet(dest, sender, PACKET_TYPE_NORM, packetCounter, body, packetLenght);
+static Packet MessagePacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength) {
+	return Packet(dest, sender, PACKET_TYPE_NORM, packetCounter, body, packetLength);
 }
 
-static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLenght) {
-	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REQUESTS_ACK, packetCounter, body, packetLenght);
+static Packet MessageAckPacket(uint32_t dest, uint32_t sender, char body[], uint8_t packetLength) {
+	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REQUESTS_ACK, packetCounter, body, packetLength);
 }
 
 static Packet AckPacket(uint32_t dest, uint32_t sender, uint8_t reponsePacketNumber) {

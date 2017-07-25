@@ -9,7 +9,7 @@ const HANDSHAKE_RESPONSE = 'W';
 const HANDSHAKE_END = 'A';
 const HANDSHAKE_MESSAGE = 'H';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
-const LIST_REQUEST_PACKET = 6;
+const SENSOR_SUBMISSION_PACKET = 4;
 
 let port;
 
@@ -142,7 +142,7 @@ function read32bitInt(data,startIndex){
 }
 
 function write32BitInt(buffer,offset,address){
-  var mask = 0xFF
+  var mask = 0xFF;
   for(var a = 0; a < 4; a++){
     var currMask = mask >>  (8 * a);
     buffer[offset + a] = ((address && currMask) >> (8 * (3-a)))
@@ -208,17 +208,11 @@ function startRegistration(){
   }
 }
 
-function sendDeviceListItem(deviceAddress){
-  var buf = Buffer.alloc(5);
-  buf[0] = LIST_REQUEST_PACKET;
-  write32BitInt(buf,1,deviceAddress);
-  port.write(buf);
-}
-
-function sendDeviceListEndMessage(){
-  var buf = Buffer.alloc(2);
-  buf[0] = LIST_REQUEST_PACKET;
-  buf[1] = 0;
+function sendSensorSubmissionPacket(controllerID,sensorID){
+  var buf = Buffer.alloc(9);
+  buf[0] = SENSOR_SUBMISSION_PACKET;
+  write32BitInt(buf,1,controllerID);
+  write32BitInt(buf,5,sensorID);
   port.write(buf);
 }
 
@@ -236,5 +230,6 @@ module.exports = {
   terminate,
   startRegistration,
   sendDeviceListItem,
-  sendDeviceListEndMessage
+  sendDeviceListEndMessage,
+  sendSensorSubmissionPacket
 }

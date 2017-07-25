@@ -22,6 +22,7 @@ unsigned long long timerStartTime = 0;
 bool isFirstBoot = true;
 
 void setup() {
+  //eraseEEPROM();
   Serial.begin(9600);
   while(!Serial);
   //TODO: controllare EPROM
@@ -46,6 +47,7 @@ void loop() {
   if(!isFirstBoot){
     Serial.print("I have already an ID and it is ");
     Serial.println(randomAddress,HEX);
+    delay(5000);
     return;
   }
   
@@ -114,7 +116,7 @@ int generateRandomWaitingTime(){
 
 void handleResponsePacket(Packet response){
 
-  if(!isRegistrationResponsePacket(response.type, response.packetLenght))
+  if(!isRegistrationResponsePacket(response.type, response.packetLength))
     return;
   Serial.print("Packet received ");
   switch(response_result((uint8_t)response.body[0])){
@@ -156,7 +158,7 @@ uint32_t readEEPROM(){
   return result;
 }
 
-uint32_t writeEEPROM(){
+void writeEEPROM(){
   uint8_t byte1 = (randomAddress & 0xFF000000) >> 24;
   uint8_t byte2 = (randomAddress & 0x00FF0000) >> 16;
   uint8_t byte3 = (randomAddress & 0x0000FF00) >> 8;
@@ -166,3 +168,9 @@ uint32_t writeEEPROM(){
   eeprom_write_word(2,byte3);
   eeprom_write_word(3,byte4);
 }
+
+void eraseEEPROM(){
+  for(int a = 0; a < 4; a++)
+     eeprom_write_word(a,0xFF);
+}
+

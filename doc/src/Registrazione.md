@@ -8,7 +8,7 @@ Protocollo di registrazione
 Descrizione dei pacchetti
 -------------------------
 
-I pacchetti di registrazione dai dispositivi verso il server hanno `packetLenght = 1`
+I pacchetti di registrazione dai dispositivi verso il server hanno `packetLength = 1`
 ed il contenuto è il seguente:
 
 
@@ -20,7 +20,7 @@ ed il contenuto è il seguente:
 
 
 I pacchetti di registrazione da nodo a dispositivo contengono la
-risposta al controllo dell'ID e hanno `packetLenght = 1`\
+risposta al controllo dell'ID e hanno `packetLength = 1`\
 L'unico byte di payload ha il seguente contenuto:
 
 | Bit 7 | Bit 8 | Descrizione |
