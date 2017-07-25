@@ -58,9 +58,9 @@ ipc.on('check-first-startup',function(event,filler){
   dbHelper.checkFirstStartupOfSystem(filler);
 })
 
-ipc.on('fill-rooms-screen',function(event,container,clickAction){
-  dbHelper.fillRoomsScreen(container,clickAction,() =>{
-      event.sender.send('rooms-filled','');
+ipc.on('fill-rooms-screen',function(event){
+  dbHelper.fillRoomsScreen(container,clickAction,(rooms) =>{
+      event.sender.send('rooms-filled',rooms);
   });
 
 })

@@ -11,18 +11,25 @@ var dialogs = Dialogs();
 window.onload = setUpElements;
 
 
-ipc.on('rooms-filled',(event,arg) =>{
+ipc.on('rooms-filled',(event,rooms) =>{
   console.log("refresh");
-  var container = document.getElementById('rooms_container');
-  var content = container.innerHTML;
-  container.innerHTML = content;
+  //var container = document.getElementById('rooms_container');
+  //var content = container.innerHTML;
+  //container.innerHTML = content;
+  var content = "";
+  for(var a = 0; a < rooms.length; a++){
+    content+= "<hr>";
+    content += "<li class = \"room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </li>";
+    content += "<hr>";
+  }
+  document.getElementById('rooms_container').innerHTML = content;
 })
 
 function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
   ipc.send('check-first-startup',displayEmptyDBMessage);
-  ipc.send('fill-rooms-screen',document.getElementById('rooms_container'),"onRoomClicked");
+  ipc.send('fill-rooms-screen');
   //
   //dbHelper.fillRoomsScreen();
 }
