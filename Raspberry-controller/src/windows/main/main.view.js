@@ -1,8 +1,8 @@
 var ipc = require('electron').ipcRenderer;
 
-var remote = require('electron').remote;
+//var remote = require('electron').remote;
 
-var dbHelper = require('./DBHelper');
+//var dbHelper = require('./DBHelper');
 
 var Dialogs = require('dialogs');
 
@@ -11,8 +11,10 @@ var dialogs = Dialogs();
 function setUpElements(){
   setupRegisterDevicesButton();
   setupInsertRoomButton();
-  dbHelper.checkFirstStartupOfSystem(displayEmptyDBMessage);
-  dbHelper.fillRoomsScreen(document.getElementById('rooms_container'),"onRoomClicked");
+  ipc.send('check-first-startup',displayEmptyDBMessage);
+  ipc.send('fill-rooms-screen',document.getElementById('rooms_container'),"onRoomClicked");
+  //
+  //dbHelper.fillRoomsScreen();
 }
 
 function setupRegisterDevicesButton(){
@@ -29,7 +31,8 @@ function setupInsertRoomButton(){
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
         console.log(ok);
-        dbHelper.insertRoomIntoDB(ok,remote.getCurrentWindow());
+        ipc.send('insert_new_room',ok);
+        //dbHelper.insertRoomIntoDB(ok,remote.getCurrentWindow());
       }
     });
   });
@@ -49,5 +52,6 @@ function displayEmptyDBMessage(){
 
 function onRoomClicked(id){
   console.log("Congratulations, you clicked on the room!");
-  dbHelper.fillContentDivWithDevices(document.getElementById('content'),id)
+  ipc.send('fill_room_view',document.getElementById('content'),id);
+  //dbHelper.fillContentDivWithDevices()
 }
