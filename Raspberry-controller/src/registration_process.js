@@ -26,8 +26,6 @@ function handleRegistrationModeEntered(){
 }
 
 function handleIDCheckRequest(id){
-  if(!checkHandshakeState())
-      return;
   if(isAcceptationIDStreamActive){
     console.log("Warning: received ID check request while id submission stream is open [All IDs were already checked]");
     return;
@@ -37,8 +35,6 @@ function handleIDCheckRequest(id){
 }
 
 function handleIDStreamStartMessage(){
-  if(!checkHandshakeState())
-      return;
   if(isAcceptationIDStreamActive){
     console.log("Warning: received id stream start packet while stream is already open");
     return;
@@ -48,8 +44,6 @@ function handleIDStreamStartMessage(){
 }
 
 function handleIDStreamValueMessage(id,type){
-  if(!checkHandshakeState())
-      return;
   if(!isAcceptationIDStreamActive){
     console.log("Warning: received an id stream packet while stream is closed");
     return;
@@ -60,8 +54,6 @@ function handleIDStreamValueMessage(id,type){
 }
 
 function handleIDStreamEndMessage(){
-  if(!checkHandshakeState())
-      return;
   if(!isAcceptationIDStreamActive){
     console.log("Warning: received id stream end message while stream is already closed");
     return;
@@ -80,13 +72,6 @@ function handleIDStreamEndMessage(){
   accepted_ids = 0;
 }
 
-function checkHandshakeState(){
-  if(!handshakeSucceded){
-    console.log("Warning: received a serial message without completing the handshake");
-    return false;
-  }
-  return true;
-}
 
 function terminate(){
   helpers.terminate();
