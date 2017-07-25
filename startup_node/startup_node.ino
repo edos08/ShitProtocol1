@@ -144,8 +144,11 @@ void serialEvent(){
         doubled_ID = idToCheck;
         alertDoubledDevicesTrigger = true;
       }
+      return;
     }
-  } else if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
+  }
+
+  if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
   } else {
     Serial.println("unrecognized");
