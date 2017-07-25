@@ -12,6 +12,9 @@ const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const LIST_REQUEST_PACKET = 6;
 
 let port;
+
+var portNumber = 0;
+
 var registrationMode = false;
 
 var handshakeHandler;
@@ -29,16 +32,20 @@ function init(handlers){
   if(port != null && port.isOpen)
       return;
 
-  var portPath = '/dev/ttyACM0';
+  openPort();
+}
 
-  console.log("Testing " + portPath);
+function openPort(){
+    var portPath = '/dev/ttyACM' + portNumber;
 
-  port = new SerialPort(portPath,{
-    baudRate: 9600,
-    autoOpen: false
-  });
+    console.log("Testing " + portPath);
 
-  port.open(onPortOpened);
+    port = new SerialPort(portPath,{
+      baudRate: 9600,
+      autoOpen: false
+    });
+    portNumber++;
+    port.open(onPortOpened);
 }
 
 function connectHandlers(handlers){
@@ -64,6 +71,7 @@ function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
       port = null;
+      openPort();
       return;
   }
 
