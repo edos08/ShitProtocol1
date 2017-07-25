@@ -58,9 +58,9 @@ static void sendRegistrationModeStartedMessage(){
 }
 
 void enterRegistrationMode(){
-  if(devices_ids != null)
+  if(devices_ids != NULL)
       delete[] devices_ids;
-  if(devices_types != null)
+  if(devices_types != NULL)
     delete[] devices_types;
   hasReceivedNumberOfDevicesToRegister = false;
   devices_to_register = -1;
