@@ -144,7 +144,7 @@ ipc.on('room_id_request',function(event){
 
 ipc.on('room-request',(event) => {
   dbHelper.fillRoomsList((rooms) => {
-    ipc.sender.send('room-response',rooms);
+    event.sender.send('room-response',rooms);
   });
 })
 
