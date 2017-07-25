@@ -229,7 +229,5 @@ module.exports = {
   answerToIDCheckRequest: answerToIDCheckRequest,
   terminate,
   startRegistration,
-  sendDeviceListItem,
-  sendDeviceListEndMessage,
   sendSensorSubmissionPacket
 }
