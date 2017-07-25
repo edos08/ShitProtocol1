@@ -167,8 +167,8 @@ void serialEvent(){
   }
 
   if(isSensorSubmissionMessage(serialBuffer,serialMessageLength)){
-    uint32_t controllerAddress = Helpers::read32bitInt(serialBuffer + 1);
-    uint32_t sensorAddress = Helpers::read32bitInt(serialBuffer + 5);
+    uint32_t controllerAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 1));
+    uint32_t sensorAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 5));
     Serial.println("Submission: controller: ");
     Serial.println(controllerAddress,HEX);
     Serial.println("Submission: sensor: ");
