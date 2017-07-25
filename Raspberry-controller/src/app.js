@@ -74,12 +74,15 @@ ipc.on('insert_new_room',function(event,roomName){
 })
 
 
-ipc.on("register_devices_pressed",function(){
+ipc.on("register_devices_pressed",function(event){
   console.log("Congratualtions, you have pressed the register devices button");
-  registration.start(onRegistrationEnd);
-  registrationActive = true;
-
+  event.sender.send('dev-no-dialog');
 });
+
+ipc.on('registration-device-start',(event,devicesNumber) => {
+  registration.start(onRegistrationEnd,devicesNumber);
+  registrationActive = true;
+})
 
 ipc.on("insert_room_button_pressed", function(){
   console.log("Button rooms pressed");
@@ -136,6 +139,11 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
       sensorsAssignationWindow.reload();
   });
   chooseSensorWindow.close();
+
+  //TODO: serial send info to device
+
+
+
 })
 
 ipc.on('room_id_request',function(event){
