@@ -195,6 +195,8 @@ function sendEntrerRegistrationModeMessage(){
 function startRegistration(){
   if(port != null && port.isOpen){
     sendEntrerRegistrationModeMessage();
+  }else{
+    console.log("I ain't sending anything");
   }
 }
 
