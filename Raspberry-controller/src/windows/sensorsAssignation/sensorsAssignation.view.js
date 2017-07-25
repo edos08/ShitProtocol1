@@ -14,7 +14,8 @@ function setUpComponents(){
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
     if(name != null && name != undefined && name != "" && name != " "){
-      dbHelper.renameDevice(button.parentNode.id,name,remote.getCurrentWindow());
+      ipc.send('rename-device',deviceID,name);
+      //dbHelper.renameDevice(button.parentNode.id,name,remote.getCurrentWindow());
     }
   });
 }
