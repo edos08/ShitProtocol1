@@ -139,7 +139,13 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 })
 
 ipc.on('room_id_request',function(event){
-  event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
+  //event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);
+  dbHelper.fillRoomNameContainer(currentRoomInWhichTheSensorsAreHeld,(name) => {
+    event.sender.send('room_name_response',name);
+  });
+  dbHelper.fillSensorsList(room,(sensors) => {
+    event.sender.send('sensors-response',sensors);
+  });
 })
 
 ipc.on('room-request',(event) => {
@@ -155,6 +161,12 @@ ipc.on('cancel',function(){
 ipc.on('devices-with-no-room-request',(event) => {
   dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
     event.sender.send('devices-with-no-room-response',devices);
+  });
+})
+
+ipc.on('devices-with-no-sensor-request',(event) => {
+  dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
+    event.sender.send('devices-with-no-sensor-response',devices);
   });
 })
 

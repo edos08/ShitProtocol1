@@ -1,9 +1,5 @@
 var ipc = require('electron').ipcRenderer;
 
-//var remote = require('electron').remote;
-
-//var dbHelper = require('./DBHelper');
-
 var Dialogs = require('dialogs');
 
 var dialogs = Dialogs();
@@ -13,9 +9,6 @@ window.onload = setUpElements;
 
 ipc.on('rooms-filled',(event,rooms) =>{
   console.log("refresh");
-  //var container = document.getElementById('rooms_container');
-  //var content = container.innerHTML;
-  //container.innerHTML = content;
   var content = "";
   for(var a = 0; a < rooms.length; a++){
     content+= "<hr>";
@@ -48,7 +41,6 @@ function setupInsertRoomButton(){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
         console.log(ok);
         ipc.send('insert_new_room',ok);
-        //dbHelper.insertRoomIntoDB(ok,remote.getCurrentWindow());
       }
     });
   });

@@ -61,7 +61,7 @@ function queryAllDevicesWithNoRoomAssignedAndShowIn(after){
   });
 }
 
-function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(container){
+function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(after){
   knex.withSchema('LoRa')
   .select("Devices.ID as id ","Devices.Description as dev_desc ","Device_types.Description as dev_type","Device_types.ID as dev_type_id")
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
@@ -71,17 +71,7 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(container){
   .andWhere("Devices.Type",2)
   .orderBy('id','asc')
   .then(function(devices){
-    var content = "";
-    if(devices.length > 0){
-      content = "<ul>";
-      for(var a = 0; a < devices.length; a++){
-          content += populateListItemWithDeviceInfo(devices[a],false);
-      }
-      content += "</ul>";
-    }else {
-      content = "Nessun dispositivo da collegare ad altre stanze";
-    }
-    container.innerHTML = content;
+    after(devices);
   });
 }
 
@@ -151,30 +141,25 @@ function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selec
   })
 }
 
-function fillSensorsList(sensorsListContainer,roomID){
+function fillSensorsList(roomID,after){
   knex.withSchema('LoRa')
   .select('ID','Description')
   .from('Devices')
   .where('Type',3)
   .andWhere('Room', roomID)
   .then(function(sensors){
-    console.log("sensors: " + sensors);
-    var content = "";
-    for(var a = 0; a < sensors.length; a++){
-      content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
-    }
-    sensorsListContainer.innerHTML = content;
+    after(sensors);
   });
 }
 
-function fillRoomNameContainer(roomID,roomNameContainer){
+function fillRoomNameContainer(roomID,after){
   console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
   .select('Description')
   .from('Rooms')
   .where('ID',"=",roomID)
   .then(function(rooms){
-    roomNameContainer.innerHTML += rooms[0].Description;
+    after(rooms[0].Description);
   })
 }
 
