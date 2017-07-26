@@ -1,10 +1,11 @@
 #include <SPI.h>
-#include <RegistrationProtocol.h>
+#include <WorkingProtocol.h>
 #include <avr/eeprom.h>
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
-#define TYPE DEVICE_TYPE_CONTROLLER
+#define SENSOR_SEND_DATA_WAITING_TIME 3000
+#define TYPE DEVICE_TYPE_SENSOR
 
 
 bool idSent = false;
@@ -19,11 +20,15 @@ unsigned long long timerStartTime = 0;
 
 bool isFirstBoot = true;
 
+int sensorPin = A0;
+uint16_t sensorValue = 0;
+
 void setup() {
-  //eraseEEPROM();
+  //eraseEEPROM(0);
+  //eraseEEPROM(4);
   Serial.begin(9600);
   while(!Serial);
-  //TODO: controllare EPROM
+  pinMode(sensorPin,INPUT);
   uint32_t memoryContent = readEEPROM();
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
@@ -45,7 +50,12 @@ void loop() {
   if(!isFirstBoot){
     Serial.print("I have already an ID and it is ");
     Serial.println(randomAddress,HEX);
-    delay(5000);
+    sensorValue = analogRead(sensorPin);
+    Serial.print("Valore fotoresistenza: ");
+    Serial.println(sensorValue);
+    int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
+    Helpers::printResponseMessage(result);
+    delay(SENSOR_SEND_DATA_WAITING_TIME);
     return;
   }
 
@@ -114,31 +124,31 @@ int generateRandomWaitingTime(){
 
 void handleResponsePacket(Packet response){
 
-  if(!isRegistrationResponsePacket(response.type, response.packetLength))
-    return;
-  Serial.print("Packet received ");
-  switch(response_result((uint8_t)response.body[0])){
-    case REGISTRATION_RESPONSE_ID_DENIED:
-      Serial.println("ID denied");
-      Serial.flush();
-      idDenied = true;
-      break;
-    case REGISTRATION_RESPONSE_ID_ACCEPTED:
-      Serial.println("ID accepted");
-      Serial.flush();
-      idAccepted = true;
-      break;
-    case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
-      Serial.println("Registration denied");
-      Serial.flush();
-      registrationDenied = true;
-      break;
-    case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
-      Serial.println("Registration resumed");
-      Serial.flush();
-      if(registrationDenied)
-        registrationResumed = true;
-      break;
+  if(isRegistrationResponsePacket(response.type, response.packetLength)){
+    Serial.print("Packet received ");
+    switch(response_result((uint8_t)response.body[0])){
+      case REGISTRATION_RESPONSE_ID_DENIED:
+        Serial.println("ID denied");
+        Serial.flush();
+        idDenied = true;
+        break;
+      case REGISTRATION_RESPONSE_ID_ACCEPTED:
+        Serial.println("ID accepted");
+        Serial.flush();
+        idAccepted = true;
+        break;
+      case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
+        Serial.println("Registration denied");
+        Serial.flush();
+        registrationDenied = true;
+        break;
+      case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
+        Serial.println("Registration resumed");
+        Serial.flush();
+        if(registrationDenied)
+          registrationResumed = true;
+        break;
+    }
   }
 }
 
@@ -167,7 +177,7 @@ void writeEEPROM(){
   eeprom_write_word(3,byte4);
 }
 
-void eraseEEPROM(){
+void eraseEEPROM(int offset){
   for(int a = 0; a < 4; a++)
-     eeprom_write_word(a,0xFF);
+     eeprom_write_word(offset + a,0xFF);
 }
