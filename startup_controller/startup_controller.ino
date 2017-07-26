@@ -48,7 +48,7 @@ void loop() {
     Serial.print("I have already an ID and it is ");
     Serial.println(randomAddress,HEX);
     Serial.print("I'm listening to the sensor ");
-    Serial.println(randomAddress,HEX);
+    Serial.println(mySensor,HEX);
     delay(5000);
     return;
   }
@@ -162,7 +162,7 @@ uint32_t readEEPROM(int offset){
   return result;
 }
 
-void writeEEPROM(int value,int offset){
+void writeEEPROM(uint32_t value,int offset){
   uint8_t byte1 = (value & 0xFF000000) >> 24;
   uint8_t byte2 = (value & 0x00FF0000) >> 16;
   uint8_t byte3 = (value & 0x0000FF00) >> 8;
