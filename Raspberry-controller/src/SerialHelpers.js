@@ -212,6 +212,7 @@ function sendSensorSubmissionPacket(controllerID,sensorID){
   buf[0] = SENSOR_SUBMISSION_PACKET;
   write32BitInt(buf,1,controllerID);
   write32BitInt(buf,5,sensorID);
+  console.log(buf);
   port.write(buf);
 }
 
