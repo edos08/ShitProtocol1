@@ -19,7 +19,7 @@ ipc.on('rooms-filled',(event,rooms) =>{
 })
 
 ipc.on('dev-no-dialog',(event) => {
-  dialogs.prompt('Inserisci il numero di dispositivi da registrare','Inserisci',(deviceNumber) => {
+  dialogs.prompt('Inserisci il numero di dispositivi da registrare','1',(deviceNumber) => {
     ipc.send('registration-device-start',deviceNumber);
   })
 });
