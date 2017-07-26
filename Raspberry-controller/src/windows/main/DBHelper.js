@@ -180,7 +180,7 @@ function getDeviceInfo(deviceID,after){
   .select('devs.ID as id','devs.Description as description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value')
   .innerJoin('Devices as devs2','devs.Sensor','devs2.ID')
   .from('Devices as devs')
-  .where('ID',deviceID)
+  .where('devs.ID',deviceID)
   .then((devices) =>{
     after(devices[0]);
   })
