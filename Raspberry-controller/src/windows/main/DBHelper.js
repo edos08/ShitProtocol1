@@ -117,6 +117,9 @@ function assignDeviceToRoom(deviceID,roomID){
 }
 
 function assignSensorToController(controllerID,sensorID){
+  console.log("DBHELPERS");
+  console.log("controllerID: " + controllerID);
+  console.log("sensorID: " + sensorID);
   knex('Devices').withSchema('LoRa')
   .where('ID',controllerID)
   .update('Sensor',sensorID)
