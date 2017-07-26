@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <LoRa.h>
-#include <RegistrationProtocol.h>
+#include <WorkingProtocol.h>
 #include <SerialHelpers.h>
 //!!!!! Da mettere solo se la scheda è una Feather M0 !!!!!!
 #define Serial SERIAL_PORT_USBVIRTUAL
@@ -174,8 +174,8 @@ void serialEvent(){
 
   }
 
-  if (isLightValueChangedMessage(serialBuffer,serialMessageLength){
-    uint32_t controllerAddress = Helpers.read32bitInt((uint8_t*)(serialBuffer + 1));
+  if (isLightValueChangedMessage(serialBuffer,serialMessageLength)){
+    uint32_t controllerAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 1));
     uint16_t lightValue = (((uint16_t)(serialBuffer[5])) << 8 );
     lightValue |= (uint16_t)serialBuffer[6];
     Serial.println("Controller: ");
@@ -183,7 +183,7 @@ void serialEvent(){
     Serial.print("LightValue: ");
     Serial.print(lightValue);
     int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
-    Helpers.printResponseMessage(result);
+    Helpers::printResponseMessage(result);
   } else {
     Serial.println("unrecognized");
   }
