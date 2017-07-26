@@ -12,6 +12,13 @@ const HANDSHAKE_RESET = 'R';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const SENSOR_SUBMISSION_PACKET = 4;
 
+const masks = [
+  0xFF000000,
+  0x00FF0000,
+  0x0000FF00,
+  0x000000FF
+]
+
 let port;
 
 var portNumber = 0;
@@ -217,10 +224,8 @@ function sendSensorSubmissionPacket(controllerID,sensorID){
 }
 
 function write32BitInt(buffer,offset,address){
-  var mask = 0xFF;
   for(var a = 0; a < 4; a++){
-    var currMask = mask >>  (8 * a);
-    buffer[offset + a] = ((address & currMask) >> (8 * (3-a)))
+    buffer[offset + a] = ((address & masks[a]) >> (8 * (3-a)))
   }
 }
 
