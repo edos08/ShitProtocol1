@@ -129,8 +129,8 @@ void serialEvent(){
     if(isHandshakeResponseMessage(serialBuffer,serialMessageLength)){
       handshakeCompleted = true;
       sendHandShakeEndMessage();
+      return;
     }
-    return;
   }
   if(isEnterRegistrationModeMessage(serialBuffer,serialMessageLength)){
     enterRegistrationMode();
@@ -144,8 +144,8 @@ void serialEvent(){
       devices_ids = new uint32_t[devices_to_register];
       devices_types = new uint8_t[devices_to_register];
       Serial.println("Dev no received");
+      return;
     }
-    return;
   }
   if(isWaitingForDeviceIDCheck){
     if(isIDCheckResponse(serialBuffer,serialMessageLength)){
