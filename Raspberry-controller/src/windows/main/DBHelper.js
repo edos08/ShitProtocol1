@@ -205,5 +205,6 @@ module.exports = {
   fillSensorsList,
   fillRoomNameContainer,
   queryAllDevicesWithRoomAssignedButNoSensorAndShowIn,
-  retreiveDevicesList
+  retreiveDevicesList,
+  getAddressesForControllerAndSensor
 }
