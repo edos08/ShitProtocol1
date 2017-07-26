@@ -114,7 +114,7 @@ function handleValueSubmission(){
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
   }else{
-    var daviceID = document.getElementById('lightValue').parentNode.id;
+    var deviceID = document.getElementById('lightValue').parentNode.id;
     ipc.send('change-light-value',valueInserted,deviceID);
   }
 }
