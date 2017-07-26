@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <RegistrationProtocol.h>
-#include <avr/eeprom.h> 
+#include <avr/eeprom.h>
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
@@ -24,12 +24,12 @@ void setup() {
   Serial.begin(9600);
   while(!Serial);
   //TODO: controllare EPROM
-  uint32_t memoryContent = readEEPROM(); 
+  uint32_t memoryContent = readEEPROM();
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
   if(memoryContent == 0xFFFFFFFF){
     randomSeed(analogRead(0));
-    randomAddress = generateRandomAddress(); 
+    randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
     //writeEEPROM();
   }else{
@@ -48,7 +48,7 @@ void loop() {
     delay(5000);
     return;
   }
-  
+
   if(!registrationDenied){
     if(!idAccepted){
 
@@ -171,4 +171,3 @@ void eraseEEPROM(){
   for(int a = 0; a < 4; a++)
      eeprom_write_word(a,0xFF);
 }
-
