@@ -1,6 +1,6 @@
 #include <SPI.h>
-#include <RegistrationProtocol.h>
-#include <avr/eeprom.h>
+#include <WorkingProtocol.h>
+//#include <avr/eeprom.h>
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
@@ -20,36 +20,46 @@ unsigned long long timerStartTime = 0;
 bool isFirstBoot = true;
 
 uint32_t mySensor = 0xFFFFFFFF;
+uint16_t lightCurrentValue = 290;
+
+int dimmerTot = 500;
+int maxBrightness = 700;
+int minBrightness = 300;
+
+int photocellPin = 7;
 
 void setup() {
-  //eraseEEPROM();
   Serial.begin(9600);
   while(!Serial);
-  //TODO: controllare EPROM
-  uint32_t memoryContent = readEEPROM(0);
-  Serial.print("Memory content ");
-  Serial.println(memoryContent,HEX);
-  if(memoryContent == 0xFFFFFFFF){
+  //uint32_t memoryContent = readEEPROM(0);
+  //Serial.print("Memory content ");
+  //Serial.println(memoryContent,HEX);
+  //if(memoryContent == 0xFFFFFFFF){
     randomSeed(analogRead(0));
     randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
-  }else{
-    randomAddress = memoryContent;
-    mySensor = readEEPROM(4);
-    isFirstBoot = false;
-  }
-  initLoRa(randomAddress, 9, 4, 3);
+  //}else{
+  //  randomAddress = memoryContent;
+  //  mySensor = readEEPROM(4);
+  //  isFirstBoot = false;
+
+  //}
+  initLoRa(randomAddress, 8, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
   if(!isFirstBoot){
-    Serial.print("I have already an ID and it is ");
-    Serial.println(randomAddress,HEX);
-    Serial.print("I'm listening to the sensor ");
-    Serial.println(mySensor,HEX);
-    delay(5000);
+    //Serial.print("I have already an ID and it is ");
+    //Serial.println(randomAddress,HEX);
+    //Serial.print("I'm listening to the sensor ");
+    //Serial.println(mySensor,HEX);
+
+    //adjust light dimmer
+    photo(lightCurrentValue);
+
+    //delay(5000);
     return;
   }
 
@@ -88,7 +98,7 @@ void loop() {
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
       Serial.flush();
-      writeEEPROM(randomAddress,0);
+      //writeEEPROM(randomAddress,0);
       isFirstBoot = false;
     }
   }else{
@@ -142,14 +152,22 @@ void handleResponsePacket(Packet response){
           registrationResumed = true;
         break;
     }
-  }else if(isSensorSubmissionPacket(response.type,response.packetLength)){
+  }else if(!isFirstBoot && isSensorSubmissionPacket(response.type,response.packetLength)){
     mySensor = Helpers::read32bitInt((uint8_t*)response.body);
-    writeEEPROM(mySensor,4);
+    //writeEEPROM(mySensor,4);
+  }  else if( !isFirstBoot && isSensorValuePacket(response.type, response.packetLength)){
+    if(response.sender == mySensor){
+       lightCurrentValue = 0;
+       lightCurrentValue |= (((uint16_t) response.body[0]) << 8);
+       lightCurrentValue |= (uint8_t) response.body[1];
+       Serial.print("Light changed: ");
+       Serial.println(lightCurrentValue);
+    }
   }
 }
 
 
-uint32_t readEEPROM(int offset){
+/*uint32_t readEEPROM(int offset){
   uint32_t result = 0;
   int shifter = 24;
   for(int a = 0; a < 4; a++){
@@ -176,4 +194,4 @@ void writeEEPROM(uint32_t value,int offset){
 void eraseEEPROM(){
   for(int a = 0; a < 4; a++)
      eeprom_write_word(a,0xFF);
-}
+}*/

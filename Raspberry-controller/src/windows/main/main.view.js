@@ -80,8 +80,17 @@ ipc.on('devices-loaded',(event,devices) =>{
 
 
 function createDeviceItemForList(device){
-    return "<li> "
+    return "<li"
+    + " id = \"" + device.ID + "\""
+    + ((device.dev_type == 2)?"onClick = \"onDeviceClicked(this)\"":"")
+    + "> "
     + ((device.desc != null)?device.desc:"Dispositivo senza nome")
     + " ("
-    + device.dev_type + ")</li>";
+    + device.dev_type
+    + ")"
+    + "</li>";
+}
+
+function onDeviceClicked(deviceID){
+  console.log("Device clicked");
 }
