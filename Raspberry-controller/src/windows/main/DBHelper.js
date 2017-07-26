@@ -182,6 +182,7 @@ function getDeviceInfo(deviceID,after){
   .from('Devices as devs')
   .where('devs.ID',deviceID)
   .then((devices) =>{
+    console.log("im in the after");
     after(devices[0]);
   })
 }
