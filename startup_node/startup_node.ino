@@ -121,6 +121,11 @@ bool isDuplicateId(uint32_t receivedId){
 void serialEvent(){
   int serialMessageLength = readSerialContent();
 
+  if(isResetMessage(serialBuffer,serialMessageLength)){
+    sendHandshakeMessage();
+    handshakeCompleted = false;
+    return;
+  }
   if(!handshakeCompleted){
     if(isHandshakeResponseMessage(serialBuffer,serialMessageLength)){
       handshakeCompleted = true;

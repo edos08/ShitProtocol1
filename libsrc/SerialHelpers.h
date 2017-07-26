@@ -4,7 +4,7 @@
 #define HANDSHAKE_MESSAGE 'H'
 #define HANDSHAKE_VALID_RESPONSE 'W'
 #define HANDSHAKE_END_MESSAGE 'A'
-
+#define HANDSHAKE_RESET 'R'
 
 #define MESSAGE_TYPE_DEVICES_COUNT 0
 #define MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE 1
@@ -74,6 +74,10 @@ void enterRegistrationMode(){
   stream_started = false;
   stream_ended = false;
   sendRegistrationModeStartedMessage();
+}
+
+static bool isResetMessage(char dataBuffer[], int buffer_size){
+  return buffer_size == 1 && dataBuffer[0] == HANDSHAKE_RESET;
 }
 
 static bool isEnterRegistrationModeMessage(char dataBuffer[], int buffer_size){

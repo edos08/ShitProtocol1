@@ -8,7 +8,9 @@ function init(onEndHandler){
     handshakeEndHandler: handleHandshakeEnd
   };
   onEnd = onEndHandler;
-  helpers.init(handlers);
+  helpers.init(handlers,() =>{
+    helpers.sendResetMessage();
+  });
 }
 
 function handleHandshake(){
