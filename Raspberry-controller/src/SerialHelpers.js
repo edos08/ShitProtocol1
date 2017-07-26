@@ -243,6 +243,8 @@ function sendResetMessage(){
 }
 
 function sendLightValueChangedPacket(controllerAddress,newValue){
+  console.log("Adddress: " + controllerAddress);
+  console.log("New value: " + newValue);
   var buf = Buffer.alloc(7);
   buf[0] = LIGHT_VALUE_CHANGED_PACKET;
   write32BitInt(buf,1,controllerAddress);
