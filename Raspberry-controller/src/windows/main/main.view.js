@@ -74,8 +74,8 @@ ipc.on('devices-loaded',(event,devices) =>{
   for(var a = 0; a < devices.length; a++){
     content += createDeviceItemForList(devices[a]);
   }
-  content += "</ul>"
-  ,document.getElementById('content').innerHTML = content;
+  content += "</ul>";
+  document.getElementById('content').innerHTML = content;
 })
 
 
@@ -92,5 +92,27 @@ function createDeviceItemForList(device){
 }
 
 function onDeviceClicked(deviceID){
-  console.log("Device clicked");
+  ipc.send('gather-device-info',deviceID);
+}
+
+ipc.on('device-info-gathered',(event,device) => {
+  content = "Dispositivo: " + device.description + "</br>"
+  + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</br>"
+  + "Valore corrente: </br>"
+  + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
+  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\">"
+  + "<input type=\"submit\" value = \"" + device.value + "\">"
+  + "</form>"
+  document.getElementById('content').innerHTML = content;
+
+})
+
+function handleValueSubmission(){
+  var valueInserted = document.getElementById('lightValue').innerHTML;
+  if(valueInserted < 0 || valueInserted > 1023){
+    ipc.send('invalid-value-inserted');
+  }else{
+    var daviceID = document.getElementById('lightValue').parentNode.id;
+    ipc.send('change-light-value',valueInserted,deviceID);
+  }
 }

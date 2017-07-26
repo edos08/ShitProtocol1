@@ -11,6 +11,7 @@ const HANDSHAKE_MESSAGE = 'H';
 const HANDSHAKE_RESET = 'R';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const SENSOR_SUBMISSION_PACKET = 4;
+const LIGHT_VALUE_CHANGED_PACKET = 5;
 
 const masks = [
   0xFF000000,
@@ -241,6 +242,15 @@ function sendResetMessage(){
   port.write('R');
 }
 
+function sendLightValueChangedPacket(controllerAddress,newValue){
+  var buf = Buffer.alloc(7);
+  buf[0] = LIGHT_VALUE_CHANGED_PACKET;
+  write32BitInt(buf,1,controllerAddress);
+  buf[5] = ((newValue & 0xFF00) >> 8);
+  buf[6] = ((newValue & 0x00FF) >> 0);
+  port.write(buf);
+}
+
 module.exports = {
   init,
   answerToHandshake: answerToHandshake,
@@ -249,5 +259,6 @@ module.exports = {
   terminate,
   startRegistration,
   sendSensorSubmissionPacket,
-  sendResetMessage
+  sendResetMessage,
+  sendLightValueChangedPacket
 }

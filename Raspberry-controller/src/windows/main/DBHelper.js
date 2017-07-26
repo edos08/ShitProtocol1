@@ -175,18 +175,34 @@ function fillRoomNameContainer(roomID,after){
   })
 }
 
-function retreiveDevicesList(id,list,sendDevice){
+function getDeviceInfo(deviceID,after){
   knex.withSchema('LoRa')
-  .select("Address")
+  .select('devs.ID ad id''devs.Description ad description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value')
+  .innerJoin('Devices ad devs2','devs.Sensor','devs2.ID')
+  .from('Devices as devs')
+  .where('ID',deviceID)
+  .then((devices) =>{
+    after(devices[0]);
+  })
+}
+
+function changeLightValue(deviceID, newValue, after){
+  knex('Devices').withSchema('LoRa')
+  .update('LightValue',newValue)
+  .where('ID',deviceID)
+  .then(()=>{
+    after();
+  })
+}
+
+function getAddressForController(controllerID,after){
+  knex.withSchema('LoRa')
+  .select('Address')
   .from('Devices')
-  .where('Sensor',id)
-  .then(function(devices){
-    list = [];
-    for(var a = 0; a < devices.length; a++){
-      list.push(devices[a].Address);
-    }
-    sendDevice();
-  });
+  .where('ID',controllerID)
+  .then((devices) => {
+    after(devices[0].Address);
+  })
 }
 
 module.exports = {
@@ -205,6 +221,8 @@ module.exports = {
   fillSensorsList,
   fillRoomNameContainer,
   queryAllDevicesWithRoomAssignedButNoSensorAndShowIn,
-  retreiveDevicesList,
-  getAddressesForControllerAndSensor
+  getAddressesForControllerAndSensor,
+  getDeviceInfo,
+  changeLightValue,
+  getAddressForController
 }
