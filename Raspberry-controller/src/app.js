@@ -89,7 +89,7 @@ ipc.on('change-light-value',(event,newValue,deviceID) => {
   console.log("change light value " + deviceID + " " + newValue );
   dbHelper.changeLightValue(deviceID, newValue, () => {
     gatherDeviceInfo(event,deviceID);
-    dbHelper.getAddressForController(deviceId,(address) => {
+    dbHelper.getAddressForController(deviceID,(address) => {
       registration.sendLightValueChangedPacket(address,newValue);
     })
   });
