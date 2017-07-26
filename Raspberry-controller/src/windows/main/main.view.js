@@ -102,8 +102,8 @@ ipc.on('device-info-gathered',(event,device) => {
   + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</br>"
   + "Valore corrente: </br>"
   + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
-  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\">"
-  + "<input type=\"submit\" value = \"" + device.value + "\">"
+  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\">"
+  + "<input type=\"submit\" >"
   + "</form>"
   document.getElementById('content').innerHTML = content;
 
