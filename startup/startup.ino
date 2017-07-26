@@ -1,7 +1,5 @@
 #include <SPI.h>
 #include <RegistrationProtocol.h>
-//#include <EEPROM.h>
-
 #include <avr/eeprom.h> 
 
 #define NODE_ADDRESS 0xFFFFFFFF
