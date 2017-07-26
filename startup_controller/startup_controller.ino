@@ -163,7 +163,7 @@ void handleResponsePacket(Packet response){
        Serial.print("Light changed: ");
        Serial.println(lightCurrentValue);
     }
-  } else if(!isFirstBoot && isLightValueChangedMessage(response.type, response.packetLength)){
+  } else if(!isFirstBoot && isLightValueChangedPacket(response.type, response.packetLength)){
     uint16_t lightValue = (((uint16_t) response.body[0]) << 8);
     lightValue |= (uint16_t) response.body[1];
     maxBrightness = lightValue + 100;
