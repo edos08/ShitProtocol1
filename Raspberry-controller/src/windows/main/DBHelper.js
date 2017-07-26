@@ -117,9 +117,6 @@ function assignDeviceToRoom(deviceID,roomID){
 }
 
 function assignSensorToController(controllerID,sensorID){
-  console.log("DBHELPERS");
-  console.log("controllerID: " + controllerID);
-  console.log("sensorID: " + sensorID);
   knex('Devices').withSchema('LoRa')
   .where('ID',controllerID)
   .update('Sensor',sensorID)
@@ -127,6 +124,18 @@ function assignSensorToController(controllerID,sensorID){
     if(result == 1){
       console.log("Sensore assegnato al dispositivo con successo");
     }
+  })
+}
+
+function getAddressesForControllerAndSensor(controllerID,sensorID,after){
+  knex.withSchema('LoRa')
+  .select('Address')
+  .from('Devices')
+  .where('ID',controllerID)
+  .orWhere('ID',sensorID)
+  .orderBy('Type','asc')
+  .then((devices) => {
+    after(devices[0].Address,devices[1].Address);
   })
 }
 
