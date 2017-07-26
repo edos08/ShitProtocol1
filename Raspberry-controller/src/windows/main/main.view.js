@@ -91,9 +91,9 @@ function createDeviceItemForList(device){
     + "</li>";
 }
 
-function onDeviceClicked(deviceID){
+function onDeviceClicked(device){
   console.log("Device clicked");
-  ipc.send('gather-device-info',deviceID);
+  ipc.send('gather-device-info',device.id);
 }
 
 ipc.on('device-info-gathered',(event,device) => {
