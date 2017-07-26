@@ -178,8 +178,8 @@ void serialEvent(){
     uint32_t controllerAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 1));
     uint16_t lightValue = (((uint16_t)(serialBuffer[5])) << 8 );
     lightValue |= (uint16_t)serialBuffer[6];
-    Serial.println("Controller: ");
-    Serial.print(controllerAddress,HEX);
+    Serial.print("Controller: ");
+    Serial.println(controllerAddress,HEX);
     Serial.print("LightValue: ");
     Serial.print(lightValue);
     int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
