@@ -11,6 +11,7 @@
 #define MESSAGE_TYPE_DEVICES_SUBMISSION 2
 #define MESSAGE_TYPE_ENTER_REGISTRATION_MODE 3
 #define MESSAGE_TYPE_SENSOR_SUBMISSION 4
+#define MESSAGE_TYPE_LIGHT_VALUE_CHANGED 5
 
 #define MESSAGE_ID_VALID 0
 #define MESSAGE_ID_INVALID 1
@@ -102,6 +103,10 @@ static bool isIDCheckResponse(char dataBuffer[], int buffer_size){
 
 static bool isSensorSubmissionMessage(char dataBuffer[],int buffer_size){
   return buffer_size == 9 && dataBuffer[0] == MESSAGE_TYPE_SENSOR_SUBMISSION;
+}
+
+static bool isLightValueChangedMessage(char dataBuffer[], int buffer_size){
+  return buffer_size == 7 && dataBuffer[0] == MESSAGE_TYPE_LIGHT_VALUE_CHANGED;
 }
 
 static void sendIDCheckMessage(uint32_t ID){

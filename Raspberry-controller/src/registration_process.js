@@ -81,5 +81,6 @@ module.exports = {
   start,
   onEnd,
   terminate,
-  sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket
+  sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket,
+  sendLightValueChangedPacket: helpers.sendLightValueChangedPacket
 }

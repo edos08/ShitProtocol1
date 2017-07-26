@@ -172,6 +172,18 @@ void serialEvent(){
     int result = sendPacket(SensorSubmissionPacket(controllerAddress,NODE_ADDRESS,sensorAddress));
     Helpers::printResponseMessage(result);
 
+  }
+
+  if (isLightValueChangedMessage(serialBuffer,serialMessageLength){
+    uint32_t controllerAddress = Helpers.read32bitInt((uint8_t*)(serialBuffer + 1));
+    uint16_t lightValue = (((uint16_t)(serialBuffer[5])) << 8 );
+    lightValue |= (uint16_t)serialBuffer[6];
+    Serial.println("Controller: ");
+    Serial.print(controllerAddress,HEX);
+    Serial.print("LightValue: ");
+    Serial.print(lightValue);
+    int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
+    Helpers.printResponseMessage(result);
   } else {
     Serial.println("unrecognized");
   }

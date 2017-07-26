@@ -1,4 +1,4 @@
-const {app,BrowserWindow} = require('electron');
+const {app,BrowserWindow,dialog} = require('electron');
 var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
@@ -68,6 +68,29 @@ ipc.on('fill_room_view',(event,roomID) => {
     event.sender.send('devices-loaded',devices)
   });
 });
+
+ipc.on('gather-device-info',(event,deviceID) => {
+  gatherDeviceInfo(event,deviceID);
+})
+
+function gatherDeviceInfo(event,deviceID){
+  dbHelper.getDeviceInfo(deviceID,(device) => {
+    event.sender.send('device-info-gathered',device);
+  })
+}
+
+ipc.on('invalid-value-inserted',(event) => {
+  dialog.showErrorBox("Valore inserito non valido", "Il valore di luminosità deve essere tra 0 e 1023")
+})
+
+ipc.on('change-light-value',(event,newValue,deviceID) => {
+  dbHelper.changeLightValue(deviceID, newValue, () => {
+    gatherDeviceInfo(event,deviceID);
+    dbHelper.getAddressForController(deviceId,(address) => {
+      registration.sendLightValueChangedPacket(address,newValue);
+    })
+  });
+})
 
 ipc.on('insert_new_room',function(event,roomName){
   dbHelper.insertRoomIntoDB(roomName,window);
