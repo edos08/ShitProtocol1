@@ -147,14 +147,6 @@ function read32bitInt(data,startIndex){
   return _id;
 }
 
-function write32BitInt(buffer,offset,address){
-  var mask = 0xFF;
-  for(var a = 0; a < 4; a++){
-    var currMask = mask >>  (8 * a);
-    buffer[offset + a] = ((address && currMask) >> (8 * (3-a)))
-  }
-}
-
 function isHandshakePacket(data){
   return data == HANDSHAKE_MESSAGE;
 }
@@ -215,11 +207,20 @@ function startRegistration(){
 }
 
 function sendSensorSubmissionPacket(controllerID,sensorID){
+  console.log("Sending sensor submission packet");
   var buf = Buffer.alloc(9);
   buf[0] = SENSOR_SUBMISSION_PACKET;
   write32BitInt(buf,1,controllerID);
   write32BitInt(buf,5,sensorID);
   port.write(buf);
+}
+
+function write32BitInt(buffer,offset,address){
+  var mask = 0xFF;
+  for(var a = 0; a < 4; a++){
+    var currMask = mask >>  (8 * a);
+    buffer[offset + a] = ((address & currMask) >> (8 * (3-a)))
+  }
 }
 
 function terminate(){
