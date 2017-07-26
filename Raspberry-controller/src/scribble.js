@@ -12,8 +12,14 @@ function write32BitInt(buffer,offset,address){
   }
 }
 
-var buf = Buffer.alloc(4);
+function sendSensorSubmissionPacket(){
+  console.log("Sending sensor submission packet");
+  var buf = Buffer.alloc(9);
+  buf[0] = 4;
+  write32BitInt(buf,1,0xC38ABB77);
+  write32BitInt(buf,5,0x6ECDF57C);
+  console.log(buf);
+  //port.write(buf);
+}
 
-write32BitInt(buf,0,0x01020304);
-
-console.log(buf);
+sendSensorSubmissionPacket()

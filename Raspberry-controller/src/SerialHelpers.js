@@ -215,6 +215,8 @@ function startRegistration(){
 
 function sendSensorSubmissionPacket(controllerID,sensorID){
   console.log("Sending sensor submission packet");
+  console.log("controllerID: " + controllerID);
+  console.log("sensorID: " + sensorID);
   var buf = Buffer.alloc(9);
   buf[0] = SENSOR_SUBMISSION_PACKET;
   write32BitInt(buf,1,controllerID);
