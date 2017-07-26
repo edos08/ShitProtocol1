@@ -168,6 +168,10 @@ void serialEvent(){
     Serial.println(controllerAddress,HEX);
     Serial.println("Submission: sensor: ");
     Serial.println(sensorAddress,HEX);
+
+    int result = sendPacket(SensorSubmissionPacket(controllerAddress,NODE_ADDRESS,sensorAddress));
+    Helpers::printResponseMessage(result);
+
   } else {
     Serial.println("unrecognized");
   }

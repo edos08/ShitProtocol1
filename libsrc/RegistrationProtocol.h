@@ -42,6 +42,18 @@ static Packet RegistrationUnavailablePacket(uint32_t dest, uint32_t sender) {
 	return Packet(dest, sender, PACKET_TYPE_NORM | PACKET_TYPE_REGISTRATION, packetCounter, body, 1);
 }
 
+static Packet SensorSubmissionPacket(uint32_t dest,uint32_t sender,uint32_t sensor){
+	char body[4];
+	body[0] = ((sensor & 0xFF000000) >> 24);
+	body[1] = ((sensor & 0x00FF0000) >> 16);
+	body[2] = ((sensor & 0x0000FF00) >> 8);
+	body[3] = ((sensor & 0x000000FF) >> 0);
+	return Packet(dest,sender,PACKET_TYPE_NORM | PACKET_TYPE_SENSOR_SUBMISSION | PACKET_TYPE_REQUESTS_ACK, packetCounter,body,4);
+}
+
+static bool isSensorSubmissionPacket(uint8_t type, uint8_t packetLength){
+	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_SENSOR_SUBMISSION) && packetLength == 4;
+}
 
 static bool isRegistrationResponsePacket(uint8_t type, uint8_t packetLength){
 	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLength == 1;
@@ -49,10 +61,6 @@ static bool isRegistrationResponsePacket(uint8_t type, uint8_t packetLength){
 
 static bool isRegistrationRequestPacket(uint8_t type, uint8_t packetLength) {
 	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_REGISTRATION) && packetLength == 1;
-}
-
-static bool isTypeSubmissionPacket(uint8_t type, uint8_t packetLength){
-	return ((type & PACKET_TYPE_MASK) == PACKET_TYPE_DEVICE_SUBMISSION) && packetLength == 1;
 }
 
 static int response_result(uint8_t payload) {
