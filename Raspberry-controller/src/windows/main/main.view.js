@@ -97,6 +97,7 @@ function onDeviceClicked(deviceID){
 }
 
 ipc.on('device-info-gathered',(event,device) => {
+  console.log("Displaying infoos");
   content = "Dispositivo: " + device.description + "</br>"
   + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</br>"
   + "Valore corrente: </br>"
