@@ -8,8 +8,6 @@
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
 
-bool packetReceived = false;
-
 char serialBuffer[SERIAL_BUFFER_SIZE];
 
 void setup() {
@@ -24,12 +22,6 @@ void loop() {
 
   if(Serial.available()){
     serialEvent();
-  }
-
-  if(packetReceived){
-    packetReceived = false;
-    Serial.println("Packet received");
-    Serial.flush();
   }
 
   if(handshakeCompleted){
@@ -92,7 +84,6 @@ void sendDeviceTypeToSerial(){
 
 
 void handleSubmissionPacket(Packet idSubmissionPacket){
-    packetReceived=true;
     if(!isWaitingForDeviceIDCheck){
       if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLength)){
         if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have al that i need
