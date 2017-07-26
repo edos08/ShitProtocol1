@@ -13,7 +13,7 @@ char serialBuffer[SERIAL_BUFFER_SIZE];
 void setup() {
   Serial.begin(9600);
   while(!Serial);
-  sendHandshakeMessage();
+  //sendHandshakeMessage();
   initLoRa(NODE_ADDRESS, 8,4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
 }
