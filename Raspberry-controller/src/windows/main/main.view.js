@@ -110,7 +110,7 @@ ipc.on('device-info-gathered',(event,device) => {
 })
 
 function handleValueSubmission(){
-  var valueInserted = document.getElementById('lightValue').innerHTML;
+  var valueInserted = document.getElementById('lightValue').value;
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
   }else{
