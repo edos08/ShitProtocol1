@@ -26,7 +26,7 @@ function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
   .where('Devices.Room',roomID)
-  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type')
+  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
   .from('Devices')
   .then(function(devices){
     after(devices);
