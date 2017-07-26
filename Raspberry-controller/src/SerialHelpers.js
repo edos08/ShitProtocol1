@@ -8,6 +8,7 @@ const ID_CONFIRMATION_PROCESS_END = 255;
 const HANDSHAKE_RESPONSE = 'W';
 const HANDSHAKE_END = 'A';
 const HANDSHAKE_MESSAGE = 'H';
+const HANDSHAKE_RESET = 'R';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const SENSOR_SUBMISSION_PACKET = 4;
 
@@ -26,8 +27,11 @@ var idStreamEndHandler;
 var registrationModeEnteredHandler;
 var listRequestHandler;
 
-function init(handlers){
+var onOpenFunction;
+
+function init(handlers,onOpenCallback){
   connectHandlers(handlers);
+  onOpenFunction = onOpenCallback;
 
   if(port != null && port.isOpen)
       return;
@@ -111,6 +115,8 @@ function onPortOpened(err){
   this.on('close',(error) =>{
     port = null;
   });
+
+  onOpenFunction();
 
 }
 
@@ -222,12 +228,17 @@ function terminate(){
   }
 }
 
+function sendResetMessage(){
+  port.write('R');
+}
+
 module.exports = {
-  init: init,
+  init,
   answerToHandshake: answerToHandshake,
   sendDevicesNumberPacket: sendDevicesNumberPacket,
   answerToIDCheckRequest: answerToIDCheckRequest,
   terminate,
   startRegistration,
-  sendSensorSubmissionPacket
+  sendSensorSubmissionPacket,
+  sendResetMessage
 }
