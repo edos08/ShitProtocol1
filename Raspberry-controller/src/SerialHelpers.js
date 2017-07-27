@@ -117,6 +117,7 @@ function onPortOpened(err){
       var _id = read32bitInt(data,1);
       listRequestHandler(_id);
     } else if(isSendResultPacket(data) && sendResultHandler){
+      console.log("Calling handler")
       sendResultHandler(data[1]);
     }
 
