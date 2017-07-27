@@ -20,7 +20,7 @@ void photo(int brightness){
   }
   Serial.print("Dimmer: ");
   Serial.println(dimmerTot);
-  analogWrite(7, dimmerTot/4);
+  analogWrite(13, dimmerTot/4);
   delay(5000);
 }
 
