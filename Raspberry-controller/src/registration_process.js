@@ -8,9 +8,7 @@ var accepted_ids = 0;
 var onEnd;
 let action;
 
-
-function start(processEndHandler,devicesNumber){
-  devicesToRegister = devicesNumber;
+function init(){
   helpers.init({
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
@@ -19,7 +17,10 @@ function start(processEndHandler,devicesNumber){
     registrationModeEnteredHandler: handleRegistrationModeEntered,
     sendResultHandler: handleSendResultPackets
   });
+}
 
+function start(processEndHandler,devicesNumber){
+  devicesToRegister = devicesNumber;
   helpers.startRegistration();
   onEnd = processEndHandler;
 }
@@ -89,6 +90,7 @@ function terminate(){
 }
 
 module.exports = {
+  init,
   start,
   onEnd,
   terminate,
