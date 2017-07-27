@@ -76,6 +76,7 @@ function handleIDStreamEndMessage(){
 }
 
 function handleSendResultPackets(result){
+  console.log("HAndling result");
   action(result);
 }
 
