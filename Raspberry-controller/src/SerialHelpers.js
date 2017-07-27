@@ -119,6 +119,8 @@ function onPortOpened(err){
     } else if(isSendResultPacket(data) && sendResultHandler){
       console.log("Calling handler")
       sendResultHandler(data[1]);
+    }else{
+      console.log("Unrecognized serial");
     }
 
   });
@@ -195,10 +197,6 @@ function isRegistrationModeEnteredPacket(data){
     return data[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
   else
     return data == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
-}
-
-function isListRequestPacket(data){
-  return Buffer.byteLength(data) == 5 && data[0] == LIST_REQUEST_PACKET;
 }
 
 function answerToIDCheckRequest(result){
