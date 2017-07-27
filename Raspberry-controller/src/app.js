@@ -15,7 +15,7 @@ let sensorsAssignationWindow;
 let registrationActive = false;
 let currentDeviceForWhichTheRoomIsBeingChosen = -1;
 let currentRoomInWhichTheSensorsAreHeld = -1;
-let currentSensorTowhichTheDeviceIsBeingConnected = -1,
+let currentSensorTowhichTheDeviceIsBeingConnected = -1;
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
