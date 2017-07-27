@@ -76,9 +76,10 @@ function connectHandlers(handlers){
     handshakeEndHandler = handlers.handshakeEndHandler;
   if(handlers.registrationModeEnteredHandler)
     registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
-  if(handlers.sendResultHandler)
+  if(handlers.sendResultHandler){
     sendResultHandler = handlers.sendResultHandler
-  else {
+    console.log("Result handler");
+  } else {
     console.log("no result handler");
   }
 }
