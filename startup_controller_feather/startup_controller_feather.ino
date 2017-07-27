@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <WorkingProtocol.h>
-#include <avr/eeprom.h>
+//#include <avr/eeprom.h>
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
@@ -29,39 +29,36 @@ int minBrightness = 300;
 int photocellPin = 7;
 
 void setup() {
-  //eraseEEPROM();
   Serial.begin(9600);
   while(!Serial);
-  uint32_t memoryContent = readEEPROM(0);
-  Serial.print("Memory content ");
-  Serial.println(memoryContent,HEX);
-  if(memoryContent == 0xFFFFFFFF){
+  //uint32_t memoryContent = readEEPROM(0);
+  //Serial.print("Memory content ");
+  //Serial.println(memoryContent,HEX);
+  //if(memoryContent == 0xFFFFFFFF){
     randomSeed(analogRead(0));
     randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
-  }else{
+  /*}else{
       randomAddress = memoryContent;
       mySensor = readEEPROM(4);
       isFirstBoot = false;
-      Serial.print("ID: ");
-      Serial.println(randomAddress,HEX);
-  }
-  initLoRa(randomAddress, 8, 4, 2);
+  }*/
+  initLoRa(randomAddress, 8, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
   if(!isFirstBoot){
-    Serial.print("I have already an ID and it is ");
-    Serial.println(randomAddress,HEX);
-    Serial.print("I'm listening to the sensor ");
-    Serial.println(mySensor,HEX);
+    //Serial.print("I have already an ID and it is ");
+    //Serial.println(randomAddress,HEX);
+    //Serial.print("I'm listening to the sensor ");
+    //Serial.println(mySensor,HEX);
 
     //adjust light dimmer
     photo(lightCurrentValue);
 
-    delay(5000);
+    //delay(5000);
     return;
   }
 
@@ -100,7 +97,7 @@ void loop() {
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
       Serial.flush();
-      writeEEPROM(randomAddress,0);
+      //writeEEPROM(randomAddress,0);
       isFirstBoot = false;
     }
   }else{
@@ -128,9 +125,9 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
-
-    Serial.print("Packet received ");
+Serial.print("Packet received ");
   if(isRegistrationResponsePacket(response.type, response.packetLength)){
+    
     switch(response_result((uint8_t)response.body[0])){
       case REGISTRATION_RESPONSE_ID_DENIED:
         Serial.println("ID denied");
@@ -156,7 +153,9 @@ void handleResponsePacket(Packet response){
     }
   }else if(!isFirstBoot && isSensorSubmissionPacket(response.type,response.packetLength)){
     mySensor = Helpers::read32bitInt((uint8_t*)response.body);
-    writeEEPROM(mySensor,4);
+    Serial.print("My sensor :");
+    Serial.println(mySensor,HEX);
+    //writeEEPROM(mySensor,4);
   }  else if( !isFirstBoot && isSensorValuePacket(response.type, response.packetLength)){
     if(response.sender == mySensor){
        lightCurrentValue = 0;
@@ -175,7 +174,7 @@ void handleResponsePacket(Packet response){
   }
 }
 
-
+/*
 uint32_t readEEPROM(int offset){
   uint32_t result = 0;
   int shifter = 24;
@@ -203,4 +202,4 @@ void writeEEPROM(uint32_t value,int offset){
 void eraseEEPROM(){
   for(int a = 0; a < 4; a++)
      eeprom_write_word(a,0xFF);
-}
+}*/
