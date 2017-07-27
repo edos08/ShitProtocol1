@@ -172,6 +172,7 @@ void serialEvent(){
     int result = sendPacket(SensorSubmissionPacket(controllerAddress,NODE_ADDRESS,sensorAddress));
     //Helpers::printResponseMessage(result);
     sendResultMessage(result);
+    return;
   }
 
   if (isLightValueChangedMessage(serialBuffer,serialMessageLength)){
