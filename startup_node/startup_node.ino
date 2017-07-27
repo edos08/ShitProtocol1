@@ -164,10 +164,10 @@ void serialEvent(){
   if(isSensorSubmissionMessage(serialBuffer,serialMessageLength)){
     uint32_t controllerAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 1));
     uint32_t sensorAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 5));
-    Serial.println("Submission: controller: ");
-    Serial.println(controllerAddress,HEX);
-    Serial.println("Submission: sensor: ");
-    Serial.println(sensorAddress,HEX);
+    //Serial.println("Submission: controller: ");
+    //Serial.println(controllerAddress,HEX);
+    //Serial.println("Submission: sensor: ");
+    //Serial.println(sensorAddress,HEX);
 
     int result = sendPacket(SensorSubmissionPacket(controllerAddress,NODE_ADDRESS,sensorAddress));
     //Helpers::printResponseMessage(result);
@@ -179,10 +179,10 @@ void serialEvent(){
     uint32_t controllerAddress = Helpers::read32bitInt((uint8_t*)(serialBuffer + 1));
     uint16_t lightValue = (((uint16_t)(serialBuffer[5])) << 8 );
     lightValue |= (uint16_t)serialBuffer[6];
-    Serial.print("Controller: ");
-    Serial.println(controllerAddress,HEX);
-    Serial.print("LightValue: ");
-    Serial.print(lightValue);
+    //Serial.print("Controller: ");
+    //Serial.println(controllerAddress,HEX);
+    //Serial.print("LightValue: ");
+    //Serial.print(lightValue);
     int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
     //Helpers::printResponseMessage(result);
     sendResultMessage(result);
