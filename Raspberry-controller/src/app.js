@@ -15,6 +15,7 @@ let sensorsAssignationWindow;
 let registrationActive = false;
 let currentDeviceForWhichTheRoomIsBeingChosen = -1;
 let currentRoomInWhichTheSensorsAreHeld = -1;
+let currentSensorTowhichTheDeviceIsBeingConnected = -1,
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
@@ -87,13 +88,21 @@ ipc.on('invalid-value-inserted',(event) => {
 
 ipc.on('change-light-value',(event,newValue,deviceID) => {
   console.log("change light value " + deviceID + " " + newValue );
-  dbHelper.changeLightValue(deviceID, newValue, () => {
-    gatherDeviceInfo(event,deviceID);
-    dbHelper.getAddressForController(deviceID,(address) => {
-      registration.sendLightValueChangedPacket(address,newValue);
-    })
-  });
+  registration.setAction(onLightChangedAction);
+  dbHelper.getAddressForController(deviceID,(address) => {
+    registration.sendLightValueChangedPacket(address,newValue);
+  })
 })
+
+function onLightChangedAction(result){
+  if(result == 1){
+    dbHelper.changeLightValue(deviceID, newValue, () => {
+      //gatherDeviceInfo(event,deviceID);
+    });
+  }else{
+    dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
+  }
+}
 
 ipc.on('insert_new_room',function(event,roomName){
   dbHelper.insertRoomIntoDB(roomName,window);
@@ -157,22 +166,31 @@ ipc.on('sensor_assignation_button_pressed',function(event,deviceID){
 })
 
 ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
-  dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
+
+  currentSensorTowhichTheDeviceIsBeingConnected = sensorID;
+
+  registration.setAction(onSensorSubmissionAction);
+
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
     registration.sendSensorSubmissionPacket(devAddress,sensAddress);
   })
+
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
     if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
   });
-  chooseSensorWindow.close();
-  //TODO: serial send info to device
-
-
-
 })
+
+function onSensorSubmissionAction(result){
+  if(result == 1){
+    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
+  }else{
+    dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
+  }
+  chooseSensorWindow.close();
+}
 
 ipc.on('room_id_request',function(event){
   //event.sender.send('room_response',currentRoomInWhichTheSensorsAreHeld);

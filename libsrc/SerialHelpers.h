@@ -12,6 +12,7 @@
 #define MESSAGE_TYPE_ENTER_REGISTRATION_MODE 3
 #define MESSAGE_TYPE_SENSOR_SUBMISSION 4
 #define MESSAGE_TYPE_LIGHT_VALUE_CHANGED 5
+#define MESSAGE_TYPE_SEND_RESULT 6
 
 #define MESSAGE_ID_VALID 0
 #define MESSAGE_ID_INVALID 1
@@ -136,6 +137,13 @@ static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   buffer[5] = type;
   Serial.write(buffer,6);
+}
+
+static void sendResultMessage(int result){
+  char buffer[2];
+  buffer[0] = MESSAGE_TYPE_SEND_RESULT;
+  buffer[1] = result;
+  Serial.write(buffer,2);
 }
 
 #endif

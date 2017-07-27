@@ -8,17 +8,17 @@
 #define TYPE DEVICE_TYPE_SENSOR
 
 
-bool idSent = false;
-bool idAccepted = false;
-bool idDenied = false;
-bool registrationDenied = false;
-bool registrationResumed = false;
+volatile bool idSent = false;
+volatile bool idAccepted = false;
+volatile bool idDenied = false;
+volatile bool registrationDenied = false;
+volatile bool registrationResumed = false;
 bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-bool isFirstBoot = true;
+volatile bool isFirstBoot = true;
 
 int sensorPin = A0;
 uint16_t sensorValue = 0;
@@ -125,26 +125,26 @@ int generateRandomWaitingTime(){
 void handleResponsePacket(Packet response){
 
   if(isRegistrationResponsePacket(response.type, response.packetLength)){
-    Serial.print("Packet received ");
+    //Serial.print("Packet received ");
     switch(response_result((uint8_t)response.body[0])){
       case REGISTRATION_RESPONSE_ID_DENIED:
-        Serial.println("ID denied");
-        Serial.flush();
+        //Serial.println("ID denied");
+        //Serial.flush();
         idDenied = true;
         break;
       case REGISTRATION_RESPONSE_ID_ACCEPTED:
-        Serial.println("ID accepted");
-        Serial.flush();
+        //Serial.println("ID accepted");
+        //Serial.flush();
         idAccepted = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
-        Serial.println("Registration denied");
-        Serial.flush();
+        //Serial.println("Registration denied");
+        //Serial.flush();
         registrationDenied = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
-        Serial.println("Registration resumed");
-        Serial.flush();
+        //Serial.println("Registration resumed");
+        //Serial.flush();
         if(registrationDenied)
           registrationResumed = true;
         break;

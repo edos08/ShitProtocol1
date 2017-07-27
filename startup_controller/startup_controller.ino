@@ -7,29 +7,30 @@
 #define TYPE DEVICE_TYPE_CONTROLLER
 
 
-bool idSent = false;
-bool idAccepted = false;
-bool idDenied = false;
-bool registrationDenied = false;
-bool registrationResumed = false;
-bool waitingTimedOut = false;
+volatile bool idSent = false;
+volatile bool idAccepted = false;
+volatile bool idDenied = false;
+volatile bool registrationDenied = false;
+volatile bool registrationResumed = false;
+volatile bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-bool isFirstBoot = true;
+volatile bool isFirstBoot = true;
 
-uint32_t mySensor = 0xFFFFFFFF;
-uint16_t lightCurrentValue = 290;
+volatile uint32_t mySensor = 0xFFFFFFFF;
+volatile uint16_t lightCurrentValue = 290;
 
 int dimmerTot = 500;
-int maxBrightness = 700;
-int minBrightness = 300;
+volatile int maxBrightness = 700;
+volatile int minBrightness = 300;
 
 int photocellPin = 7;
 
 void setup() {
-  //eraseEEPROM();
+  //eraseEEPROM(0);
+  //eraseEEPROM(4);
   Serial.begin(9600);
   while(!Serial);
   uint32_t memoryContent = readEEPROM(0);
@@ -42,26 +43,26 @@ void setup() {
   }else{
       randomAddress = memoryContent;
       mySensor = readEEPROM(4);
+      Serial.print("Sensor: ");
+      Serial.println(mySensor,HEX);
       isFirstBoot = false;
-      Serial.print("ID: ");
-      Serial.println(randomAddress,HEX);
   }
-  initLoRa(randomAddress, 8, 4, 2);
+  initLoRa(randomAddress, 8, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
 }
 
 void loop() {
   if(!isFirstBoot){
-    Serial.print("I have already an ID and it is ");
-    Serial.println(randomAddress,HEX);
-    Serial.print("I'm listening to the sensor ");
-    Serial.println(mySensor,HEX);
+    //Serial.print("I have already an ID and it is ");
+    //Serial.println(randomAddress,HEX);
+    //Serial.print("I'm listening to the sensor ");
+    //Serial.println(mySensor,HEX);
 
     //adjust light dimmer
     photo(lightCurrentValue);
 
-    delay(5000);
+    //delay(5000);
     return;
   }
 
@@ -99,7 +100,7 @@ void loop() {
       Serial.print("My ID 0x");
       Serial.print(randomAddress,HEX);
       Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
-      Serial.flush();
+      //Serial.flush();
       writeEEPROM(randomAddress,0);
       isFirstBoot = false;
     }
@@ -128,50 +129,54 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
-
-    Serial.print("Packet received ");
-  if(isRegistrationResponsePacket(response.type, response.packetLength)){
+//Serial.println("Packet received ");
+  if(isFirstBoot && isRegistrationResponsePacket(response.type, response.packetLength)){
+    
     switch(response_result((uint8_t)response.body[0])){
       case REGISTRATION_RESPONSE_ID_DENIED:
-        Serial.println("ID denied");
-        Serial.flush();
+        //Serial.println("ID denied");
+        //Serial.flush();
         idDenied = true;
         break;
       case REGISTRATION_RESPONSE_ID_ACCEPTED:
-        Serial.println("ID accepted");
-        Serial.flush();
+        //Serial.println("ID accepted");
+        //Serial.flush();
         idAccepted = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
-        Serial.println("Registration denied");
-        Serial.flush();
+        //Serial.println("Registration denied");
+        //Serial.flush();
         registrationDenied = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
-        Serial.println("Registration resumed");
-        Serial.flush();
+        //Serial.println("Registration resumed");
+        //Serial.flush();
         if(registrationDenied)
           registrationResumed = true;
         break;
     }
-  }else if(!isFirstBoot && isSensorSubmissionPacket(response.type,response.packetLength)){
+  }else if(isSensorSubmissionPacket(response.type,response.packetLength)){
     mySensor = Helpers::read32bitInt((uint8_t*)response.body);
+    //Serial.print("My sensor :");
+    //Serial.println(mySensor,HEX);
     writeEEPROM(mySensor,4);
-  }  else if( !isFirstBoot && isSensorValuePacket(response.type, response.packetLength)){
+  }  else if(isSensorValuePacket(response.type, response.packetLength)){
     if(response.sender == mySensor){
        lightCurrentValue = 0;
        lightCurrentValue |= (((uint16_t) response.body[0]) << 8);
        lightCurrentValue |= (uint8_t) response.body[1];
-       Serial.print("Light changed: ");
-       Serial.println(lightCurrentValue);
+       //Serial.print("Light changed: ");
+       //Serial.println(lightCurrentValue);
     }
-  } else if(!isFirstBoot && isLightValueChangedPacket(response.type, response.packetLength)){
+  } else if(isLightValueChangedPacket(response.type, response.packetLength)){
     uint16_t lightValue = (((uint16_t) response.body[0]) << 8);
-    lightValue |= (uint16_t) response.body[1];
+    lightValue |= (uint8_t) response.body[1];
     maxBrightness = lightValue + 100;
     minBrightness = lightValue - 100;
+    Serial.print("New light value ");
+    Serial.println(lightValue);
   } else {
-    Serial.println("Pacchetto sconosciuto");
+    //Serial.println("Pacchetto sconosciuto");
   }
 }
 
@@ -200,7 +205,7 @@ void writeEEPROM(uint32_t value,int offset){
   eeprom_write_word(offset + 3,byte4);
 }
 
-void eraseEEPROM(){
+void eraseEEPROM(int offset){
   for(int a = 0; a < 4; a++)
-     eeprom_write_word(a,0xFF);
+     eeprom_write_word(offset + a,0xFF);
 }

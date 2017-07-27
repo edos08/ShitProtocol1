@@ -12,6 +12,7 @@ const HANDSHAKE_RESET = 'R';
 const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const SENSOR_SUBMISSION_PACKET = 4;
 const LIGHT_VALUE_CHANGED_PACKET = 5;
+const SEND_RESULT_PACKET = 6;
 
 const masks = [
   0xFF000000,
@@ -34,6 +35,7 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 var registrationModeEnteredHandler;
 var listRequestHandler;
+var sendResultHandler;
 
 var onOpenFunction;
 
@@ -77,6 +79,8 @@ function connectHandlers(handlers){
     registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
   if(handlers.listRequestHandler)
     listRequestHandler = handlers.listRequestHandler;
+  if(handlers.sendResultHandler)
+    sendResultHandler = handlers.sendResultHandler
 }
 
 function onPortOpened(err){
@@ -112,6 +116,8 @@ function onPortOpened(err){
     } else if(isListRequestPacket(data) && listRequestHandler){
       var _id = read32bitInt(data,1);
       listRequestHandler(_id);
+    } else if(isSendResultPacket(data) && sendResultHandler){
+      sendResultHandler(data[1]);
     }
 
   });
@@ -157,6 +163,10 @@ function read32bitInt(data,startIndex){
 
 function isHandshakePacket(data){
   return data == HANDSHAKE_MESSAGE;
+}
+
+function isSendResultPacket(data){
+  return Buffer.byteLength(data) == 2 && data[0] == SEND_RESULT_PACKET;
 }
 
 function isIDStreamStartPacket(data){
