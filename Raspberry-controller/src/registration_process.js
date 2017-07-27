@@ -6,6 +6,8 @@ var devicesToRegister = 1; //this should be given from the user (1 - 255)
 var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
+let action;
+
 
 function start(processEndHandler,devicesNumber){
   devicesToRegister = devicesNumber;
@@ -15,6 +17,7 @@ function start(processEndHandler,devicesNumber){
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
     registrationModeEnteredHandler: handleRegistrationModeEntered
+    sendResultHandler: handleSendResultPackets
   });
 
   helpers.startRegistration();
@@ -72,6 +75,13 @@ function handleIDStreamEndMessage(){
   accepted_ids = 0;
 }
 
+function handleSendResultPackets(result){
+  action(result);
+}
+
+function setAction(_action){
+  action = _action;
+}
 
 function terminate(){
   helpers.terminate();
@@ -82,5 +92,6 @@ module.exports = {
   onEnd,
   terminate,
   sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket,
-  sendLightValueChangedPacket: helpers.sendLightValueChangedPacket
+  sendLightValueChangedPacket: helpers.sendLightValueChangedPacket,
+  setAction
 }

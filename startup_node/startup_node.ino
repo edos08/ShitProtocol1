@@ -170,8 +170,8 @@ void serialEvent(){
     Serial.println(sensorAddress,HEX);
 
     int result = sendPacket(SensorSubmissionPacket(controllerAddress,NODE_ADDRESS,sensorAddress));
-    Helpers::printResponseMessage(result);
-
+    //Helpers::printResponseMessage(result);
+    sendResultMessage(result);
   }
 
   if (isLightValueChangedMessage(serialBuffer,serialMessageLength)){
@@ -183,7 +183,9 @@ void serialEvent(){
     Serial.print("LightValue: ");
     Serial.print(lightValue);
     int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
-    Helpers::printResponseMessage(result);
+    //Helpers::printResponseMessage(result);
+    sendResultMessage(result);
+
   } else {
     Serial.println("unrecognized");
   }
