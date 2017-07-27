@@ -34,7 +34,6 @@ var idStreamStartHandler;
 var idStreamValueHandler;
 var idStreamEndHandler;
 var registrationModeEnteredHandler;
-var listRequestHandler;
 var sendResultHandler;
 
 var onOpenFunction;
@@ -77,8 +76,6 @@ function connectHandlers(handlers){
     handshakeEndHandler = handlers.handshakeEndHandler;
   if(handlers.registrationModeEnteredHandler)
     registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
-  if(handlers.listRequestHandler)
-    listRequestHandler = handlers.listRequestHandler;
   if(handlers.sendResultHandler)
     sendResultHandler = handlers.sendResultHandler
 }
@@ -113,7 +110,7 @@ function onPortOpened(err){
       idStreamValueHandler(_id,_type);
     } else if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
       registrationModeEnteredHandler();
-    } else if(isSendResultPacket(data) /*&& sendResultHandler*/){
+    } else if(isSendResultPacket(data) && sendResultHandler){
       console.log("Calling handler")
       sendResultHandler(data[1]);
     }else{
