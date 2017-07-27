@@ -16,7 +16,7 @@ function start(processEndHandler,devicesNumber){
     idStreamStartHandler: handleIDStreamStartMessage,
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
-    registrationModeEnteredHandler: handleRegistrationModeEntered
+    registrationModeEnteredHandler: handleRegistrationModeEntered,
     sendResultHandler: handleSendResultPackets
   });
 
