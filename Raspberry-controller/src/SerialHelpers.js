@@ -78,6 +78,9 @@ function connectHandlers(handlers){
     registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
   if(handlers.sendResultHandler)
     sendResultHandler = handlers.sendResultHandler
+  else {
+    console.log("no result handler");
+  }
 }
 
 function onPortOpened(err){
