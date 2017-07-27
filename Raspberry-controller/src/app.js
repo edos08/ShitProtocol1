@@ -16,6 +16,8 @@ let registrationActive = false;
 let currentDeviceForWhichTheRoomIsBeingChosen = -1;
 let currentRoomInWhichTheSensorsAreHeld = -1;
 let currentSensorTowhichTheDeviceIsBeingConnected = -1;
+let currentDeviceWhichValueIsBeingChanged = -1;
+let currentValueThatIsBeingChanged = -1;
 let selectSensorAfterwardsTrigger = false;
 
 app.on('ready', function(){
@@ -89,6 +91,8 @@ ipc.on('invalid-value-inserted',(event) => {
 })
 
 ipc.on('change-light-value',(event,newValue,deviceID) => {
+  currentDeviceWhichValueIsBeingChanged = deviceID;
+  currentValueThatIsBeingChanged = newValue;
   console.log("change light value " + deviceID + " " + newValue );
   registration.setAction(onLightChangedAction);
   dbHelper.getAddressForController(deviceID,(address) => {
@@ -98,7 +102,7 @@ ipc.on('change-light-value',(event,newValue,deviceID) => {
 
 function onLightChangedAction(result){
   if(result == 1){
-    dbHelper.changeLightValue(deviceID, newValue, () => {
+    dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
       //gatherDeviceInfo(event,deviceID);
     });
   }else{
@@ -187,7 +191,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 function onSensorSubmissionAction(result){
   if(result == 1){
-    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,sensorID);
+    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
