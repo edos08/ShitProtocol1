@@ -113,9 +113,6 @@ function onPortOpened(err){
       idStreamValueHandler(_id,_type);
     } else if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
       registrationModeEnteredHandler();
-    } else if(isListRequestPacket(data) && listRequestHandler){
-      var _id = read32bitInt(data,1);
-      listRequestHandler(_id);
     } else if(isSendResultPacket(data) && sendResultHandler){
       console.log("Calling handler")
       sendResultHandler(data[1]);
