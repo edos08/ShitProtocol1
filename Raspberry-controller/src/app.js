@@ -34,6 +34,8 @@ function initMain(){
   window.on('closed',() =>{
     window = null;
   });
+
+  registration.init();
 }
 
 app.on('window-all-closed', () => {
