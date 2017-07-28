@@ -70,11 +70,16 @@ function onRoomClicked(id){
 }
 
 ipc.on('devices-loaded',(event,devices,roomID) =>{
-  var content = "<ul>";
-  for(var a = 0; a < devices.length; a++){
-    content += createDeviceItemForList(devices[a]);
+  var content = "";
+  if(devices.length > 0){
+    content += "<ul>";
+    for(var a = 0; a < devices.length; a++){
+      content += createDeviceItemForList(devices[a]);
+    }
+    content += "</ul>";
+  }else{
+    content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
-  content += "</ul>";
   content += "<button id = \"" + roomID +"\" onClick=\"deleteRoomButton(this)\"> Elimina la stanza </button>";
   document.getElementById('content').innerHTML = content;
 })
