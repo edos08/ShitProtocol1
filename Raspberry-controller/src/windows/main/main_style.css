@@ -1,5 +1,6 @@
 body{
-  width 100%;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   display: flex;
   padding: 0px;
@@ -32,7 +33,7 @@ body{
 #content{
   float: left;
   width: 70%;
-  height: 100%;
+  height: 100hv;
   margin-left: -1px;
   border-style: solid;
   border-color: black;
@@ -41,5 +42,5 @@ body{
 }
 
 #insert_room_button{
-  
+
 }
