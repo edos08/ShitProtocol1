@@ -13,9 +13,14 @@ body{
 }
 
 .room_element{
-  padding: 0px;
+  padding: 10px;
   padding-left: 10px;
-  margin: 0;
+  border-style: solid;
+  border-top-color: black;
+  border-bottom-color: black;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+
 }
 
 
