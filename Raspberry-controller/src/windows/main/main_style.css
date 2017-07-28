@@ -24,7 +24,7 @@ body{
 #left{
   float: left;
   width: 30%;
-  height: 100%;
+  height: 100hv;
   border-style: solid;
   border-color: black;
   border-width: 1px;
