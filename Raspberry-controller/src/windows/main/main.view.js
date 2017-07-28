@@ -116,7 +116,7 @@ ipc.on('device-info-gathered',(event,device) => {
   + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Cambia sensore </button></td></br>"
   + "</tr><tr>"
   + "<td>Valore corrente: </td></br>"
-  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
+  + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
   + "</tr><tr>"
   + "<td>Valore (0 - 1023): </td><td><input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"> <td>"
   + "<td><input type=\"submit\" ></td>"
