@@ -75,15 +75,20 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(after){
   });
 }
 
-function insertRoomIntoDB(roomName,windowToReload){
+function insertRoomIntoDB(roomName,windowToReload,errorAction){
   console.log("Inserting : " + roomName);
   knex('Rooms').withSchema('LoRa')
-  .insert({Description: roomName}).then(function(){
+  .insert({Description: roomName})
+  .then(function(){
     windowToReload.reload();
-  });;
+  })
+  .catch((error) =>{
+    errorAction();
+  })
+
 }
 
-function renameDevice(id,name,after){
+function renameDevice(id,name,after,errorAction){
   console.log("ID " + id + " name " + name);
   knex('Devices').withSchema('LoRa')
   .where('ID',id)
@@ -93,7 +98,10 @@ function renameDevice(id,name,after){
       console.log("Descrizione aggiornata con successo!");
     }
     after();
-  });
+  })
+  .catch((error) => {
+    errorAction();
+  })
 }
 
 function fillRoomsList(after){
@@ -204,6 +212,15 @@ function getAddressForController(controllerID,after){
   .where('ID',controllerID)
   .then((devices) => {
     after(devices[0].Address);
+  })
+}
+
+function deleteRoom(roomID,after){
+  knex('Rooms').withSchema('LoRa')
+  .where('ID',roomID)
+  .del()
+  .then(() =>{
+    after();
   })
 }
 

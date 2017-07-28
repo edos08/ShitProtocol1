@@ -70,9 +70,15 @@ ipc.on('fill-rooms-screen',function(event){
 
 ipc.on('fill_room_view',(event,roomID) => {
   dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
-    event.sender.send('devices-loaded',devices)
+    event.sender.send('devices-loaded',devices,roomID)
   });
 });
+
+ipc.on('delete-room',roomID){
+  dbHelper.deleteRoom(roomID,() => {
+    window.reload();
+  })
+}
 
 ipc.on('gather-device-info',(event,deviceID) => {
   gatherDeviceInfo(event,deviceID);
@@ -111,7 +117,9 @@ function onLightChangedAction(result){
 }
 
 ipc.on('insert_new_room',function(event,roomName){
-  dbHelper.insertRoomIntoDB(roomName,window);
+  dbHelper.insertRoomIntoDB(roomName,window,() => {
+      dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
+  });
 })
 
 
@@ -187,8 +195,10 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   chooseSensorWindow.on('closed',() =>{
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
+    if(sensorsAssignationWindow && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
+    else
+      window.reload();
   });
 })
 
@@ -241,6 +251,8 @@ ipc.on('rename-device',(event,deviceID,name) => {
       deviceAssignationWindow.reload();
     else
       window.reload();
+  },() => {
+      dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
   });
 })
 
