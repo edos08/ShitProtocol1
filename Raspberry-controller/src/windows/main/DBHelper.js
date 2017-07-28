@@ -28,6 +28,7 @@ function fillContentDivWithDevices(roomID,after){
   .where('Devices.Room',roomID)
   .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
   .from('Devices')
+  .orderBy('ID','asc')
   .then(function(devices){
     after(devices);
   });
