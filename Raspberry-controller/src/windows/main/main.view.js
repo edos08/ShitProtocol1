@@ -69,14 +69,19 @@ function onRoomClicked(id){
   ipc.send('fill_room_view',id);
 }
 
-ipc.on('devices-loaded',(event,devices) =>{
+ipc.on('devices-loaded',(event,devices,roomID) =>{
   var content = "<ul>";
   for(var a = 0; a < devices.length; a++){
     content += createDeviceItemForList(devices[a]);
   }
   content += "</ul>";
+  content += "<button id = \"" + roomID +"\" onClick=\"deleteRoomButton(this)\"> Elimina la stanza </button>";
   document.getElementById('content').innerHTML = content;
 })
+
+function deleteRoomButton(button){
+  ipc.send('delete-room',button.id);
+}
 
 
 function createDeviceItemForList(device){
@@ -99,7 +104,8 @@ function onDeviceClicked(device){
 ipc.on('device-info-gathered',(event,device) => {
   console.log("Displaying infoos");
   content = "Dispositivo: " + device.description + " <button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></br> "
-  + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</br>"
+  + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato")
+  + " <button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Cambia sensore </button></br>"
   + "Valore corrente: </br>"
   + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\">"
@@ -120,6 +126,10 @@ function onDeviceRenameButtonClick(button){
 
 function onDeviceAssignToRoomButtonClick(button){
   ipc.send('room_assignation_button_pressed',button.id);
+}
+
+function onDeviceAssignSensorButtonClick(button){
+  ipc.send('sensor_assignation_button_pressed',button.id);
 }
 
 function handleValueSubmission(){
