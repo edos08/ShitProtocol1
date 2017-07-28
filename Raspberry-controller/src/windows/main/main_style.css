@@ -47,7 +47,7 @@ body{
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
-  overflow: hidden
+  overflow: auto;
   max-height:60%;
 }
 
