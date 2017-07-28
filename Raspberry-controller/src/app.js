@@ -74,11 +74,11 @@ ipc.on('fill_room_view',(event,roomID) => {
   });
 });
 
-ipc.on('delete-room',roomID){
+ipc.on('delete-room',(event,roomID) => {
   dbHelper.deleteRoom(roomID,() => {
     window.reload();
   })
-}
+});
 
 ipc.on('gather-device-info',(event,deviceID) => {
   gatherDeviceInfo(event,deviceID);
