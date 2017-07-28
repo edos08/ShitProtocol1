@@ -45,5 +45,9 @@ body{
   position: absolute;
   bottom: 0;
   display: block;
-  width: inherit;
+  width: auto;
+}
+
+#test{
+  position:relative;
 }
