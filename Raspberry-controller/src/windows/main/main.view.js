@@ -72,7 +72,7 @@ function onRoomClicked(id){
 ipc.on('devices-loaded',(event,devices,roomID) =>{
   var content = "";
   if(devices.length > 0){
-    content += "<ul>";
+    content += "<ul class = \"list-group\">";
     for(var a = 0; a < devices.length; a++){
       content += createDeviceItemForList(devices[a]);
     }
@@ -90,7 +90,7 @@ function deleteRoomButton(button){
 
 
 function createDeviceItemForList(device){
-    return "<li"
+    return "<li class = \"list-group-item\""
     + " id = \"" + device.ID + "\""
     + ((device.type == 2)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
