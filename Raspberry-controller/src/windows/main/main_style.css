@@ -42,13 +42,25 @@ body{
 }
 
 #insert_room_button{
-  position: absolute;
-  bottom: 0;
+  /*position: absolute;
+  bottom: 0;*/
   display: block;
-  width: 29.2%;
-  float:left;
+  /*width: 29.2%;
+  float:left;*/
   margin: 0;
 }
 
-nav ul{height:200px; width:18%;}
-nav ul{overflow:hidden; overflow-y:scroll;}
+nav {
+  display: block;
+  width: 100%;
+  height: inherit;
+}
+
+nav ul{
+   height:100%;
+   width:100%;
+}
+nav ul{
+  overflow:hidden;
+  overflow-y:scroll;
+}
