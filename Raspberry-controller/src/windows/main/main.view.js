@@ -108,23 +108,23 @@ function onDeviceClicked(device){
 
 ipc.on('device-info-gathered',(event,device) => {
   console.log("Displaying infoos");
-  content = "<table>"
-  + "<tr>"
+  content = /*"<table>"*/""
+  //+ "<tr>"
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></td></br> "
-  + "</tr><tr>"
+  //+ "</tr><tr>"
   + "<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
   + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Cambia sensore </button></td></br>"
-  + "</tr><tr>"
+  //+ "</tr><tr>"
   + "<td>Valore corrente: </td></br>"
-  + "</tr><tr>"
+  //+ "</tr><tr>"
   + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
   + "<input type=\"submit\"/>"
   + "</form>"
-  + "</tr><tr>"
+  //+ "</tr><tr>"
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br></td>"
-  + "</tr>"
-  + "</table>";
+  //+ "</tr>"
+  //+ "</table>";
   document.getElementById('content').innerHTML = content;
 
 })
