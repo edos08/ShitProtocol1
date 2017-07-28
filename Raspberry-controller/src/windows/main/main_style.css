@@ -18,8 +18,8 @@ body{
   border-style: solid;
   border-top-color: black;
   border-bottom-color: black;
-  border-top-width: 1px;
-  border-bottom-width: 1px;
+  border-top-width: 0.5px;
+  border-bottom-width: 0.5px;
   border-left-style: none;
   border-right-style: none;
 
