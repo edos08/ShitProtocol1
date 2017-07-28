@@ -16,12 +16,13 @@ body{
   padding: 10px;
   padding-left: 10px;
   border-style: solid;
-  border-top-color: black;
+  /*border-top-color: black;*/
   border-bottom-color: black;
-  border-top-width: 0.5px;
+  /*border-top-width: 0.5px;*/
   border-bottom-width: 0.5px;
   border-left-style: none;
   border-right-style: none;
+  border-top-style: none;
 
 }
 
