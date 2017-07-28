@@ -47,7 +47,6 @@ body{
   margin: 0px;
   overflow: auto;
   max-height:60%;
-  display: flex;
 }
 
 #header{
