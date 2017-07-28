@@ -145,4 +145,5 @@ function handleValueSubmission(){
     var deviceID = document.getElementById('lightValue').parentNode.id;
     ipc.send('change-light-value',valueInserted,deviceID);
   }
+  return false;
 }
