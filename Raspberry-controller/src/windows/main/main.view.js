@@ -108,7 +108,7 @@ function onDeviceClicked(device){
 
 ipc.on('device-info-gathered',(event,device) => {
   console.log("Displaying infoos");
-  content = "<table>"
+  content = /*"<table>"*/ ""
   + "<tr>"
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></td></br> "
   + "</tr><tr>"
@@ -124,7 +124,7 @@ ipc.on('device-info-gathered',(event,device) => {
   + "</tr><tr>"
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br></td>"
   + "</tr>"
-  + "</table>";
+  /*+ "</table>"*/;
   document.getElementById('content').innerHTML = content;
 
 })
