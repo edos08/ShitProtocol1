@@ -20,6 +20,8 @@ body{
   border-bottom-color: black;
   border-top-width: 1px;
   border-bottom-width: 1px;
+  border-left-style: none;
+  border-right-style: none;
 
 }
 
