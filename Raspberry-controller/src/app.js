@@ -156,7 +156,10 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   console.log("Ok button pressed with device = " + currentDeviceForWhichTheRoomIsBeingChosen + " and room " + roomID);
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
   chooseRoomWindow.on('closed',() =>{
-      deviceAssignationWindow.reload();
+      if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed())
+        deviceAssignationWindow.reload();
+      else
+        window.reload();
       if(selectSensorAfterwardsTrigger){
         selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
       }else {
@@ -234,8 +237,10 @@ ipc.on('rename-device',(event,deviceID,name) => {
   dbHelper.renameDevice(deviceID,name,() => {
     if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
-    if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
+    else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
       deviceAssignationWindow.reload();
+    else
+      window.reload();
   });
 })
 

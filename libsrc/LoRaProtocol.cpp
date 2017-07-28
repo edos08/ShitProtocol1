@@ -20,15 +20,15 @@ int sendPacketAck(Packet packet, int retries);
 //Function bodies
 
 void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
-    myAddress = _myAddress;
-	  lastPacket = new Packet();
-    LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
-    if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
-        //Serial.println("LoRa init failed. Check your connections.");
-        while (true);                       // if failed, do nothing
-    }
-
+  myAddress = _myAddress;
+  lastPacket = new Packet();
+  LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
+  if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
+      //Serial.println("LoRa init failed. Check your connections.");
+      while (true);                       // if failed, do nothing
+  }
   LoRa.onReceive(receivePacket);
+  activateReceiveMode();
   //Serial.println("LoRa init succeeded.");
 }
 
@@ -37,8 +37,6 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
-	//if(!packet.isAck())
-	//	Serial.println("Sending packet");
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
@@ -59,6 +57,7 @@ int sendNonAckPacket(Packet packet) {
 		packetCounter++;
 	activateReceiveMode();
 	return result;
+  return 0;
 }
 
 
