@@ -58,11 +58,4 @@ body{
 
 #insert_room_button{
   margin: 2px;
-  position: absolute;
-  bottom: 0px;
-}
-
-#button_container{
-  height: 5%;
-  position: relative;
 }
