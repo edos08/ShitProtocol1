@@ -146,6 +146,7 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 function handleValueSubmission(){
+  console.log("value-changed");
   var valueInserted = document.getElementById('lightValue').value;
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
