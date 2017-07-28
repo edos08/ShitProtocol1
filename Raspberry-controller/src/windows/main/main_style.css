@@ -47,8 +47,7 @@ body{
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
-  overflow: auto;
-  max-height: 86%;
+  overflow: hidden;
 }
 
 #header{
@@ -61,10 +60,6 @@ body{
   margin: 2px;
   position: absolute;
   bottom: 0px;
-}
-
-#c{
-  height: 100%;
 }
 
 #button_container{
