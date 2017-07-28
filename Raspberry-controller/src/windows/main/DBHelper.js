@@ -243,5 +243,6 @@ module.exports = {
   getAddressesForControllerAndSensor,
   getDeviceInfo,
   changeLightValue,
-  getAddressForController
+  getAddressForController,
+  deleteRoom
 }
