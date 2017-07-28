@@ -85,7 +85,7 @@ void activateReceiveMode(){
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
   Packet receivedPacket = Helpers::readInputPacket();
-  if(receivedPacket == ((const Packet&)(*lastPacket))){ Serial.println("Duplicated packet");return;}
+  //if(receivedPacket == ((const Packet&)(*lastPacket))){ Serial.println("Duplicated packet");return;}
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     while(LoRa.available())
         LoRa.read();
