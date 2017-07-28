@@ -40,7 +40,7 @@ void setup() {
     randomAddress = memoryContent;
     isFirstBoot = false;
   }
-  initLoRa(randomAddress, 10, 4, 3);
+  initLoRa(randomAddress, 8, 4, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
   
   Serial.println("INIITS");
