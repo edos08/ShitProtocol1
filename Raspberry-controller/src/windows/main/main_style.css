@@ -46,4 +46,6 @@ body{
   bottom: 0;
   display: block;
   width: 30%;
+  float:left;
+  margin: 0;
 }
