@@ -117,7 +117,7 @@ ipc.on('device-info-gathered',(event,device) => {
   //+ "</tr><tr>"
   + "<td>Valore corrente: </td></br>"
   //+ "</tr><tr>"
-  + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
+  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
   + "<input type=\"submit\"/>"
   + "</form>"
