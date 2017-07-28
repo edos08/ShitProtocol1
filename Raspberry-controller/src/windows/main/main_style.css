@@ -10,15 +10,15 @@ body{
 
 .register_container{
   padding: 10px;
+  height: 20%;
 }
 
 .room_element{
   padding-left: 10px;
 }
 
-#rooms_container{
-  list-style: none;
-  padding-left: 0px;
+.scrollable_container{
+  height: 79%;
 }
 
 #left{
@@ -41,26 +41,33 @@ body{
   padding: 10px;
 }
 
+
+#rooms_container{
+  list-style: none;
+  padding: 5px;
+  padding-left: 0px;
+  margin: 0px;
+  overflow: auto;
+  max-height: 86%;
+}
+
+#header{
+  height: 5%;
+  padding: 0px;
+  margin: 0px;
+}
+
 #insert_room_button{
-  /*position: absolute;
-  bottom: 0;*/
-  display: block;
-  /*width: 29.2%;
-  float:left;*/
-  margin: 0;
+  margin: 2px;
+  position: absolute;
+  bottom: 0px;
 }
 
-nav {
-  display: block;
-  width: 100%;
-  height: inherit;
+#c{
+  height: 100%;
 }
 
-nav ul{
-   height:100%;
-   width:100%;
-}
-nav ul{
-  overflow:hidden;
-  overflow-y:scroll;
+#button_container{
+  height: 5%;
+  position: relative;
 }
