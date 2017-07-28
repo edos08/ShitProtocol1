@@ -124,7 +124,7 @@ ipc.on('device-info-gathered',(event,device) => {
   + "</tr><tr>"
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br></td>"
   + "</tr>"
-  /*+ "</table>"*/;
+  + "</table>";
   document.getElementById('content').innerHTML = content;
 
 })
