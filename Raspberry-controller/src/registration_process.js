@@ -21,6 +21,7 @@ function init(){
 
 function start(processEndHandler,devicesNumber){
   devicesToRegister = devicesNumber;
+  isAcceptationIDStreamActive = false;
   helpers.startRegistration();
   onEnd = processEndHandler;
 }

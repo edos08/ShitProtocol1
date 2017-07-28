@@ -28,7 +28,7 @@ void setup() {
   //eraseEEPROM(4);
   Serial.begin(9600);
   while(!Serial);
-  pinMode(sensorPin,INPUT);
+  //pinMode(sensorPin,INPUT);
   uint32_t memoryContent = readEEPROM();
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
@@ -36,14 +36,14 @@ void setup() {
     randomSeed(analogRead(0));
     randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
-    //writeEEPROM();
   }else{
     randomAddress = memoryContent;
     isFirstBoot = false;
   }
-  initLoRa(randomAddress, 9, 4, 3);
-  Serial.println("INIITS");
+  initLoRa(randomAddress, 10, 4, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
+  
+  Serial.println("INIITS");
 }
 
 void loop() {
@@ -54,7 +54,6 @@ void loop() {
     Serial.print("Valore fotoresistenza: ");
     Serial.println(sensorValue);
     int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
-    Helpers::printResponseMessage(result);
     delay(SENSOR_SEND_DATA_WAITING_TIME);
     return;
   }
@@ -63,8 +62,6 @@ void loop() {
     if(!idAccepted){
 
       if(idDenied){
-        Serial.println("Id denied");
-        Serial.flush();
         randomAddress = generateRandomAddress();
         changeAddress(randomAddress);
         idSent = false;
@@ -76,13 +73,10 @@ void loop() {
 
       if(!idSent){
         delay(generateRandomWaitingTime());
-        Serial.println("About to send");
-        Serial.flush();
-        int result = sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
-        Helpers::printResponseMessage(result);
+        sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
         Serial.print("My ID 0x");
         Serial.println(randomAddress,HEX);
-        Serial.flush();
+        //Serial.flush();
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -92,9 +86,7 @@ void loop() {
     }else{
       Serial.print("My ID 0x");
       Serial.print(randomAddress,HEX);
-      Serial.println(" has been accepted, I SOULD now write it in my EPROM and start my regular program");
-      Serial.flush();
-      //TODO: write to EPROM
+      Serial.println(" has been accepted");
       writeEEPROM();
       isFirstBoot = false;
     }
@@ -113,8 +105,6 @@ uint32_t generateRandomAddress(){
   uint16_t rightHalf = random(1,0xFFFF);
   randomNumber |= ((uint32_t)(leftHalf)) << 16;
   randomNumber |= rightHalf;
-  Serial.print("ID generated = ");
-  Serial.println(randomNumber, HEX);
   return randomNumber;
 }
 
@@ -125,26 +115,17 @@ int generateRandomWaitingTime(){
 void handleResponsePacket(Packet response){
 
   if(isRegistrationResponsePacket(response.type, response.packetLength)){
-    //Serial.print("Packet received ");
     switch(response_result((uint8_t)response.body[0])){
       case REGISTRATION_RESPONSE_ID_DENIED:
-        //Serial.println("ID denied");
-        //Serial.flush();
         idDenied = true;
         break;
       case REGISTRATION_RESPONSE_ID_ACCEPTED:
-        //Serial.println("ID accepted");
-        //Serial.flush();
         idAccepted = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_DENIED:
-        //Serial.println("Registration denied");
-        //Serial.flush();
         registrationDenied = true;
         break;
       case REGISTRATION_RESPONSE_REGISTRATION_RESUMED:
-        //Serial.println("Registration resumed");
-        //Serial.flush();
         if(registrationDenied)
           registrationResumed = true;
         break;
@@ -158,8 +139,6 @@ uint32_t readEEPROM(){
   int shifter = 24;
   for(int a = 0; a < 4; a++){
       uint8_t c_byte = /*EEPROM.read(a);*/eeprom_read_word(a);
-      Serial.print("Byte: ");
-      Serial.println(c_byte,HEX);
       result |= (((uint32_t)c_byte) << shifter);
       shifter -= 8;
   }
