@@ -108,15 +108,23 @@ function onDeviceClicked(device){
 
 ipc.on('device-info-gathered',(event,device) => {
   console.log("Displaying infoos");
-  content = "Dispositivo: " + device.description + " <button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></br> "
-  + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato")
-  + " <button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Cambia sensore </button></br>"
-  + "Valore corrente: </br>"
+  content = "<table>"
+  + "<tr>"
+  + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></td></br> "
+  + "</tr><tr>"
+  + "<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
+  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Cambia sensore </button></td></br>"
+  + "</tr><tr>"
+  + "<td>Valore corrente: </td></br>"
   + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
-  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\">"
-  + "<input type=\"submit\" >"
+  + "</tr><tr>"
+  + "<td>Valore (0 - 1023): </td><td><input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"> <td>"
+  + "<td><input type=\"submit\" ></td>"
   + "</form>"
-  + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br>"
+  + "</tr><tr>"
+  + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br></td>"
+  + "</tr>"
+  + "</table>";
   document.getElementById('content').innerHTML = content;
 
 })
