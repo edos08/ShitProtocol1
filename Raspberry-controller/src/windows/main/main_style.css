@@ -2,7 +2,7 @@ body{
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  isplay: flex;
+  display: flex;
   padding: 0px;
   margin: 0px;
 }
