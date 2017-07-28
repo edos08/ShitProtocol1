@@ -24,20 +24,20 @@ body{
   border-right-style: none;
   border-top-style: none;
 
-}
+}*/
 
 
-#left{
-  float: left;
+.left.col{
+  /*float: left;*/
   width: 30%;
   height: 100%;
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  align-items: stretch;
+  /*align-items: stretch;*/
 }
-#content{
-  float: left;
+.right.col{
+  /*float: left;*/
   width: 70%;
   height: 100%;
   margin-left: -1px;
@@ -47,7 +47,7 @@ body{
   padding: 10px;
 }
 
-
+/*
 #rooms_container{
   list-style: none;
   padding: 5px;
