@@ -44,5 +44,6 @@ body{
 #insert_room_button{
   position: absolute;
   bottom: 0;
+  display: block;
   width: inherit;
 }
