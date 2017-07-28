@@ -98,16 +98,29 @@ function onDeviceClicked(device){
 
 ipc.on('device-info-gathered',(event,device) => {
   console.log("Displaying infoos");
-  content = "Dispositivo: " + device.description + "</br>"
+  content = "Dispositivo: " + device.description + " <button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina </button></br> "
   + "Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</br>"
   + "Valore corrente: </br>"
   + "<form onsubmit=\"handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\">"
   + "<input type=\"submit\" >"
   + "</form>"
+  + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\"> Cambia stanza </br>"
   document.getElementById('content').innerHTML = content;
 
 })
+
+function onDeviceRenameButtonClick(button){
+  dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
+    if(name != null && name != undefined && name != "" && name != " "){
+      ipc.send('rename-device',button.id,name);
+    }
+  });
+}
+
+function onDeviceAssignToRoomButtonClick(button){
+  ipc.send('room_assignation_button_pressed',button.id);
+}
 
 function handleValueSubmission(){
   var valueInserted = document.getElementById('lightValue').value;
