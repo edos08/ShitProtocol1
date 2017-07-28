@@ -6,7 +6,7 @@ body{
   padding: 0px;
   margin: 0px;
 }
-/*
+
 
 .register_container{
   padding: 10px;
@@ -16,15 +16,15 @@ body{
   padding: 10px;
   padding-left: 10px;
   border-style: solid;
-  /*border-top-color: black;
+  /*border-top-color: black;*/
   border-bottom-color: black;
-  /*border-top-width: 0.5px;
+  /*border-top-width: 0.5px;*/
   border-bottom-width: 0.5px;
   border-left-style: none;
   border-right-style: none;
   border-top-style: none;
 
-}*/
+}
 
 
 .left.col{
@@ -47,7 +47,7 @@ body{
   padding: 10px;
 }
 
-/*
+
 #rooms_container{
   list-style: none;
   padding: 5px;
@@ -66,4 +66,3 @@ body{
   position: absolute;
   bottom: 0;
 }
-*/
