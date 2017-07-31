@@ -159,6 +159,7 @@ void handleResponsePacket(Packet response){
     writeEEPROM16(lightValue,8);
   } else {
   }
+
 }
 
 
