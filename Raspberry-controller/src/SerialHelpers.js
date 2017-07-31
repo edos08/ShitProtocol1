@@ -76,12 +76,8 @@ function connectHandlers(handlers){
     handshakeEndHandler = handlers.handshakeEndHandler;
   if(handlers.registrationModeEnteredHandler)
     registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
-  if(handlers.sendResultHandler){
-    sendResultHandler = handlers.sendResultHandler
-    console.log("Result handler");
-  } else {
-    console.log("no result handler");
-  }
+  if(handlers.sendResultHandler)
+    sendResultHandler = handlers.sendResultHandler;
 }
 
 function onPortOpened(err){
@@ -94,7 +90,7 @@ function onPortOpened(err){
 
   console.log("Port " + this.path + " opened succesfully");
   this.on('data',(data) =>{
-    console.log('Received: \"' + data[0] + "\"");
+    console.log('Received: \"' + data + "\"");
     console.log('lenght = ' + Buffer.byteLength(data));
 
     if(isHandshakePacket(data) && handshakeHandler){
@@ -115,7 +111,6 @@ function onPortOpened(err){
     } else if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
       registrationModeEnteredHandler();
     } else if(isSendResultPacket(data) && sendResultHandler){
-      console.log("Calling handler")
       sendResultHandler(data[1]);
     }else{
       console.log("Unrecognized serial");
@@ -202,8 +197,6 @@ function answerToIDCheckRequest(result){
   buf[0] = ID_CHECK_PACKET;
   buf[1] = result;
   port.write(buf);
-  console.log(buf);
-  console.log("done");
   console.log("check result returned");
 }
 
@@ -235,7 +228,7 @@ function sendSensorSubmissionPacket(controllerID,sensorID){
 
 function write32BitInt(buffer,offset,address){
   for(var a = 0; a < 4; a++){
-    buffer[offset + a] = ((address & masks[a]) >> (8 * (3-a)))
+    buffer[offset + a] = ((address & masks[a]) >> (8 * (3-a)));
   }
 }
 
@@ -262,12 +255,21 @@ function sendLightValueChangedPacket(controllerAddress,newValue){
 
 module.exports = {
   init,
-  answerToHandshake: answerToHandshake,
-  sendDevicesNumberPacket: sendDevicesNumberPacket,
-  answerToIDCheckRequest: answerToIDCheckRequest,
+  answerToHandshake,
+  sendDevicesNumberPacket,
+  answerToIDCheckRequest,
   terminate,
   startRegistration,
   sendSensorSubmissionPacket,
   sendResetMessage,
-  sendLightValueChangedPacket
+  sendLightValueChangedPacket,
+  connectHandlers, //for testing purposes
+  handshakeHandler,
+  handshakeEndHandler,
+  idCheckRequestHandler,
+  idStreamStartHandler,
+  idStreamValueHandler,
+  idStreamEndHandler,
+  registrationModeEnteredHandler,
+  sendResultHandler
 }
