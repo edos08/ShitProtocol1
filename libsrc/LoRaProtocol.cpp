@@ -6,11 +6,11 @@
 
 // Global varialbles
 
-Packet* lastPacket;
 uint32_t myAddress;
 uint8_t packetCounter = 0;
 AckHolder ackHolder;
 functionCall subscribedFunction = NULL;
+int notificationPin = 7;
 //Global functions not declared in LoRaProtocol.h
 
 int sendPacketAck(Packet packet, int retries);
@@ -21,12 +21,15 @@ int sendPacketAck(Packet packet, int retries);
 
 void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
   myAddress = _myAddress;
-  lastPacket = new Packet();
   LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
+  pinMode(notificationPin,OUTPUT);
   if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
-      //Serial.println("LoRa init failed. Check your connections.");
+      //Serial.println("LoRa init failed. Check your connections.")
+      tone(notificationPin,1000);
+      digitalWrite(notificationPin,HIGH);
       while (true);                       // if failed, do nothing
   }
+
   LoRa.onReceive(receivePacket);
   activateReceiveMode();
   //Serial.println("LoRa init succeeded.");
@@ -84,8 +87,9 @@ void activateReceiveMode(){
 
 void receivePacket(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
+  //digitalWrite(notificationPin,HIGH);
+  tone(notificationPin,1000,200);
   Packet receivedPacket = Helpers::readInputPacket();
-  //if(receivedPacket == ((const Packet&)(*lastPacket))){ Serial.println("Duplicated packet");return;}
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     while(LoRa.available())
         LoRa.read();
@@ -100,7 +104,6 @@ void receivePacket(int packetSize) {
   }
 
   if((receivedPacket.packetLength) != position){
-      //Serial.println("Corrupted message");
       return;
   }
 
@@ -109,20 +112,12 @@ void receivePacket(int packetSize) {
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
 	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
   }
-  //Serial.println("Has responded");
   if (receivedPacket.isAck()) {
 	  ackHolder.hasAck = true;
 	  ackHolder.ack = receivedPacket;
   } else if (subscribedFunction != NULL) {
-    //Serial.println("Calling subscribed function");
 	  subscribedFunction(receivedPacket);
   }
-
-    //Serial.println("Copying old packet");
-
-   (*lastPacket) = receivedPacket;
-
-   //Serial.println("Done");
 }
 
 void subscribeToReceivePacketEvent(functionCall function) {
