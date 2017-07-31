@@ -3,7 +3,6 @@ var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
 var handshake = require('./Handshake_process');
-
 var dbHelper =require('./windows/main/DBHelper');
 
 let window;

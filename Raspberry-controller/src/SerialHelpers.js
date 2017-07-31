@@ -81,48 +81,56 @@ function onPortOpened(err){
   }
 
   console.log("Port " + this.path + " opened succesfully");
-  this.on('data',(data) =>{
+  port.on('data',(data) =>{
     console.log('Received: \"' + data + "\"");
     console.log('lenght = ' + Buffer.byteLength(data));
-
-    if(isHandshakePacket(data) && handshakeHandler){
-      handshakeHandler();
-    } else if(isHandshakeEndPacket(data) && handshakeEndHandler){
-      handshakeEndHandler();
-    }else if(isIDCheckRequest(data) && idCheckRequestHandler){
-      var _id = read32bitInt(data,1);
-      idCheckRequestHandler(_id);
-    }else if (isIDStreamStartPacket(data) && idStreamStartHandler) {
-      idStreamStartHandler();
-    } else if (isIDStreamEndPacket(data) && idStreamEndHandler) {
-      idStreamEndHandler();
-    } else if (isIDStreamValuePacket(data) && idStreamValueHandler) {
-      var _id = read32bitInt(data,1);
-      var _type = data[5];
-      idStreamValueHandler(_id,_type);
-    } else if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
-      registrationModeEnteredHandler();
-    } else if(isSendResultPacket(data) && sendResultHandler){
-      sendResultHandler(data[1]);
-    }else{
-      console.log("Unrecognized serial");
-    }
-
+    callPacketHandler(data);
   });
 
-  this.on('error',(error) =>{
+  port.on('error',(error) =>{
     Console.log('Errore di connessione seriale ' + error);
   });
 
-  this.on('close',(error) =>{
+  port.on('close',(error) =>{
     port = null;
   });
 
-  onOpenFunction();
-
+  if(onOpenFunction)
+    onOpenFunction();
 }
 
+function callPacketHandler(data){
+  if(isHandshakePacket(data) && this.handshakeHandler){
+    return this.handshakeHandler();
+  }
+  if(isHandshakeEndPacket(data) && this.handshakeEndHandler){
+    return this.handshakeEndHandler();
+  }
+  if(isIDCheckRequest(data) && this.idCheckRequestHandler){
+    var _id = read32bitInt(data,1);
+    return this.idCheckRequestHandler(_id);
+  }
+  if (isIDStreamStartPacket(data) && this.idStreamStartHandler) {
+    return this.idStreamStartHandler();
+  }
+  if (isIDStreamEndPacket(data) && this.idStreamEndHandler) {
+    return this.idStreamEndHandler();
+  }
+  if (isIDStreamValuePacket(data) && this.idStreamValueHandler) {
+    var _id = read32bitInt(data,1);
+    var _type = data[5];
+    return this.idStreamValueHandler(_id,_type);
+  }
+  if(isRegistrationModeEnteredPacket(data) && this.registrationModeEnteredHandler){
+    return this.registrationModeEnteredHandler();
+  }
+  if(isSendResultPacket(data) && this.sendResultHandler){
+    return this.sendResultHandler(data[1]);
+  }
 
+  console.log("Unrecognized serial");
+
+}
 
 function sendDevicesNumberPacket(devicesNumber){
   console.log(("Sending devices number"));
@@ -146,6 +154,13 @@ function read32bitInt(data,startIndex){
     shifter -= 8;
   }
   return _id;
+}
+
+
+function write32BitInt(buffer,offset,address){
+  for(var a = 0; a < 4; a++){
+    buffer[offset + a] = ((address & masks[a]) >> (8 * (3-a)));
+  }
 }
 
 function isHandshakePacket(data){
@@ -177,10 +192,7 @@ function isHandshakeEndPacket(data){
 }
 
 function isRegistrationModeEnteredPacket(data){
-  if(Buffer.isBuffer(data))
-    return data[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
-  else
-    return data == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+  return data[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
 }
 
 function answerToIDCheckRequest(result){
@@ -213,12 +225,6 @@ function sendSensorSubmissionPacket(controllerID,sensorID){
   write32BitInt(buf,5,sensorID);
   console.log(buf);
   port.write(buf);
-}
-
-function write32BitInt(buffer,offset,address){
-  for(var a = 0; a < 4; a++){
-    buffer[offset + a] = ((address & masks[a]) >> (8 * (3-a)));
-  }
 }
 
 function terminate(){
@@ -254,14 +260,6 @@ module.exports = {
   sendLightValueChangedPacket,
    //for testing purposes
   connectHandlers,
-  handshakeHandler,
-  handshakeEndHandler,
-  idCheckRequestHandler,
-  idStreamStartHandler,
-  idStreamValueHandler,
-  idStreamEndHandler,
-  registrationModeEnteredHandler,
-  sendResultHandler,
   isHandshakePacket,
   isHandshakeEndPacket,
   isIDCheckRequest,
@@ -271,5 +269,6 @@ module.exports = {
   isIDStreamValuePacket,
   isRegistrationModeEnteredPacket,
   read32bitInt,
-  openPort,
+  write32BitInt,
+  callPacketHandler
 }
