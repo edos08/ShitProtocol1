@@ -48,6 +48,17 @@ function init(handlers,onOpenCallback){
   openPort();
 }
 
+function connectHandlers(handlers){
+  this.handshakeHandler = handlers.handshakeHandler;
+  this.idCheckRequestHandler = handlers.idCheckRequestHandler;
+  this.idStreamStartHandler = handlers.idStreamStartHandler;
+  this.idStreamValueHandler = handlers.idStreamValueHandler;
+  this.idStreamEndHandler = handlers.idStreamEndHandler;
+  this.handshakeEndHandler = handlers.handshakeEndHandler;
+  this.registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
+  this.sendResultHandler = handlers.sendResultHandler;
+}
+
 function openPort(){
     var portPath = '/dev/ttyACM' + portNumber;
 
@@ -59,25 +70,6 @@ function openPort(){
     });
     portNumber++;
     port.open(onPortOpened);
-}
-
-function connectHandlers(handlers){
-  if(handlers.handshakeHandler)
-    handshakeHandler = handlers.handshakeHandler;
-  if(handlers.idCheckRequestHandler)
-    idCheckRequestHandler = handlers.idCheckRequestHandler;
-  if(handlers.idStreamStartHandler)
-    idStreamStartHandler = handlers.idStreamStartHandler;
-  if(handlers.idStreamValueHandler)
-    idStreamValueHandler = handlers.idStreamValueHandler;
-  if(handlers.idStreamEndHandler)
-    idStreamEndHandler = handlers.idStreamEndHandler;
-  if(handlers.handshakeEndHandler)
-    handshakeEndHandler = handlers.handshakeEndHandler;
-  if(handlers.registrationModeEnteredHandler)
-    registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
-  if(handlers.sendResultHandler)
-    sendResultHandler = handlers.sendResultHandler;
 }
 
 function onPortOpened(err){
@@ -133,13 +125,12 @@ function onPortOpened(err){
 
 
 function sendDevicesNumberPacket(devicesNumber){
-  console.log(("Sending devices number.."));
+  console.log(("Sending devices number"));
   var buf = Buffer.alloc(2);
   buf[0] = DEVICES_NUMBER_PACKET;
   buf[1] = devicesNumber;
   port.write(buf);
   console.log(buf);
-  console.log("done");
 }
 
 function answerToHandshake(){
@@ -209,8 +200,6 @@ function sendEntrerRegistrationModeMessage(){
 function startRegistration(){
   if(port != null && port.isOpen){
     sendEntrerRegistrationModeMessage();
-  }else{
-    console.log("I ain't sending anything");
   }
 }
 
@@ -263,7 +252,8 @@ module.exports = {
   sendSensorSubmissionPacket,
   sendResetMessage,
   sendLightValueChangedPacket,
-  connectHandlers, //for testing purposes
+   //for testing purposes
+  connectHandlers,
   handshakeHandler,
   handshakeEndHandler,
   idCheckRequestHandler,
@@ -271,5 +261,15 @@ module.exports = {
   idStreamValueHandler,
   idStreamEndHandler,
   registrationModeEnteredHandler,
-  sendResultHandler
+  sendResultHandler,
+  isHandshakePacket,
+  isHandshakeEndPacket,
+  isIDCheckRequest,
+  isSendResultPacket,
+  isIDStreamStartPacket,
+  isIDStreamEndPacket,
+  isIDStreamValuePacket,
+  isRegistrationModeEnteredPacket,
+  read32bitInt,
+  openPort,
 }

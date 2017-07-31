@@ -14,7 +14,8 @@
     "electron": "^1.6.11",
     "electron-rebuild": "^1.5.11",
     "jest": "^20.0.4",
-    "pubsub-js": "^1.5.7"
+    "pubsub-js": "^1.5.7",
+    "serialport": "^5.0.0"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
