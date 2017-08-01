@@ -31,10 +31,16 @@ body{
   padding: 10px;
 }
 
+.room_div{
+  position: relative;
+}
+
 .bottom-button{
   position: absolute;
   bottom: 0;
 }
+
+
 
 #rooms_container{
   flex-direction: column;
