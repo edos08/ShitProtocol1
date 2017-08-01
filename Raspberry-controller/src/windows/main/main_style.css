@@ -4,7 +4,6 @@ body{
   overflow: hidden;
   padding: 0px;
   margin: 0px;
-  padding-bottom: 70px;
   display: flex;
 }
 
@@ -42,7 +41,6 @@ body{
 }
 
 #rooms_container{
-  max-height: auto;
   overflow-y: scroll;
 }
 
