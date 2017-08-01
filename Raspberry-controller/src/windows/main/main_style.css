@@ -37,6 +37,7 @@ body{
 
 #rooms_container{
   flex:  1 1 0;
+  flex-direction: column;
   list-style: none;
   padding: 5px;
   padding-left: 0px;
