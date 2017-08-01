@@ -13,7 +13,7 @@ var serialHelpers = proxyquire('../src/SerialHelpers',{
 
 const mockFunc = sinon.stub().returns(1);
 
-decribe('serial Helpers:',() => {
+describe('serial Helpers:',() => {
 
   describe('bitwise write',() => {
     it('should write : 0xAB, 0x19, 0x28, 0x37',() => {
