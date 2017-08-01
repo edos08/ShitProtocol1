@@ -29,7 +29,6 @@ describe('application launch', function () {
     })
   })
 
-	describe('shows device infos',() =>{
 		it('opens room info',() => {
 			this.app.client.element('.left.col').click('#7').then(() => {
 				this.app.client.element('.right.col').click('#150').then(() => {
@@ -37,5 +36,4 @@ describe('application launch', function () {
 				})
 			})
 		})
-	})
 })
