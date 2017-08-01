@@ -42,7 +42,7 @@ body{
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
-  max-height: 200px;
+  max-height: auto;
   overflow-y: scroll;
 }
 
