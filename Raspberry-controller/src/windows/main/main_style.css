@@ -13,24 +13,13 @@ body{
   height: 30%;
 }
 
-.room_element{
-  /*padding: 10px;
-  padding-left: 10px;
-  border-style: solid;
-  border-bottom-color: black;
-  border-bottom-width: 0.5px;
-  border-left-style: none;
-  border-right-style: none;
-  border-top-style: none;*/
-
-}
-
 .left.col{
   width: 30%;
   height: 100%;
   border-style: solid;
   border-color: black;
   border-width: 1px;
+  position: relative;
 }
 .right.col{
   width: 70%;
@@ -46,11 +35,17 @@ body{
   min-height: 70%;
 }
 
+.panel-footer.bottom-button{
+  position: absolute;
+  bottom: 0;
+}
+
 #rooms_container{
   list-style: none;
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
+  max-height: 60%;
   overflow: auto;
 }
 
