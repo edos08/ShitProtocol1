@@ -10,6 +10,7 @@ body{
 
 .register_container{
   padding: 10px;
+  height: 30%;
 }
 
 .room_element{
@@ -25,13 +26,11 @@ body{
 }
 
 .left.col{
-  /*float: left;*/
   width: 30%;
   height: 100%;
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  /*align-items: stretch;*/
 }
 .right.col{
   width: 70%;
@@ -43,22 +42,16 @@ body{
   padding: 10px;
 }
 
-.rooms_div{
-  /*position:relative;*/
-}
-
-.footer-row{
-  /*position: absolute;
-  bottom: 0;*/
+.room_div{
+  min-height: 70%;
 }
 
 #rooms_container{
-  /*list-style: none;
+  list-style: none;
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
   overflow: auto;
-  max-height:60%;*/
 }
 
 #header{
