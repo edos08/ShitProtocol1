@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "install": "electron-rebuild",
-    "test": "jest"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -14,14 +14,14 @@
     "electron": "^1.6.11",
     "electron-rebuild": "^1.5.11",
     "jest": "^20.0.4",
-    "pubsub-js": "^1.5.7",
-    "serialport": "^5.0.0"
+    "mocha": "^3.5.0",
+    "serialport": "^5.0.0",
+    "spectron": "^3.7.2"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
     "dialogs": "^1.1.20",
     "knex": "^0.13.0",
-    "pg": "^7.0.1",
-    "serialport": "^5.0.0-beta8"
+    "pg": "^7.0.1"
   }
 }
