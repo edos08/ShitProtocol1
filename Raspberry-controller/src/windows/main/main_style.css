@@ -47,7 +47,7 @@ body{
 }
 
 .footer.row{
-  bottom: 0;
+  /*bottom: 0;*/
 }
 
 #rooms_container{
