@@ -10,9 +10,7 @@ ipc.on('rooms-filled',(event,rooms) =>{
   console.log("refresh");
   var content = "";
   for(var a = 0; a < rooms.length; a++){
-    //content+= "<hr>";
-    content += "<li class = \"list-group-item room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </li>";
-    //content += "<hr>";
+    content += "<button type=\"button\" class = \"list-group-item\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
   document.getElementById('rooms_container').innerHTML = content;
 })
