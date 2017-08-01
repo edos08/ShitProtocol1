@@ -11,7 +11,7 @@ ipc.on('rooms-filled',(event,rooms) =>{
   var content = "";
   for(var a = 0; a < rooms.length; a++){
     //content+= "<hr>";
-    content += "<li class = \"room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </li>";
+    content += "<li class = \"list-group-item room_element\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </li>";
     //content += "<hr>";
   }
   document.getElementById('rooms_container').innerHTML = content;
