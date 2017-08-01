@@ -19,6 +19,7 @@ body{
   border-color: black;
   border-width: 1px;
   position: relative;
+  display: flex;
 }
 .right.col{
   width: 70%;
