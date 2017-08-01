@@ -9,7 +9,7 @@ let app = new Application({
 	]
 })
 
-it('test'){
+it('test',() => {
 	app.start().then(() => {
 		return app.browserWindow.isVisible();
 	}).then((isVisible) => {
@@ -25,4 +25,4 @@ it('test'){
 	}).catch((error) => {
 		console.error('Test failed',error.message);
 	})
-}
+})
