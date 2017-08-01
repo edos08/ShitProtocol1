@@ -19,6 +19,7 @@ body{
   border-color: black;
   border-width: 1px;
   position: relative;
+  flex:  1 1 0;
 }
 .right.col{
   width: 70%;
@@ -36,7 +37,6 @@ body{
 }
 
 #rooms_container{
-  flex:  1 1 0;
   flex-direction: column;
   list-style: none;
   padding: 5px;
