@@ -13,7 +13,7 @@ body{
   height: 30%;
 }
 
-.panel.panel-default.room_div{
+.room_element{
   padding: 10px;
   padding-left: 10px;
   border-style: solid;
@@ -42,7 +42,7 @@ body{
   padding: 10px;
 }
 
-.room_div{
+.panel.panel-default.room_div{
   min-height: 70%;
   background-color: black;
 }
