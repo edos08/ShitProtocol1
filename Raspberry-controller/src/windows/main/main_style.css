@@ -10,7 +10,6 @@ body{
 
 .register_container{
   padding: 10px;
-  height: 30%;
 }
 
 .left.col{
@@ -32,7 +31,6 @@ body{
 }
 
 .panel.panel-default.room_div{
-  min-height: 70%;
 }
 
 .panel-footer.bottom-button{
