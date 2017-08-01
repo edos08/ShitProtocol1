@@ -49,20 +49,20 @@ function init(handlers,onOpenCallback){
 }
 
 function connectHandlers(handlers){
-  this.handshakeHandler = handlers.handshakeHandler;
-  this.idCheckRequestHandler = handlers.idCheckRequestHandler;
-  this.idStreamStartHandler = handlers.idStreamStartHandler;
-  this.idStreamValueHandler = handlers.idStreamValueHandler;
-  this.idStreamEndHandler = handlers.idStreamEndHandler;
-  this.handshakeEndHandler = handlers.handshakeEndHandler;
-  this.registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
-  this.sendResultHandler = handlers.sendResultHandler;
+  handshakeHandler = handlers.handshakeHandler;
+  idCheckRequestHandler = handlers.idCheckRequestHandler;
+  idStreamStartHandler = handlers.idStreamStartHandler;
+  idStreamValueHandler = handlers.idStreamValueHandler;
+  idStreamEndHandler = handlers.idStreamEndHandler;
+  handshakeEndHandler = handlers.handshakeEndHandler;
+  registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
+  sendResultHandler = handlers.sendResultHandler;
 }
 
 function openPort(){
     var portPath = '/dev/ttyACM' + portNumber;
 
-    console.log("Testing " + portPath);
+    //console.log("Testing " + portPath);
 
     port = new SerialPort(portPath,{
       baudRate: 9600,
@@ -76,7 +76,8 @@ function onPortOpened(err){
   if(err != null){
       console.log("Serial port error: ",err.message);
       port = null;
-      openPort();
+      if(portNumber < 20)
+        openPort();
       return;
   }
 
@@ -100,50 +101,36 @@ function onPortOpened(err){
 }
 
 function callPacketHandler(data){
-  if(isHandshakePacket(data) && this.handshakeHandler){
-    return this.handshakeHandler();
+  if(isHandshakePacket(data) && handshakeHandler){
+    return handshakeHandler();
   }
-  if(isHandshakeEndPacket(data) && this.handshakeEndHandler){
-    return this.handshakeEndHandler();
+  if(isHandshakeEndPacket(data) && handshakeEndHandler){
+    return handshakeEndHandler();
   }
-  if(isIDCheckRequest(data) && this.idCheckRequestHandler){
+  if(isIDCheckRequest(data) && idCheckRequestHandler){
     var _id = read32bitInt(data,1);
-    return this.idCheckRequestHandler(_id);
+    return idCheckRequestHandler(_id);
   }
-  if (isIDStreamStartPacket(data) && this.idStreamStartHandler) {
-    return this.idStreamStartHandler();
+  if (isIDStreamStartPacket(data) && idStreamStartHandler) {
+    return idStreamStartHandler();
   }
-  if (isIDStreamEndPacket(data) && this.idStreamEndHandler) {
-    return this.idStreamEndHandler();
+  if (isIDStreamEndPacket(data) && idStreamEndHandler) {
+    return idStreamEndHandler();
   }
-  if (isIDStreamValuePacket(data) && this.idStreamValueHandler) {
+  if (isIDStreamValuePacket(data) && idStreamValueHandler) {
     var _id = read32bitInt(data,1);
     var _type = data[5];
-    return this.idStreamValueHandler(_id,_type);
+    return idStreamValueHandler(_id,_type);
   }
-  if(isRegistrationModeEnteredPacket(data) && this.registrationModeEnteredHandler){
-    return this.registrationModeEnteredHandler();
+  if(isRegistrationModeEnteredPacket(data) && registrationModeEnteredHandler){
+    return registrationModeEnteredHandler();
   }
-  if(isSendResultPacket(data) && this.sendResultHandler){
-    return this.sendResultHandler(data[1]);
+  if(isSendResultPacket(data) && sendResultHandler){
+    return sendResultHandler(data[1]);
   }
 
   console.log("Unrecognized serial");
 
-}
-
-function sendDevicesNumberPacket(devicesNumber){
-  console.log(("Sending devices number"));
-  var buf = Buffer.alloc(2);
-  buf[0] = DEVICES_NUMBER_PACKET;
-  buf[1] = devicesNumber;
-  port.write(buf);
-  console.log(buf);
-}
-
-function answerToHandshake(){
-    port.write('W');
-    console.log("Handshake answered");
 }
 
 function read32bitInt(data,startIndex){
@@ -200,13 +187,29 @@ function answerToIDCheckRequest(result){
   buf[0] = ID_CHECK_PACKET;
   buf[1] = result;
   port.write(buf);
-  console.log("check result returned");
+  return buf;
+}
+
+
+function sendDevicesNumberPacket(devicesNumber){
+  console.log(("Sending devices number"));
+  var buf = Buffer.alloc(2);
+  buf[0] = DEVICES_NUMBER_PACKET;
+  buf[1] = devicesNumber;
+  port.write(buf);
+  return buf;
+}
+
+function answerToHandshake(){
+  var buf = Buffer.alloc(1,HANDSHAKE_RESPONSE);
+  port.write(buf);
+  return buf;
 }
 
 function sendEntrerRegistrationModeMessage(){
-  var buf = Buffer.alloc(1);
-  buf[0] = MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+  var buf = Buffer.alloc(1,MESSAGE_TYPE_ENTER_REGISTRATION_MODE);
   port.write(buf);
+  return buf;
 }
 
 function startRegistration(){
@@ -216,15 +219,12 @@ function startRegistration(){
 }
 
 function sendSensorSubmissionPacket(controllerID,sensorID){
-  console.log("Sending sensor submission packet");
-  console.log("controllerID: " + controllerID);
-  console.log("sensorID: " + sensorID);
   var buf = Buffer.alloc(9);
   buf[0] = SENSOR_SUBMISSION_PACKET;
   write32BitInt(buf,1,controllerID);
   write32BitInt(buf,5,sensorID);
-  console.log(buf);
   port.write(buf);
+  return buf;
 }
 
 function terminate(){
@@ -234,18 +234,19 @@ function terminate(){
 }
 
 function sendResetMessage(){
-  port.write('R');
+  var buf = Buffer.alloc(1,HANDSHAKE_RESET);
+  port.write(buf);
+  return buf;
 }
 
 function sendLightValueChangedPacket(controllerAddress,newValue){
-  console.log("Adddress: " + controllerAddress);
-  console.log("New value: " + newValue);
   var buf = Buffer.alloc(7);
   buf[0] = LIGHT_VALUE_CHANGED_PACKET;
   write32BitInt(buf,1,controllerAddress);
   buf[5] = ((newValue & 0xFF00) >> 8);
   buf[6] = ((newValue & 0x00FF) >> 0);
   port.write(buf);
+  return buf;
 }
 
 module.exports = {
@@ -258,17 +259,7 @@ module.exports = {
   sendSensorSubmissionPacket,
   sendResetMessage,
   sendLightValueChangedPacket,
-   //for testing purposes
-  connectHandlers,
-  isHandshakePacket,
-  isHandshakeEndPacket,
-  isIDCheckRequest,
-  isSendResultPacket,
-  isIDStreamStartPacket,
-  isIDStreamEndPacket,
-  isIDStreamValuePacket,
-  isRegistrationModeEnteredPacket,
-  read32bitInt,
+  //for testing purposes
   write32BitInt,
   callPacketHandler
 }

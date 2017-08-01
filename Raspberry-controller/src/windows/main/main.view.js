@@ -6,7 +6,6 @@ var dialogs = Dialogs();
 
 window.onload = setUpElements;
 
-
 ipc.on('rooms-filled',(event,rooms) =>{
   console.log("refresh");
   var content = "";
@@ -107,6 +106,10 @@ function onDeviceClicked(device){
 }
 
 ipc.on('device-info-gathered',(event,device) => {
+  showDeviceInfos(device);
+})
+
+function showDeviceInfos(device){
   console.log("Displaying infoos");
   content = /*"<table>"*/""
   //+ "<tr>"
@@ -126,8 +129,8 @@ ipc.on('device-info-gathered',(event,device) => {
   //+ "</tr>"
   //+ "</table>";
   document.getElementById('content').innerHTML = content;
-
-})
+  return content;
+}
 
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
@@ -155,4 +158,10 @@ function handleValueSubmission(){
     ipc.send('change-light-value',valueInserted,deviceID);
   }
   return false;
+}
+
+module.exports = {
+  handleValueSubmission,
+  showDeviceInfos,
+  window
 }
