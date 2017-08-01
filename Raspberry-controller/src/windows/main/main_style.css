@@ -40,7 +40,7 @@ body{
 }*/
 
 #rooms_container{
-  height: 550px;
+  height: 600px;
   overflow-y: scroll;
 }
 
