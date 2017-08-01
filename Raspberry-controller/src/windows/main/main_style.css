@@ -26,7 +26,6 @@ body{
 
 }
 
-
 .left.col{
   /*float: left;*/
   width: 30%;
@@ -47,6 +46,9 @@ body{
   padding: 10px;
 }
 
+.footer.row{
+  bottom: 0;
+}
 
 #rooms_container{
   list-style: none;
@@ -59,10 +61,4 @@ body{
 
 #header{
   padding-left: 10px;
-}
-
-#insert_room_button{
-  margin: 2px;
-  position: absolute;
-  bottom: 0;
 }
