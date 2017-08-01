@@ -46,8 +46,13 @@ body{
   padding: 10px;
 }
 
+.rooms_div{
+  position:relative;
+}
+
 .footer.row{
-  /*bottom: 0;*/
+  position: absolute;
+  bottom: 0;
 }
 
 #rooms_container{
