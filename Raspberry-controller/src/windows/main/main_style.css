@@ -44,6 +44,7 @@ body{
 
 .room_div{
   min-height: 70%;
+  background-color: black;
 }
 
 #rooms_container{
