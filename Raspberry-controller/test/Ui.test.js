@@ -24,16 +24,13 @@ describe('application launch', function () {
   })
 
   it('shows an initial window', function () {
-    return this.app.client.getWindowCount().then(function (count) {
+   this.app.client.getWindowCount().then(function (count) {
       assert.equal(count, 1)
     })
-  })
-
-		it('opens room info',() => {
-			this.app.client.element('.left.col').click('#7').then(() => {
-				this.app.client.element('.right.col').click('#150').then(() => {
-					assert.equal(1,1);
-				})
+		this.app.client.element('.left.col').click('#7').then(() => {
+			this.app.client.element('.right.col').click('#150').then(() => {
+				assert.equal(1,1);
 			})
 		})
+  })
 })
