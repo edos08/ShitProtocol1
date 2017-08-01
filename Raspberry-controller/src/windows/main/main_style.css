@@ -19,7 +19,7 @@ body{
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  /*position: relative;*/
+  position: relative;
 }
 .right.col{
   width: 70%;
@@ -33,6 +33,12 @@ body{
 
 .room_div{
   padding-bottom: 70px;
+}
+
+.bottom-button{
+  position: absolute;
+  bottom: 0;
+  height: 70px;
 }
 
 #rooms_container{
