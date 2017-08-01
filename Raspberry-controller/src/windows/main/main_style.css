@@ -31,10 +31,9 @@ body{
   padding: 10px;
 }
 
-/*.bottom-button{
-  position: absolute;
-  bottom: 0;
-}*/
+.room_div{
+  padding-bottom: 70px;
+}
 
 #rooms_container{
   list-style: none;
