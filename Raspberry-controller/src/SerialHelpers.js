@@ -192,7 +192,7 @@ function answerToIDCheckRequest(result){
 
 
 function sendDevicesNumberPacket(devicesNumber){
-  console.log(("Sending devices number"));
+  //console.log(("Sending devices number"));
   var buf = Buffer.alloc(2);
   buf[0] = DEVICES_NUMBER_PACKET;
   buf[1] = devicesNumber;
