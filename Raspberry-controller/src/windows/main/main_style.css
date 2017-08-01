@@ -46,7 +46,7 @@ body{
   padding-left: 0px;
   margin: 0px;
   max-height: 60%;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
 #header{
