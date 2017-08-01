@@ -12,7 +12,7 @@ ipc.on('rooms-filled',(event,rooms) =>{
   for(var a = 0; a < rooms.length; a++){
     content += "<button type=\"button\" class = \"list-group-item\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
-  document.getElementById('rooms_container').innerHTML = content;
+  document.getElementById('rooms_container').innerHTML = content + document.getElementById('rooms_container').innerHTML;
 })
 
 ipc.on('dev-no-dialog',(event) => {
