@@ -12,25 +12,34 @@
   <div  class="left col" id = "left">
     <div class = "register_container">
       <h1>Welcome</h1>
+
       <p id = "empty_db_message"></p>
+
       <button id = "register_devices_button">
             Registra nuovi dispositivi
       </button>
+
       <button id = "assign_devices_button" onclick="onAssignButtonCLick()">
         Assegna nuovi dispositivi alle stanze
       </button>
+
       <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()">
         Assegna sensori ai dispositivi sprovvisti
       </button>
+
     </div>
     <hr>
     <div class = "scrollable_container">
       <h3 id="header">Stanze</h3>
+
       <ul id = "rooms_container">
       </ul>
-      <button id = "insert_room_button">
-        Inserisci una nuova stanza
-      </button>
+
+      <div class = "footer row">
+        <button id = "insert_room_button">
+          Inserisci una nuova stanza
+        </button>
+      </div>
     </div>
   </div>
 

@@ -2,10 +2,19 @@ var assert = require('assert');
 var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
 
+var isOpen = false;
+
+var openFunc = function(onPortOpened){
+  onPortOpened();
+}
+
 function mockSerialPort(){
   this.write = sinon.stub();
-  this.open = sinon.stub();
+  this.open = openFunc;
+  this.on = sinon.stub();
+  this.isOpen = isOpen;
 }
+
 
 var serialHelpers = proxyquire('../src/SerialHelpers',{
   'serialport' : mockSerialPort
@@ -153,6 +162,32 @@ describe('serial Helpers:',() => {
       var packet = serialHelpers.answerToHandshake();
       assert.equal(Buffer.byteLength(packet), 1);
       assert.equal(packet[0], 'W'.charCodeAt(0));
+    })
+  })
+
+  describe('port opening',() => {
+
+    var shouldBeCalled = sinon.spy();
+
+    it('should call onPortOpened',() => {
+      serialHelpers.init({},shouldBeCalled);
+      assert.equal(shouldBeCalled.called,true);
+    })
+
+    it('should not call onPortOpened',() => {
+      serialHelpers.init({},null);
+      assert.equal(shouldBeCalled.calledOnce,true);
+    })
+
+    it('should throw an error',() => {
+      var shouldNotBeCalled = sinon.spy();
+      openFunc = function(onPortOpened){
+        onPortOpened({
+          message: 'stub error'
+        });
+      }
+      serialHelpers.init({},shouldNotBeCalled);
+      assert.equal(shouldNotBeCalled.called,false);
     })
   })
 })
