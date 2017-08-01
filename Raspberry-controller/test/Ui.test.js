@@ -28,4 +28,14 @@ describe('application launch', function () {
       assert.equal(count, 1)
     })
   })
+
+	describe('shows device infos',() =>{
+		it('opens room info',() => {
+			this.app.client.element('.left.col').click('#7').then(() => {
+				this.app.client.element('.right.col').click('#150').then(() => {
+					assert.equal(1,1);
+				})
+			})
+		})
+	})
 })
