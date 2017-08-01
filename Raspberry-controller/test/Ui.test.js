@@ -15,11 +15,10 @@ it('test',() => {
 	}).then((isVisible) => {
 		assert.equal(isVisible,true);
 	}).then(() =>{
-		app.client.element('.left.col').click('#7').then(() => {
-			app.client.element('.right.col').click('#150').then(() => {
-				assert.equal(1,1);
-			})
-		})
+		app.client.element('.left.col').click('#7');
+		app.client.element('.right.col').click('#150');
+		assert.equal(1,1);
+
 	}).then(() => {
 		return app.stop();
 	}).catch((error) => {
