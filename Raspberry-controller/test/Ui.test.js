@@ -5,23 +5,15 @@ const path = require('path');
 let app;
 
 describe('application launch', function () {
+	
   this.timeout(10000)
-
-  beforeEach(function () {
-    this.app = new Application({
-      path: electronPath,
-			args: [
-				path.join(__dirname,"..",'src','app')
-			]
-    })
-    return this.app.start()
-  })
-
-  afterEach(function () {
-    if (this.app && this.app.isRunning()) {
-      return this.app.stop()
-    }
-  })
+	this.app = new Application({
+		path: electronPath,
+		args: [
+			path.join(__dirname,"..",'src','app')
+		]
+	})
+	return this.app.start()
 
   it('shows an initial window', function () {
    this.app.client.getWindowCount().then(function (count) {
@@ -33,4 +25,8 @@ describe('application launch', function () {
 			})
 		})
   })
+
+	if (this.app && this.app.isRunning()) {
+		return this.app.stop()
+	}
 })
