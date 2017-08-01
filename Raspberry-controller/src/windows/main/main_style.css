@@ -42,6 +42,7 @@ body{
 #rooms_container{
   overflow-y: auto;
   padding-bottom: 70px;
+  max-height: inherit;
 }
 
 #header{
