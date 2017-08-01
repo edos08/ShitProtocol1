@@ -102,7 +102,7 @@ describe('serial Helpers:',() => {
   })
 
   describe('packet sending',() => {
-    it(' check sendLightValueChangedPacket format',() => {
+    it('check sendLightValueChangedPacket format',() => {
       var packet = serialHelpers.sendLightValueChangedPacket(0xAB192837,600);
       assert.equal(Buffer.byteLength(packet), 7);
       assert.equal(packet[0], 5);
