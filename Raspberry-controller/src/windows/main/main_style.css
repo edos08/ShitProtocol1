@@ -4,6 +4,7 @@ body{
   overflow: hidden;
   padding: 0px;
   margin: 0px;
+  padding-bottom: 70px;
 }
 
 
@@ -17,7 +18,7 @@ body{
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  position: relative;
+  /*position: relative;*/
 }
 .right.col{
   width: 70%;
@@ -29,15 +30,12 @@ body{
   padding: 10px;
 }
 
-.bottom-button{
+/*.bottom-button{
   position: absolute;
   bottom: 0;
-}
-
-
+}*/
 
 #rooms_container{
-
   display: flex;
   flex:  1 1 0;
   flex-direction: column;
