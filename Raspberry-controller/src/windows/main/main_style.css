@@ -41,7 +41,7 @@ body{
 
 #rooms_container{
   height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #header{
