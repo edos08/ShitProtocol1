@@ -4,11 +4,8 @@ let electronPath = require('electron');
 const path = require('path');
 let app;
 
-var
-
-
 describe('application launch', function () {
-  //this.timeout(10000)
+  this.timeout(10000)
 
   beforeEach(function () {
     this.app = new Application({
