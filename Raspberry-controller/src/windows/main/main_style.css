@@ -30,10 +30,7 @@ body{
   padding: 10px;
 }
 
-.panel.panel-default.room_div{
-}
-
-.panel-footer.bottom-button{
+.bottom-button{
   position: absolute;
   bottom: 0;
 }
