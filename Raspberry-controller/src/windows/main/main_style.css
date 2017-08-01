@@ -31,7 +31,6 @@ body{
 }
 
 .room_div{
-  padding-bottom: 70px;
 }
 
 .bottom-button{
@@ -41,7 +40,8 @@ body{
 }
 
 #rooms_container{
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-bottom: 70px;
 }
 
 #header{
