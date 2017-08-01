@@ -40,7 +40,7 @@ body{
 }
 
 #rooms_container{
-  overflow-y: auto;
+  /*overflow-y: auto;*/
   padding-bottom: 70px;
   max-height: inherit;
 }
