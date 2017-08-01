@@ -41,7 +41,7 @@ body{
   padding: 5px;
   padding-left: 0px;
   margin: 0px;
-  max-height: 300px;
+  max-height: 60%;
   overflow-y: scroll;
 }
 
