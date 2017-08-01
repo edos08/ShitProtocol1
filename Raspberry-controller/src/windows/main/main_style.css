@@ -16,9 +16,7 @@ body{
   padding: 10px;
   padding-left: 10px;
   border-style: solid;
-  /*border-top-color: black;*/
   border-bottom-color: black;
-  /*border-top-width: 0.5px;*/
   border-bottom-width: 0.5px;
   border-left-style: none;
   border-right-style: none;
@@ -36,7 +34,6 @@ body{
   /*align-items: stretch;*/
 }
 .right.col{
-  /*float: left;*/
   width: 70%;
   height: 100%;
   margin-left: -1px;
@@ -50,7 +47,7 @@ body{
   position:relative;
 }
 
-.footer.row{
+.footer-row{
   position: absolute;
   bottom: 0;
 }
