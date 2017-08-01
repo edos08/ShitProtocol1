@@ -33,6 +33,7 @@ body{
 
 .room_div{
   position: relative;
+  height: 80%;
 }
 
 .bottom-button{
