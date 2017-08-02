@@ -244,7 +244,7 @@ function insertCheckStateResult(address,value){
       Time: date
     })
     .then(function(){
-      log('Succesful')
+      Console.log('Succesful')
     })
 
   })
