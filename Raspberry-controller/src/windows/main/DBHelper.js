@@ -228,7 +228,8 @@ function deleteRoom(roomID,after){
 function insertCheckStateResult(address,value){
   var date = (new Date).toISOString().replace(/z|t/gi,' ');
   date = date.substr(0,date.length - 5);
-  address = (address >>> 0).toString(16).toUppercase();
+  address = (address >>> 0).toString(16);
+  addess = address.toUpperCase();
   address = "0x" + address;
   knex.withSchema('LoRa')
   .select('ID as dev_id')
