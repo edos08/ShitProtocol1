@@ -108,9 +108,11 @@ ipc.on('change-light-value',(event,newValue,deviceID) => {
 function onLightChangedAction(result){
   if(result == 1){
     dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
-      dialog.showMessageBox({
+      dialog.showMessageBox(window,{
+        type: "info",
+        buttons: ["Ok"],
         title: "Azione riuscita",
-        message: "Valore aggiornato correttamente"
+        message: "Sensore aggiornato correttamente"
       })
     });
   }else{
