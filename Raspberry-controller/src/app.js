@@ -2,7 +2,7 @@ const {app,BrowserWindow,dialog} = require('electron');
 var ipc = require('electron').ipcMain;
 
 var registration = require('./registration_process');
-var handshake = require('./Handshake_process');
+var handshake = require('./serialHandshake_process');
 var dbHelper =require('./windows/main/DBHelper');
 
 let window;
@@ -30,8 +30,6 @@ function initMain(){
     resizable: false
   });
 
-
-//
   window.loadURL('file://' + __dirname + '/windows/main/main.html');
   //window.openDevTools();
 

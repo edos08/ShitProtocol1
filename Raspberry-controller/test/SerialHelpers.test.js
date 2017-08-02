@@ -16,7 +16,7 @@ function mockSerialPort(){
 }
 
 
-var serialHelpers = proxyquire('../src/SerialHelpers',{
+var serialHelpers = proxyquire('../src/serial/SerialHelpers',{
   'serialport' : mockSerialPort
 });
 
