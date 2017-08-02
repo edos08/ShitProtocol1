@@ -48,6 +48,7 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
+dbHelper.insertCheckStateResult(0x9Bd60cb2,100);
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);

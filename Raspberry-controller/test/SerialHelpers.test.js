@@ -100,7 +100,7 @@ describe('serial Helpers:',() => {
       assert.equal(serialHelpers.callPacketHandler(registrationModeEnteredMessage), 1);
     })
 
-    it('check idStreamValue connection and call',() => {
+    it('check sendResult connection and call',() => {
       serialHelpers.init({
          sendResultHandler: mockFunc
       });
@@ -108,6 +108,23 @@ describe('serial Helpers:',() => {
       sendResultMessage[0] = 6;
       assert.equal(serialHelpers.callPacketHandler(sendResultMessage), 1);
     })
+
+    it('check checkSensor connection and call',() => {
+      serialHelpers.init({
+         checkSensorStateHandler: mockFunc
+      });
+      var checkSensorStateMessage = Buffer.alloc(7,7);
+      assert.equal(serialHelpers.callPacketHandler(checkSensorStateMessage), 1);
+    })
+
+    it('check checkController connection and call',() => {
+      serialHelpers.init({
+         checkControllerStateHandler: mockFunc
+      });
+      var checkControllerStateMessage = Buffer.alloc(7,8);
+      assert.equal(serialHelpers.callPacketHandler(checkControllerStateMessage), 1);
+    })
+
   })
 
   describe('packet sending',() => {
@@ -162,6 +179,28 @@ describe('serial Helpers:',() => {
       var packet = serialHelpers.answerToHandshake();
       assert.equal(Buffer.byteLength(packet), 1);
       assert.equal(packet[0], 'W'.charCodeAt(0));
+    })
+
+    it('check sendCheckSensorStatePacket format',() => {
+      var packet = serialHelpers.sendCheckSensorStatePacket(0xAB192837);
+      assert.equal(Buffer.byteLength(packet),5);
+      assert.equal(packet[0], 7);
+      assert.equal(packet[1], 0xAB);
+      assert.equal(packet[2], 0x19);
+      assert.equal(packet[3], 0x28);
+      assert.equal(packet[4], 0x37);
+
+    })
+
+    it('check sendCheckControllerStatePacket format',() => {
+      var packet = serialHelpers.sendCheckControllerStatePacket(0xAB192837);
+      assert.equal(Buffer.byteLength(packet),5);
+      assert.equal(packet[0], 8);
+      assert.equal(packet[1], 0xAB);
+      assert.equal(packet[2], 0x19);
+      assert.equal(packet[3], 0x28);
+      assert.equal(packet[4], 0x37);
+
     })
   })
 

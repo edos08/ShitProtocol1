@@ -225,6 +225,29 @@ function deleteRoom(roomID,after){
   })
 }
 
+function insertCheckStateResult(address,value){
+  var date = (new Date).toISOString().replace(/z|t/gi,' ');
+  date = date.substr(0,date.length - 5);
+
+  knex.withSchema('LoRa')
+  .select('ID ad dev_id')
+  .from('Devices')
+  .where('Address',address)
+  .then((devices) => {
+    knex('Status_log').withSchema('LoRa')
+    .insert({
+      Device: devices[0].dev_id,
+      Value: value,
+      Time: date
+    })
+    .then(function(){
+      log('Succesful')
+    })
+
+  })
+
+}
+
 module.exports = {
   checkFirstStartupOfSystem,
   fillRoomsScreen,
@@ -245,5 +268,6 @@ module.exports = {
   getDeviceInfo,
   changeLightValue,
   getAddressForController,
-  deleteRoom
+  deleteRoom,
+  insertCheckStateResult
 }
