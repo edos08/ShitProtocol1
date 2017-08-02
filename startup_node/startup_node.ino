@@ -252,7 +252,7 @@ void serialEvent(){
   if(isCheckSensorStatePacket(serialBuffer,serialMessageLength)){
     hasToCheck = true;
     device_is_sensor = true;
-    device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1));
+    device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
     has_to_retry = false;
     retries = 0;
     retry_timer = millis();
