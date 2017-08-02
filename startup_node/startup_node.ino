@@ -18,7 +18,7 @@ uint32_t device_to_check;
 bool device_is_sensor;
 bool hasToRetry = true;
 uint8_t retries;
-unsigned long long retry_timer
+unsigned long long retry_timer;
 bool hasToSendSerialResult = false;
 uint16_t device_value;
 
