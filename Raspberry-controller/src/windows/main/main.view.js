@@ -77,7 +77,7 @@ ipc.on('devices-loaded',(event,devices,roomID) =>{
   }else{
     content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
-  content += "<button id = \"" + roomID +"\" onClick=\"deleteRoomButton(this)\"> Elimina la stanza </button>";
+  content += "<button id = \"" + roomID +"\" class = \"btn btn-default\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
   document.getElementById('content').innerHTML = content;
 })
 
