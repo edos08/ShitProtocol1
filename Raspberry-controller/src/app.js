@@ -207,9 +207,11 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
-    dialog.showMessageBox({
+    dialog.showMessageBox(window,{
+      type: "info",
+      buttons: ["Ok"].
       title: "Azione riuscita",
-      message: "Sensore aggiornato correttamente" 
+      message: "Sensore aggiornato correttamente"
     })
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
