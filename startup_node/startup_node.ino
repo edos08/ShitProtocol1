@@ -16,7 +16,7 @@ char serialBuffer[SERIAL_BUFFER_SIZE];
 bool hasToCheck = false;
 uint32_t device_to_check;
 bool device_is_sensor;
-bool hasToRetry = true;
+bool has_to_retry = true;
 uint8_t retries;
 unsigned long long retry_timer;
 bool hasToSendSerialResult = false;
@@ -242,7 +242,7 @@ void serialEvent(){
     hasToCheck = true;
     device_is_sensor = true;
     device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1));
-    hasToRetry = false;
+    has_to_retry = false;
     retries = 0;
     retry_timer = millis();
   }
