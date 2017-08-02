@@ -81,8 +81,19 @@ void loop() {
           if(millis() - retry_timer > CONTROLLER_TIMEOUT){
             if(retries < 3)
               has_to_retry = true;
+            else{
+              hasToCheck = false;
+              hasToSendSerialResult = true;
+              device_value = -1;
+            }
             retries++;
           }
+        }
+      }else{
+        if(millis() - retry_timer < SENSOR_TIMEOUT){
+          hasToCheck = false;
+          hasToSendSerialResult = true;
+          device_value = -1;
         }
       }
     }
