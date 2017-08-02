@@ -108,7 +108,10 @@ ipc.on('change-light-value',(event,newValue,deviceID) => {
 function onLightChangedAction(result){
   if(result == 1){
     dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
-      //gatherDeviceInfo(event,deviceID);
+      dialog.showMessageBox({
+        title: "Azione riuscita",
+        message: "Valore aggiornato correttamente"
+      })
     });
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
@@ -204,6 +207,10 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
+    dialog.showMessageBox({
+      title: "Azione riuscita",
+      message: "Sensore aggiornato correttamente" 
+    })
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
