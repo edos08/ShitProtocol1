@@ -1,5 +1,5 @@
 var helpers = require('./SerialHelpers');
-var dbHelper = require('./windows/main/DBHelper');
+var dbHelper = require('../windows/main/DBHelper');
 
 
 var devicesToRegister = 1; //this should be given from the user (1 - 255)
