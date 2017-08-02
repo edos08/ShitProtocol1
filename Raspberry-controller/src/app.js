@@ -209,7 +209,7 @@ function onSensorSubmissionAction(result){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
     dialog.showMessageBox(window,{
       type: "info",
-      buttons: ["Ok"].
+      buttons: ["Ok"],
       title: "Azione riuscita",
       message: "Sensore aggiornato correttamente"
     })
