@@ -234,6 +234,7 @@ function insertCheckStateResult(address,value){
   .from('Devices')
   .where('Address',address)
   .then((devices) => {
+    console.log(devices);
     knex('Status_log').withSchema('LoRa')
     .insert({
       Device: devices[0].dev_id,
