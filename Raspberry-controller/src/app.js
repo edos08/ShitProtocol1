@@ -108,12 +108,7 @@ ipc.on('change-light-value',(event,newValue,deviceID) => {
 function onLightChangedAction(result){
   if(result == 1){
     dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
-      dialog.showMessageBox(window,{
-        type: "info",
-        buttons: ["Ok"],
-        title: "Azione riuscita",
-        message: "Sensore aggiornato correttamente"
-      })
+      displaySuccessDialog("Luminosità aggiornata correttamente");
     });
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
@@ -209,12 +204,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
-    dialog.showMessageBox(window,{
-      type: "info",
-      buttons: ["Ok"],
-      title: "Azione riuscita",
-      message: "Sensore aggiornato correttamente"
-    })
+    displaySuccessDialog("Sensore aggiornato correttamente");
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
@@ -293,4 +283,13 @@ function selectSensorFunction(deviceID,roomID){
 
     var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
     chooseSensorWindow.loadURL(chooseSensorWindowURL);
+}
+
+function displaySuccessDialog(success_message){
+  dialog.showMessageBox(window,{
+    type: "info",
+    buttons: ["Ok"],
+    title: "Azione riuscita",
+    message: success_message
+  })
 }
