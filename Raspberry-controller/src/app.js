@@ -30,6 +30,8 @@ function initMain(){
     resizable: false
   });
 
+
+//
   window.loadURL('file://' + __dirname + '/windows/main/main.html');
   //window.openDevTools();
 
