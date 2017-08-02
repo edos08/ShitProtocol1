@@ -230,7 +230,7 @@ function insertCheckStateResult(address,value){
   date = date.substr(0,date.length - 5);
 
   knex.withSchema('LoRa')
-  .select('ID ad dev_id')
+  .select('ID as dev_id')
   .from('Devices')
   .where('Address',address)
   .then((devices) => {
