@@ -102,5 +102,7 @@ module.exports = {
   terminate,
   sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket,
   sendLightValueChangedPacket: helpers.sendLightValueChangedPacket,
-  setAction
+  setAction,
+  sendCheckSensorStatePacket: helpers.sendCheckSensorStatePacket,
+  sendCheckControllerStatePacket: helpers.sendCheckControllerStatePacket
 }

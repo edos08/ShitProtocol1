@@ -48,7 +48,9 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
-dbHelper.insertCheckStateResult(0x9Bd60cb2,100);
+ipc.on('test-ping',() => {
+  sendCheckControllerStatePacket(0x9Bd60cb2);
+})
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
