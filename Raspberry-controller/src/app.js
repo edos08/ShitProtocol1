@@ -49,7 +49,7 @@ app.on('quit',()=>{
 })
 
 ipc.on('test-ping',() => {
-  sendCheckControllerStatePacket(0x9Bd60cb2);
+  registration.sendCheckControllerStatePacket(0x9Bd60cb2);
 })
 
 function onRegistrationEnd(result){
