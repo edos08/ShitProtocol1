@@ -1,8 +1,8 @@
 const {app,BrowserWindow,dialog} = require('electron');
 var ipc = require('electron').ipcMain;
 
-var registration = require('./registration_process');
-var handshake = require('./serialHandshake_process');
+var registration = require('./serial/registration_process');
+var handshake = require('./serial/serialHandshake_process');
 var dbHelper =require('./windows/main/DBHelper');
 
 let window;
