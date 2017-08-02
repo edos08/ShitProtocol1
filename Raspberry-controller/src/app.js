@@ -26,7 +26,8 @@ app.on('ready', function(){
 function initMain(){
   window = new BrowserWindow({
     width: 1024,
-    height: 768
+    height: 768,
+    resizable: false
   });
 
   window.loadURL('file://' + __dirname + '/windows/main/main.html');
