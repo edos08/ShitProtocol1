@@ -15,8 +15,14 @@ function init(){
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
     registrationModeEnteredHandler: handleRegistrationModeEntered,
-    sendResultHandler: handleSendResultPackets
+    sendResultHandler: handleSendResultPackets,
+    checkSensorStateHandler: handleCheckState,
+    isCheckControllerStatePacket: handleCheckState
   });
+}
+
+function handleCheckState(address,value){
+  dbHelper.insertCheckStateResult(address,value);
 }
 
 function start(processEndHandler,devicesNumber){
