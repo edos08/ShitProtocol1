@@ -321,6 +321,7 @@ function pingCallback(){
   if(deviceIndex < devicesList.length){
     pingDevice(devicesList[deviceIndex]);
   }else{
+    console.log("Pinging ended");
     setTimeout(checkDevicesStatus, 1000 * 60 * 5);
   }
 }
