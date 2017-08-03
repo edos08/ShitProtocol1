@@ -328,7 +328,7 @@ function pingCallback(value){
     console.log("Pinging ended");
     if(unreachableDevicesList.length > 0){
       var unreachableDevicesText = "";
-      for(var a = 0; a < unreachableDevicesList.lenght; a++){
+      for(var a = 0; a < unreachableDevicesList.length; a++){
         unreachableDevicesText += unreachableDevicesList[a].Address + " (" + unreachableDevicesList[a].Type + ")\n";
       }
       dialog.showErrorBox('Alcuni dispositivi non risultano raggiungigbili',unreachableDevicesText);
