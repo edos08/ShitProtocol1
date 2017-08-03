@@ -54,6 +54,7 @@ void loop() {
     Serial.print("Valore fotoresistenza: ");
     Serial.println(sensorValue);
     int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
+    Helpers::printResponseMessage(result);
     delay(SENSOR_SEND_DATA_WAITING_TIME);
     return;
   }
