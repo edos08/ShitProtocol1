@@ -252,10 +252,15 @@ function insertCheckStateResult(address,value,callback){
 }
 
 function queryAllDevicesAddresses(callback){
+  knex.withSchema('LoRa')
+  .select('Address','Type')
+  .from('Devices')
+  .where('Type','<>',1)
   .then((devices) => {
-
+    callback(devices);
   })
 }
+
 module.exports = {
   checkFirstStartupOfSystem,
   fillRoomsScreen,
@@ -277,5 +282,6 @@ module.exports = {
   changeLightValue,
   getAddressForController,
   deleteRoom,
-  insertCheckStateResult
+  insertCheckStateResult,
+  queryAllDevicesAddresses
 }
