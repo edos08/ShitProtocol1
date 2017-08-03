@@ -149,6 +149,7 @@ function getAddressesForControllerAndSensor(controllerID,sensorID,after){
 }
 
 function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selectDeviceFunction){
+  console.log("test-" + deviceID);
   knex.withSchema('LoRa')
   .select('Room')
   .from('Devices')
