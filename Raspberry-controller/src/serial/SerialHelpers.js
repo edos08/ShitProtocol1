@@ -282,10 +282,10 @@ function sendCheckSensorStatePacket(sensorAddress){
   return buf;
 }
 
-function sendCheckControllerStatePacket(sensorAddress){
+function sendCheckControllerStatePacket(controllerAddress){
   var buf = Buffer.alloc(5);
   buf[0] = CHECK_CONTROLLER_STATE_PACKET;
-  write32BitInt(buf,1,sensorAddress);
+  write32BitInt(buf,1,controllerAddress);
   port.write(buf);
   return buf;
 }
