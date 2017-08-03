@@ -329,7 +329,8 @@ function pingCallback(value){
     if(unreachableDevicesList.length > 0){
       var unreachableDevicesText = "";
       for(var a = 0; a < unreachableDevicesList.length; a++){
-        unreachableDevicesText += unreachableDevicesList[a].Address + " (" + unreachableDevicesList[a].Type + ")\n";
+        var deviceName = (unreachableDevicesList[a].Description != null)?unreachableDevicesList[a].Description:"Dispositivo senza nome";
+        unreachableDevicesText += deviceName + " (" + unreachableDevicesList[a].T_Description + ")\n";
       }
       dialog.showErrorBox('Alcuni dispositivi non risultano raggiungigbili',unreachableDevicesText);
     }
