@@ -214,7 +214,8 @@ function onSensorSubmissionAction(result){
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
-  chooseSensorWindow.close();
+  if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
+    chooseSensorWindow.close();
 }
 
 ipc.on('room_id_request',function(event){
