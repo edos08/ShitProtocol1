@@ -19,6 +19,8 @@ let currentDeviceWhichValueIsBeingChanged = -1;
 let currentValueThatIsBeingChanged = -1;
 let selectSensorAfterwardsTrigger = false;
 
+let devicePingingDone = false;
+
 app.on('ready', function(){
   handshake.init(initMain);
 });
@@ -37,7 +39,8 @@ function initMain(){
     window = null;
   });
 
-  registration.init();
+  registration.init(pingCallback);
+  checkDevicesStatus();
 }
 
 app.on('window-all-closed', () => {
@@ -296,4 +299,32 @@ function displaySuccessDialog(success_message){
     title: "Azione riuscita",
     message: success_message
   })
+}
+
+function checkDevicesStatus(){
+    dbHelper.queryAllDevicesAddresses(pingAllDevices);
+}
+
+function pingAllDevices(devices){
+  var hasSentPing = false;
+  for(var a = 0; a < devices.length; a++){
+    if(!hasSentPing){
+      console.log("Pinging device: " + (devices[a].Address >>> 0).toString(16));
+      devicePingingDone = false;
+      hasSentPing = true;
+      if(devices.Type == 3)
+        registration.sendCheckSensorStatePacket(devices[a].Address);
+      else if (devices.Type == 2) {
+        registration.sendCheckControllerStatePacket(devices[a].Address);
+      }
+    }
+    if(!devicePingingDone){
+      a--;
+    }
+  }
+  setTimeout(checkDevicesStatus, 1000 * 60 * 5);
+}
+
+function pingCallback(){
+  devicePingingDone = true;
 }

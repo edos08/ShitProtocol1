@@ -225,7 +225,7 @@ function deleteRoom(roomID,after){
   })
 }
 
-function insertCheckStateResult(address,value){
+function insertCheckStateResult(address,value,callback){
   var date = (new Date).toISOString().replace(/z|t/gi,' ');
   date = date.substr(0,date.length - 5);
   address = (address >>> 0).toString(16);
@@ -244,13 +244,18 @@ function insertCheckStateResult(address,value){
       Time: date
     })
     .then(function(){
-      console.log('Succesful')
+      console.log('Succesful');
+      callback();
     })
 
   })
-
 }
 
+function queryAllDevicesAddresses(callback){
+  .then((devices) => {
+
+  })
+}
 module.exports = {
   checkFirstStartupOfSystem,
   fillRoomsScreen,

@@ -290,6 +290,16 @@ function sendCheckControllerStatePacket(controllerAddress){
   return buf;
 }
 
+function queryAllDevicesAddresses(callback){
+  knex.withSchema('LoRa')
+  .select('Address','Type')
+  .from('Devices')
+  .where('Type','<>',1)
+  .then((devices) => {
+    callback(devices);
+  })
+}
+
 module.exports = {
   init,
   answerToHandshake,
@@ -302,6 +312,7 @@ module.exports = {
   sendLightValueChangedPacket,
   sendCheckSensorStatePacket,
   sendCheckControllerStatePacket,
+  queryAllDevicesAddresses,
   //for testing purposes
   write32BitInt,
   callPacketHandler
