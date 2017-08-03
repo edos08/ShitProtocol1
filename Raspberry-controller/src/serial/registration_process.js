@@ -7,8 +7,10 @@ var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
 let action;
+let pingCallback;
 
-function init(){
+function init(_pingCallback){
+  pingCallback = _pingCallback;
   helpers.init({
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
@@ -22,7 +24,8 @@ function init(){
 }
 
 function handleCheckState(address,value){
-  dbHelper.insertCheckStateResult(address,value);
+  dbHelper.insertCheckStateResult(address,value,pingCallback);
+
 }
 
 function start(processEndHandler,devicesNumber){
