@@ -230,9 +230,9 @@ function insertCheckStateResult(address,value,callback){
   var date = (new Date).toISOString().replace(/z|t/gi,' ');
   date = date.substr(0,date.length - 5);
   address = (address >>> 0).toString(16);
-  addess = address.toUpperCase();
+  address = address.toUpperCase();
   while(address.length < 8){
-    address = "0" + addresss;
+    address = "0" + address;
   }
   address = "0x" + address;
   knex.withSchema('LoRa')
