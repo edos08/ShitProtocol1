@@ -27,8 +27,8 @@ function populateListItemWithDeviceInfo(device){
   var content = "<li id = \"" + device.id +"\" class = \"list-group-item\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
-  + "<button onClick=\"onDeviceRenameButtonClick(this)\" class = \"btn btn-normal\"> Rinomina dispositivo </button>"
-  + ((device.dev_type_id == 2)?"<button class = \"btn btn-normal\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
+  + "<button onClick=\"onDeviceRenameButtonClick(this)\" class = \"btn btn-default\"> Rinomina dispositivo </button>"
+  + ((device.dev_type_id == 2)?"<button class = \"btn btn-default\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
   + " </li>";
   return content;
 }
