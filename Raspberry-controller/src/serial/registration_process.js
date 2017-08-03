@@ -1,5 +1,5 @@
 var helpers = require('./SerialHelpers');
-var dbHelper = require('./windows/main/DBHelper');
+var dbHelper = require('../windows/main/DBHelper');
 
 
 var devicesToRegister = 1; //this should be given from the user (1 - 255)
@@ -7,16 +7,25 @@ var isAcceptationIDStreamActive = false;
 var accepted_ids = 0;
 var onEnd;
 let action;
+let pingCallback;
 
-function init(){
+function init(_pingCallback){
+  pingCallback = _pingCallback;
   helpers.init({
     idCheckRequestHandler: handleIDCheckRequest,
     idStreamStartHandler: handleIDStreamStartMessage,
     idStreamValueHandler: handleIDStreamValueMessage,
     idStreamEndHandler: handleIDStreamEndMessage,
     registrationModeEnteredHandler: handleRegistrationModeEntered,
-    sendResultHandler: handleSendResultPackets
+    sendResultHandler: handleSendResultPackets,
+    checkSensorStateHandler: handleCheckState,
+    checkControllerStateHandler: handleCheckState
   });
+}
+
+function handleCheckState(address,value){
+  dbHelper.insertCheckStateResult(address,value,pingCallback);
+
 }
 
 function start(processEndHandler,devicesNumber){
@@ -96,5 +105,7 @@ module.exports = {
   terminate,
   sendSensorSubmissionPacket: helpers.sendSensorSubmissionPacket,
   sendLightValueChangedPacket: helpers.sendLightValueChangedPacket,
-  setAction
+  setAction,
+  sendCheckSensorStatePacket: helpers.sendCheckSensorStatePacket,
+  sendCheckControllerStatePacket: helpers.sendCheckControllerStatePacket
 }

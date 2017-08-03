@@ -5,7 +5,7 @@
     <title>Management app</title>
     <link rel="stylesheet" type="text/css" href="main_style.css">
     <link href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../sb-admin-2.min.css" rel="stylesheet">
+    <link href="../sb-admin-2.min.css" rel="stylesheet">
     <script src="./main.view.js"></script>
 </head>
 <body onload="setUpElements()">
@@ -43,9 +43,13 @@
     </div>
   </div>
 
-  <div id = "content" class="right col">
+  <div id = "content" class="right col container">
     Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti
+    <button class="btn btn-default" onclick="sendPing()">
+        Test ping
+    </button>
   </div>
+
 
 </body>
 </html>

@@ -8,7 +8,20 @@
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15
 
+#define CONTROLLER_TIMEOUT 6000
+#define SENSOR_TIMEOUT 15000
+
 char serialBuffer[SERIAL_BUFFER_SIZE];
+
+bool hasToCheck = false;
+uint32_t device_to_check;
+bool device_is_sensor;
+bool has_to_retry = true;
+uint8_t retries;
+unsigned long long retry_timer;
+bool hasToSendSerialResult = false;
+uint16_t device_value;
+
 
 void setup() {
   Serial.begin(9600);
@@ -58,6 +71,43 @@ void loop() {
             }
       }
     }
+
+    if(hasToCheck){
+      if(!device_is_sensor){
+        if(has_to_retry){
+          has_to_retry = false;
+          retry_timer = millis();
+          sendPacket(PingRequestPacket(device_to_check,NODE_ADDRESS));
+        }else{
+          if(millis() - retry_timer > CONTROLLER_TIMEOUT){
+            if(retries < 3)
+              has_to_retry = true;
+            else{
+              hasToCheck = false;
+              hasToSendSerialResult = true;
+              device_value = -1;
+            }
+            retries++;
+          }
+        }
+      }else{
+        if(millis() - retry_timer > SENSOR_TIMEOUT){
+          hasToCheck = false;
+          hasToSendSerialResult = true;
+          device_value = -1;
+        }
+      }
+    }
+
+    if(hasToSendSerialResult){
+      hasToSendSerialResult = false;
+      if(device_is_sensor){
+        sendSensorStatePacket(device_to_check,device_value);
+      }else{
+        sendControllerStatePacket(device_to_check,device_value);
+      }
+    }
+
   }
 }
 
@@ -101,8 +151,23 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
           alertDoubledDevicesTrigger = true;
         }
       }
-   } else {
-    Serial.println("Waitinn");
+   }
+   if(isSensorValuePacket(idSubmissionPacket.type,idSubmissionPacket.packetLength)){
+     //Serial.println("Sensor value");
+     if(hasToCheck && device_is_sensor && idSubmissionPacket.sender == device_to_check ){
+       //Serial.println("My sensor");
+       hasToCheck = false;
+       hasToSendSerialResult = true;
+       device_value = 0;
+       device_value = ((uint16_t)idSubmissionPacket.body[0]) << 8;
+       device_value |= idSubmissionPacket.body[1];
+     }
+   } else if(hasToCheck && !device_is_sensor && isPingResponsePacket(idSubmissionPacket.type,idSubmissionPacket.packetLength)){
+     hasToCheck = false;
+     hasToSendSerialResult = true;
+     device_value = 0;
+     device_value = ((uint16_t)idSubmissionPacket.body[0]) << 8;
+     device_value |= idSubmissionPacket.body[1];
    }
 }
 
@@ -186,10 +251,30 @@ void serialEvent(){
     int result = sendPacket(LightValueChangedPacket(controllerAddress,NODE_ADDRESS,serialBuffer + 5));
     //Helpers::printResponseMessage(result);
     sendResultMessage(result);
-
-  } else {
-    Serial.println("unrecognized");
+    return;
   }
+
+  if(isCheckSensorStatePacket(serialBuffer,serialMessageLength)){
+    hasToCheck = true;
+    device_is_sensor = true;
+    device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
+    has_to_retry = false;
+    retries = 0;
+    retry_timer = millis();
+    return;
+  }
+
+  if(isCheckControllerStatePacket(serialBuffer,serialMessageLength)){
+    hasToCheck = true;
+    device_is_sensor = false;
+    device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
+    has_to_retry = true;
+    retries = 0;
+    return;
+  }
+
+  Serial.println("unrecognized");
+
 }
 
 int readSerialContent(){

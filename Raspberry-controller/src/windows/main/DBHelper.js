@@ -225,6 +225,43 @@ function deleteRoom(roomID,after){
   })
 }
 
+function insertCheckStateResult(address,value,callback){
+  var date = (new Date).toISOString().replace(/z|t/gi,' ');
+  date = date.substr(0,date.length - 5);
+  address = (address >>> 0).toString(16);
+  addess = address.toUpperCase();
+  address = "0x" + address;
+  knex.withSchema('LoRa')
+  .select('ID as dev_id')
+  .from('Devices')
+  .where('Address',address)
+  .then((devices) => {
+    console.log(devices);
+    knex('Status_log').withSchema('LoRa')
+    .insert({
+      Device: devices[0].dev_id,
+      Value: value,
+      Time: date
+    })
+    .then(function(){
+      console.log('Succesful');
+      callback(value);
+    })
+
+  })
+}
+
+function queryAllDevicesAddresses(callback){
+  knex.withSchema('LoRa')
+  .select('Devices.Address as Address','Devices.Type as Type','Devices.Description as Description','Device_types.Description as T_Description')
+  .innerJoin('Device_types','Devices.Type','Device_types.ID')
+  .from('Devices')
+  .where('Type','<>',1)
+  .then((devices) => {
+    callback(devices);
+  })
+}
+
 module.exports = {
   checkFirstStartupOfSystem,
   fillRoomsScreen,
@@ -245,5 +282,7 @@ module.exports = {
   getDeviceInfo,
   changeLightValue,
   getAddressForController,
-  deleteRoom
+  deleteRoom,
+  insertCheckStateResult,
+  queryAllDevicesAddresses
 }

@@ -13,6 +13,8 @@ const MESSAGE_TYPE_ENTER_REGISTRATION_MODE = 3;
 const SENSOR_SUBMISSION_PACKET = 4;
 const LIGHT_VALUE_CHANGED_PACKET = 5;
 const SEND_RESULT_PACKET = 6;
+const CHECK_SENSOR_STATE_PACKET = 7;
+const CHECK_CONTROLLER_STATE_PACKET = 8;
 
 const masks = [
   0xFF000000,
@@ -35,6 +37,8 @@ var idStreamValueHandler;
 var idStreamEndHandler;
 var registrationModeEnteredHandler;
 var sendResultHandler;
+var checkSensorStateHandler;
+var checkControllerStateHandler;
 
 var onOpenFunction;
 
@@ -57,6 +61,8 @@ function connectHandlers(handlers){
   handshakeEndHandler = handlers.handshakeEndHandler;
   registrationModeEnteredHandler = handlers.registrationModeEnteredHandler;
   sendResultHandler = handlers.sendResultHandler;
+  checkSensorStateHandler = handlers.checkSensorStateHandler;
+  checkControllerStateHandler = handlers.checkControllerStateHandler;
 }
 
 function openPort(){
@@ -128,7 +134,18 @@ function callPacketHandler(data){
   if(isSendResultPacket(data) && sendResultHandler){
     return sendResultHandler(data[1]);
   }
-
+  if(isCheckSensorStatePacket(data) && checkSensorStateHandler){
+    var address = read32bitInt(data,1);
+    var value = data[5] << 8;
+    value |= data[6];
+    return checkSensorStateHandler(address,value);
+  }
+  if(isCheckControllerStatePacket(data) && checkControllerStateHandler){
+    var address = read32bitInt(data,1);
+    var value = data[5] << 8;
+    value |= data[6];
+    return checkControllerStateHandler(address,value);
+  }
   console.log("Unrecognized serial");
 
 }
@@ -180,6 +197,14 @@ function isHandshakeEndPacket(data){
 
 function isRegistrationModeEnteredPacket(data){
   return data[0] == MESSAGE_TYPE_ENTER_REGISTRATION_MODE;
+}
+
+function isCheckSensorStatePacket(data){
+  return data[0] == CHECK_SENSOR_STATE_PACKET && Buffer.byteLength(data) == 7;
+}
+
+function isCheckControllerStatePacket(data){
+  return data[0] == CHECK_CONTROLLER_STATE_PACKET && Buffer.byteLength(data) == 7;
 }
 
 function answerToIDCheckRequest(result){
@@ -249,6 +274,22 @@ function sendLightValueChangedPacket(controllerAddress,newValue){
   return buf;
 }
 
+function sendCheckSensorStatePacket(sensorAddress){
+  var buf = Buffer.alloc(5);
+  buf[0] = CHECK_SENSOR_STATE_PACKET;
+  write32BitInt(buf,1,sensorAddress);
+  port.write(buf);
+  return buf;
+}
+
+function sendCheckControllerStatePacket(controllerAddress){
+  var buf = Buffer.alloc(5);
+  buf[0] = CHECK_CONTROLLER_STATE_PACKET;
+  write32BitInt(buf,1,controllerAddress);
+  port.write(buf);
+  return buf;
+}
+
 module.exports = {
   init,
   answerToHandshake,
@@ -259,6 +300,8 @@ module.exports = {
   sendSensorSubmissionPacket,
   sendResetMessage,
   sendLightValueChangedPacket,
+  sendCheckSensorStatePacket,
+  sendCheckControllerStatePacket,
   //for testing purposes
   write32BitInt,
   callPacketHandler
