@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "electron .",
-    "install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.6.11 --target_arch=x64 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell",
+    "install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.6.11 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell",
     "test": "mocha"
   },
   "author": "",
