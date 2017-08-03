@@ -120,7 +120,7 @@ static bool isCheckControllerStatePacket(char dataBuffer[], int buffer_size){
 
 static void sendSensorStatePacket(uint32_t address, uint16_t value){
   char buffer[7];
-  buffer[0] = 7;
+  buffer[0] = MESSAGE_TYPE_CHECK_SENSOR_STATUS;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,address);
   buffer[5] = ((value & 0xFF00) >> 8);
   buffer[6] = ((value & 0x00FF) >> 0);
@@ -129,7 +129,7 @@ static void sendSensorStatePacket(uint32_t address, uint16_t value){
 
 static void sendControllerStatePacket(uint32_t address, uint16_t value){
   char buffer[7];
-  buffer[0] = 8;
+  buffer[0] = MESSAGE_TYPE_CHECK_CONTROLLER_STATUS;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,address);
   buffer[5] = ((value & 0xFF00) >> 8);
   buffer[6] = ((value & 0x00FF) >> 0);
