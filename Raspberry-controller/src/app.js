@@ -21,6 +21,9 @@ let selectSensorAfterwardsTrigger = false;
 
 let devicePingingDone = false;
 
+let devicesList = [];
+let deviceIndex  = 0;
+
 app.on('ready', function(){
   handshake.init(initMain);
 });
@@ -306,25 +309,27 @@ function checkDevicesStatus(){
 }
 
 function pingAllDevices(devices){
-  var hasSentPing = false;
-  for(var a = 0; a < devices.length; a++){
-    if(!hasSentPing){
-      console.log("Pinging device: " + (devices[a].Address >>> 0).toString(16));
-      devicePingingDone = false;
-      hasSentPing = true;
-      if(devices.Type == 3)
-        registration.sendCheckSensorStatePacket(devices[a].Address);
-      else if (devices.Type == 2) {
-        registration.sendCheckControllerStatePacket(devices[a].Address);
-      }
-    }
-    if(!devicePingingDone){
-      a--;
-    }
+  devicesList = devices;
+  deviceIndex = 0;
+  if(deviceIndex < devicesList.length){
+    pingDevice(devices[deviceIndex]);
   }
-  setTimeout(checkDevicesStatus, 1000 * 60 * 5);
 }
 
 function pingCallback(){
-  devicePingingDone = true;
+  deviceIndex++;
+  if(deviceIndex < devicesList.length){
+    pingDevice(devices[deviceIndex]);
+  }else{
+    setTimeout(checkDevicesStatus, 1000 * 60 * 5);
+  }
+}
+
+function pingDevice(device){
+  console.log("Pinging device: 0x" + (device.Address >>> 0).toString(16));
+  if(device.Type == 3)
+    registration.sendCheckSensorStatePacket(device.Address);
+  else if (device.Type == 2) {
+    registration.sendCheckControllerStatePacket(device.Address);
+  }
 }
