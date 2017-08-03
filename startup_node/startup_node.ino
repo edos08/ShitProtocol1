@@ -76,7 +76,8 @@ void loop() {
       if(!device_is_sensor){
         if(has_to_retry){
           has_to_retry = false;
-          //send ping message
+          retry_timer = millis();
+          sendPacket(PingRequestPacket(device_to_check,NODE_ADDRESS));
         }else{
           if(millis() - retry_timer > CONTROLLER_TIMEOUT){
             if(retries < 3)
@@ -254,6 +255,15 @@ void serialEvent(){
     device_is_sensor = true;
     device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
     has_to_retry = false;
+    retries = 0;
+    retry_timer = millis();
+  }
+
+  if(isCheckControllerStatePacket(serialBuffer,serialMessageLength)){
+    hasToCheck = true;
+    device_is_sensor = false;
+    device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
+    has_to_retry = true;
     retries = 0;
     retry_timer = millis();
   }
