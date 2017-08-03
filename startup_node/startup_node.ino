@@ -91,7 +91,7 @@ void loop() {
           }
         }
       }else{
-        if(millis() - retry_timer < SENSOR_TIMEOUT){
+        if(millis() - retry_timer > SENSOR_TIMEOUT){
           hasToCheck = false;
           hasToSendSerialResult = true;
           device_value = -1;
@@ -100,6 +100,7 @@ void loop() {
     }
 
     if(hasToSendSerialResult){
+      hasToSendSerialResult = false;
       if(device_is_sensor){
         sendSensorStatePacket(device_to_check,device_value);
       }else{
@@ -257,6 +258,7 @@ void serialEvent(){
     has_to_retry = false;
     retries = 0;
     retry_timer = millis();
+    return;
   }
 
   if(isCheckControllerStatePacket(serialBuffer,serialMessageLength)){
@@ -265,7 +267,7 @@ void serialEvent(){
     device_to_check = Helpers::read32bitInt((uint8_t*) serialBuffer + 1);
     has_to_retry = true;
     retries = 0;
-    retry_timer = millis();
+    return;
   }
 
   Serial.println("unrecognized");
