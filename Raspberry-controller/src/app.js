@@ -1,8 +1,8 @@
 const {app,BrowserWindow,dialog} = require('electron');
 var ipc = require('electron').ipcMain;
 
-var registration = require('./registration_process');
-var handshake = require('./Handshake_process');
+var registration = require('./serial/registration_process');
+var handshake = require('./serial/Handshake_process');
 var dbHelper =require('./windows/main/DBHelper');
 
 let window;
@@ -18,6 +18,11 @@ let currentSensorTowhichTheDeviceIsBeingConnected = -1;
 let currentDeviceWhichValueIsBeingChanged = -1;
 let currentValueThatIsBeingChanged = -1;
 let selectSensorAfterwardsTrigger = false;
+
+let devicesList = [];
+let deviceIndex  = 0;
+
+let unreachableDevicesList = [];
 
 app.on('ready', function(){
   handshake.init(initMain);
@@ -37,7 +42,8 @@ function initMain(){
     window = null;
   });
 
-  registration.init();
+  registration.init(pingCallback);
+  setTimeout(checkDevicesStatus, 1000 * 10);
 }
 
 app.on('window-all-closed', () => {
@@ -48,6 +54,9 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
+ipc.on('test-ping',() => {
+  registration.sendCheckSensorStatePacket(0x95bdb63d);
+})
 
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
@@ -293,4 +302,47 @@ function displaySuccessDialog(success_message){
     title: "Azione riuscita",
     message: success_message
   })
+}
+
+function checkDevicesStatus(){
+    dbHelper.queryAllDevicesAddresses(pingAllDevices);
+}
+
+function pingAllDevices(devices){
+  unreachableDevicesList = [];
+  devicesList = devices;
+  deviceIndex = 0;
+  if(deviceIndex < devicesList.length){
+    pingDevice(devicesList[deviceIndex]);
+  }
+}
+
+function pingCallback(value){
+  if(value == 65535){
+    unreachableDevicesList.push(devicesList[deviceIndex]);
+  }
+  deviceIndex++;
+  if(deviceIndex < devicesList.length){
+    pingDevice(devicesList[deviceIndex]);
+  }else{
+    console.log("Pinging ended");
+    if(unreachableDevicesList.length > 0){
+      var unreachableDevicesText = "";
+      for(var a = 0; a < unreachableDevicesList.length; a++){
+        var deviceName = (unreachableDevicesList[a].Description != null)?(unreachableDevicesList[a].Description).trim():"Dispositivo senza nome";
+        unreachableDevicesText += deviceName + " (" + (unreachableDevicesList[a].T_Description).trim() + ")\n";
+      }
+      dialog.showErrorBox('Alcuni dispositivi non risultano raggiungigbili',unreachableDevicesText);
+    }
+    setTimeout(checkDevicesStatus, 1000 * 60 * 5);
+  }
+}
+
+function pingDevice(device){
+  console.log("Pinging device: 0x" + (device.Address >>> 0).toString(16));
+  if(device.Type == 3)
+    registration.sendCheckSensorStatePacket(device.Address);
+  else if (device.Type == 2) {
+    registration.sendCheckControllerStatePacket(device.Address);
+  }
 }

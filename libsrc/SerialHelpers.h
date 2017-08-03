@@ -13,6 +13,8 @@
 #define MESSAGE_TYPE_SENSOR_SUBMISSION 4
 #define MESSAGE_TYPE_LIGHT_VALUE_CHANGED 5
 #define MESSAGE_TYPE_SEND_RESULT 6
+#define MESSAGE_TYPE_CHECK_SENSOR_STATUS 7
+#define MESSAGE_TYPE_CHECK_CONTROLLER_STATUS 8
 
 #define MESSAGE_ID_VALID 0
 #define MESSAGE_ID_INVALID 1
@@ -90,9 +92,6 @@ static bool isHandshakeResponseMessage(char dataBuffer[], int buffer_size){
  return buffer_size == 1 && dataBuffer[0] == HANDSHAKE_VALID_RESPONSE;
 }
 
-static void sendHandShakeEndMessage(){
-  Serial.write(HANDSHAKE_END_MESSAGE);
-}
 
 static bool isDevicesCountMessage(char dataBuffer[], int buffer_size){
   return buffer_size == 2 && dataBuffer[0] == MESSAGE_TYPE_DEVICES_COUNT;
@@ -110,11 +109,42 @@ static bool isLightValueChangedMessage(char dataBuffer[], int buffer_size){
   return buffer_size == 7 && dataBuffer[0] == MESSAGE_TYPE_LIGHT_VALUE_CHANGED;
 }
 
+
+static bool isCheckSensorStatePacket(char dataBuffer[], int buffer_size){
+  return buffer_size == 5 && dataBuffer[0] == MESSAGE_TYPE_CHECK_SENSOR_STATUS;
+}
+
+static bool isCheckControllerStatePacket(char dataBuffer[], int buffer_size){
+  return buffer_size == 5 && dataBuffer[0] == MESSAGE_TYPE_CHECK_CONTROLLER_STATUS;
+}
+
+static void sendSensorStatePacket(uint32_t address, uint16_t value){
+  char buffer[7];
+  buffer[0] = MESSAGE_TYPE_CHECK_SENSOR_STATUS;
+  SerialHelpers::write32bitIntegerIntoBuffer(buffer,address);
+  buffer[5] = ((value & 0xFF00) >> 8);
+  buffer[6] = ((value & 0x00FF) >> 0);
+  Serial.write(buffer,7);
+}
+
+static void sendControllerStatePacket(uint32_t address, uint16_t value){
+  char buffer[7];
+  buffer[0] = MESSAGE_TYPE_CHECK_CONTROLLER_STATUS;
+  SerialHelpers::write32bitIntegerIntoBuffer(buffer,address);
+  buffer[5] = ((value & 0xFF00) >> 8);
+  buffer[6] = ((value & 0x00FF) >> 0);
+  Serial.write(buffer,7);
+}
+
 static void sendIDCheckMessage(uint32_t ID){
   char buffer[5];
   buffer[0] = MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   Serial.write(buffer,5);
+}
+
+static void sendHandShakeEndMessage(){
+  Serial.write(HANDSHAKE_END_MESSAGE);
 }
 
 static void sendDevicesStreamStartMessage(){
