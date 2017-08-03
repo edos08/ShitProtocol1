@@ -151,7 +151,8 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
           alertDoubledDevicesTrigger = true;
         }
       }
-   } else if(isSensorValuePacket(idSubmissionPacket.type,idSubmissionPacket.packetLength)){
+   }
+   if(isSensorValuePacket(idSubmissionPacket.type,idSubmissionPacket.packetLength)){
      if(hasToCheck && device_is_sensor && idSubmissionPacket.sender == device_to_check ){
        hasToCheck = false;
        hasToSendSerialResult = true;
