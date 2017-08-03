@@ -245,7 +245,7 @@ function insertCheckStateResult(address,value,callback){
     })
     .then(function(){
       console.log('Succesful');
-      callback();
+      callback(value);
     })
 
   })

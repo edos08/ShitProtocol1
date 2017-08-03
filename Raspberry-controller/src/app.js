@@ -19,10 +19,10 @@ let currentDeviceWhichValueIsBeingChanged = -1;
 let currentValueThatIsBeingChanged = -1;
 let selectSensorAfterwardsTrigger = false;
 
-let devicePingingDone = false;
-
 let devicesList = [];
 let deviceIndex  = 0;
+
+let unreachableDevicesList = [];
 
 app.on('ready', function(){
   handshake.init(initMain);
@@ -309,6 +309,7 @@ function checkDevicesStatus(){
 }
 
 function pingAllDevices(devices){
+  unreachableDevicesList = [];
   devicesList = devices;
   deviceIndex = 0;
   if(deviceIndex < devicesList.length){
@@ -316,12 +317,22 @@ function pingAllDevices(devices){
   }
 }
 
-function pingCallback(){
+function pingCallback(value){
+  if(value == 65535){
+    unreachableDevicesList.push(devicesList[deviceIndex]);
+  }
   deviceIndex++;
   if(deviceIndex < devicesList.length){
     pingDevice(devicesList[deviceIndex]);
   }else{
     console.log("Pinging ended");
+    if(unreachableDevicesList.length > 0){
+      var unreachableDevicesText = "";
+      for(var a = 0; a < unreachableDevicesList.lenght; a++){
+        unreachableDevicesText += unreachableDevicesList[a].Address + " (" + unreachableDevicesList[a].Type + ")\n";
+      }
+      dialog.showErrorBox('Alcuni dispositivi non risultano raggiungigbili',unreachableDevicesText);
+    }
     setTimeout(checkDevicesStatus, 1000 * 60 * 5);
   }
 }
