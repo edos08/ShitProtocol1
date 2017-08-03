@@ -25,4 +25,23 @@ static bool isLightValueChangedPacket(uint8_t type, uint8_t packetLength){
   return (type & PACKET_TYPE_MASK) == PACKET_TYPE_LIGHT_VALUE_CHANGED && packetLength == 2;
 }
 
+static bool isPingRequestPacket(uint8_t type, uint8_t packetLength){
+  return (type & PACKET_TYPE_MASK) == PACKET_TYPE_PING && packetLength == 0;
+}
+
+static bool isPingResponsePacket(uint8_t type, uint8_t packetLength){
+  return (type & PACKET_TYPE_MASK) == PACKET_TYPE_PING && packetLength == 2;
+}
+
+static Packet PingRequestPacket(uint32_t dest, uint32_t sender){
+  return Packet(dest,sender,PACKET_TYPE_NORM | PACKET_TYPE_PING,packetCounter,"",0);
+}
+
+static Packet PingResponsePacket(uint32_t dest, uint32_t sender,uint16_t value){
+  char body[2];
+  body[0] = (value & 0xFF00) >> 8;
+  body[1] = (value & 0x00FF) >> 0;
+  return Packet(dest,sender,PACKET_TYPE_NORM | PACKET_TYPE_PING,packetCounter,body,2);
+}
+
 #endif

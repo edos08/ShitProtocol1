@@ -29,6 +29,8 @@ volatile int lightValue = 500;
 
 int photocellPin = 6;
 
+volatile bool hasToSendPingResponse = false;
+
 void setup() {
   //eraseEEPROM(0);
   //eraseEEPROM(4);
@@ -66,6 +68,10 @@ void loop() {
     //Serial.println(mySensor,HEX);
 
     //adjust light dimmer
+    if(hasToSendPingResponse){
+      sendPacket(PingResponsePacket(NODE_ADDRESS,randomAddress,dimmerTot));
+      hasToSendPingResponse = false;
+    }
     photo(lightCurrentValue);
 
   }else if(!registrationDenied){
@@ -157,7 +163,8 @@ void handleResponsePacket(Packet response){
     maxBrightness = lightValue + 100;
     minBrightness = lightValue - 100;
     writeEEPROM16(lightValue,8);
-  } else {
+  } else if(isPingRequestPacket(response.type,response.packetLength)){
+     hasToSendPingResponse = true;
   }
 
 }
