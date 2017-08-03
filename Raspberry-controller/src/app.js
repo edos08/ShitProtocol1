@@ -312,14 +312,14 @@ function pingAllDevices(devices){
   devicesList = devices;
   deviceIndex = 0;
   if(deviceIndex < devicesList.length){
-    pingDevice(devices[deviceIndex]);
+    pingDevice(devicesList[deviceIndex]);
   }
 }
 
 function pingCallback(){
   deviceIndex++;
   if(deviceIndex < devicesList.length){
-    pingDevice(devices[deviceIndex]);
+    pingDevice(devicesList[deviceIndex]);
   }else{
     setTimeout(checkDevicesStatus, 1000 * 60 * 5);
   }
