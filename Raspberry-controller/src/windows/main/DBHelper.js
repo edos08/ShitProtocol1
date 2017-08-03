@@ -253,7 +253,8 @@ function insertCheckStateResult(address,value,callback){
 
 function queryAllDevicesAddresses(callback){
   knex.withSchema('LoRa')
-  .select('Address','Type')
+  .select('Devices.Address as Address','Devices.Type as Type','Devices.Description as Description','Device_types.Description as T_Description')
+  .innerJoin('Device_types','Devices.Type'.'Device_types.ID')
   .from('Devices')
   .where('Type','<>',1)
   .then((devices) => {
