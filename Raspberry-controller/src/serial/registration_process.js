@@ -17,7 +17,7 @@ function init(){
     registrationModeEnteredHandler: handleRegistrationModeEntered,
     sendResultHandler: handleSendResultPackets,
     checkSensorStateHandler: handleCheckState,
-    isCheckControllerStatePacket: handleCheckState
+    checkControllerStateHandler: handleCheckState
   });
 }
 
