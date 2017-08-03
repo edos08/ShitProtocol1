@@ -12,7 +12,7 @@ function setUpComponents(){
 ipc.on('devices-with-no-sensor-response',(event,devices) => {
     var content = "";
     if(devices.length > 0){
-      content = "<ul>";
+      content = "<ul class = \"list-group\">";
       for(var a = 0; a < devices.length; a++){
           content += populateListItemWithDeviceInfo(devices[a],false);
       }
@@ -24,11 +24,11 @@ ipc.on('devices-with-no-sensor-response',(event,devices) => {
 })
 
 function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.id +"\"> "
+  var content = "<li id = \"" + device.id +"\" class = \"list-group-item\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
-  + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
-  + ((device.dev_type_id == 2)?"<button onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
+  + "<button onClick=\"onDeviceRenameButtonClick(this)\" class = \"btn btn-normal\"> Rinomina dispositivo </button>"
+  + ((device.dev_type_id == 2)?"<button class = \"btn btn-normal\" onClick =\"onDeviceAssignSensorButtonClick(this)\"> Assegna un sensore </button>":"")
   + " </li>";
   return content;
 }
