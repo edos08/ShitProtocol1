@@ -158,10 +158,6 @@ function handleValueSubmission(){
   return false;
 }
 
-function sendPing(){
-  ipc.send('test-ping');
-}
-
 module.exports = {
   handleValueSubmission,
   showDeviceInfos,
