@@ -49,5 +49,5 @@ function onDeviceAssignToRoomButtonClick(button){
 }
 
 function onDeviceAssignSensorButtonClick(button){
-  ipc.send('sensor_assignation_button_pressed',button.parentNode.id);
+  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
 }
