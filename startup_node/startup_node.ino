@@ -153,9 +153,9 @@ void handleSubmissionPacket(Packet idSubmissionPacket){
       }
    }
    if(isSensorValuePacket(idSubmissionPacket.type,idSubmissionPacket.packetLength)){
-     Serial.println("Sensor value");
+     //Serial.println("Sensor value");
      if(hasToCheck && device_is_sensor && idSubmissionPacket.sender == device_to_check ){
-       Serial.println("My sensor");
+       //Serial.println("My sensor");
        hasToCheck = false;
        hasToSendSerialResult = true;
        device_value = 0;

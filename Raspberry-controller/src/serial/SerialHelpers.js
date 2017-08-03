@@ -301,7 +301,7 @@ module.exports = {
   sendResetMessage,
   sendLightValueChangedPacket,
   sendCheckSensorStatePacket,
-  sendCheckControllerStatePacket
+  sendCheckControllerStatePacket,
   //for testing purposes
   write32BitInt,
   callPacketHandler
