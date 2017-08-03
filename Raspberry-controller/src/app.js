@@ -54,10 +54,6 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
-ipc.on('test-ping',() => {
-  registration.sendCheckSensorStatePacket(0x95bdb63d);
-})
-
 function onRegistrationEnd(result){
   console.log("Registration succesful: " + result);
   registrationActive = false;
