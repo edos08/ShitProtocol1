@@ -12,7 +12,7 @@ function setUpComponents(){
 ipc.on('devices-with-no-room-response',(event,devices) => {
     var content = "";
     if(devices.length > 0){
-      content = "<ul>";
+      content = "<ul class = \"list-group\">";
       for(var a = 0; a < devices.length; a++){
           content += populateListItemWithDeviceInfo(devices[a]);
       }
@@ -24,7 +24,7 @@ ipc.on('devices-with-no-room-response',(event,devices) => {
 })
 
 function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.id +"\"> "
+  var content = "<li id = \"" + device.id +"\" class = \"list-group-item\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
   + "<button onClick=\"onDeviceRenameButtonClick(this)\"> Rinomina dispositivo </button>"
