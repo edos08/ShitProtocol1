@@ -89,7 +89,7 @@ function deleteRoomButton(button){
 function createDeviceItemForList(device){
     return "<button class=\"list-group-item\""
     + " id = \"" + device.ID + "\""
-    + ((device.type == 2)?"onClick = \"onDeviceClicked(this)\"":"")
+    + ((device.type != 1)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
     + ((device.desc != null)?device.desc:"Dispositivo senza nome")
     + " ("
@@ -109,26 +109,28 @@ ipc.on('device-info-gathered',(event,device) => {
 
 function showDeviceInfos(device){
   console.log("Displaying infoos");
-  content = /*"<table>"*/""
-  //+ "<tr>"
+  content =
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
-  //+ "</tr><tr>"
-  + "<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
-  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>"
-  //+ "</tr><tr>"
-  + "<td>Valore corrente: </td></br>"
-  //+ "</tr><tr>"
-  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
-  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
-  + "<input type=\"submit\" class=\"btn btn-default\"/>"
-  + "</form>"
-  //+ "</tr><tr>"
+  + (device.type == 2)?showDeviceSensorInfo(device):"";
+  + (device.type == 2)?showDeviceValueForm(device):"";
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"> Cambia stanza </br></td>"
-  //+ "</tr>"
-  //+ "</table>";
   document.getElementById('content').innerHTML = content;
   return content;
 }
+
+function showDeviceSensorInfo(device){
+  return "<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
+  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>";
+}
+
+function showDeviceValueForm(device){
+  return "<td>Valore corrente: </td></br>"
+  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
+  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
+  + "<input type=\"submit\" class=\"btn btn-default\"/>"
+  + "</form>";
+}
+
 
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
