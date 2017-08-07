@@ -109,7 +109,7 @@ ipc.on('device-info-gathered',(event,device) => {
 
 function showDeviceInfos(device){
   console.log("Displaying infoos");
-  content =
+  content = ""
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
   + ((device.type == 2)?showDeviceSensorInfo(device):"");
   + ((device.type == 2)?showDeviceValueForm(device):"");
