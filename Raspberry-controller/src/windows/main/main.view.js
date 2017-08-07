@@ -119,16 +119,16 @@ function showDeviceInfos(device){
 }
 
 function showDeviceSensorInfo(device){
-  return "<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
-  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>";
+  return ("<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
+  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>");
 }
 
 function showDeviceValueForm(device){
-  return "<td>Valore corrente: </td></br>"
+  return ("<td>Valore corrente: </td></br>"
   + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
   + "<input type=\"submit\" class=\"btn btn-default\"/>"
-  + "</form>";
+  + "</form>");
 }
 
 
