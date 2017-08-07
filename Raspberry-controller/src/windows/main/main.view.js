@@ -111,8 +111,8 @@ function showDeviceInfos(device){
   console.log("Displaying infoos");
   content =
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
-  + (device.type == 2)?showDeviceSensorInfo(device):"";
-  + (device.type == 2)?showDeviceValueForm(device):"";
+  + ((device.type == 2)?showDeviceSensorInfo(device):"");
+  + ((device.type == 2)?showDeviceValueForm(device):"");
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"> Cambia stanza </br></td>"
   document.getElementById('content').innerHTML = content;
   return content;
