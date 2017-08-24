@@ -15,8 +15,10 @@ sudo git clone --depth=1 https://github.com/edos08/ShitProtocol1
 
  copiare il contenuto di `ShitProtocol1/libsrc` in /opt/arduino-1.8.3/libraries/LoRa:
 
- '''bash
+ '''bash 
+
 Desketop:  ./copy_lib.sh 
+
  '''
 
 
