@@ -40,6 +40,7 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
+	LoRa.idle();
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
@@ -60,7 +61,6 @@ int sendNonAckPacket(Packet packet) {
 		packetCounter++;
 	activateReceiveMode();
 	return result;
-  return 0;
 }
 
 
