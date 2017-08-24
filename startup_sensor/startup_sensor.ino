@@ -53,6 +53,7 @@ void loop() {
     sensorValue = analogRead(sensorPin);
     Serial.print("Valore fotoresistenza: ");
     Serial.println(sensorValue);
+    Serial.flush();
     int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
     Helpers::printResponseMessage(result);
     delay(SENSOR_SEND_DATA_WAITING_TIME);

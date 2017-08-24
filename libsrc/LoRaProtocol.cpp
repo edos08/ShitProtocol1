@@ -24,7 +24,7 @@ void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
   LoRa.setPins(csPin, resetPin, irqPin);// set CS, reset, IRQ pin
   pinMode(notificationPin,OUTPUT);
   if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
-      //Serial.println("LoRa init failed. Check your connections.")
+      Serial.println("LoRa init failed. Check your connections.");
       tone(notificationPin,1000);
       digitalWrite(notificationPin,HIGH);
       while (true);                       // if failed, do nothing
@@ -40,7 +40,7 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
-	LoRa.idle();
+	//LoRa.idle();
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
