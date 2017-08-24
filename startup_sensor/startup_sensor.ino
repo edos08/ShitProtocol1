@@ -8,11 +8,11 @@
 #define TYPE DEVICE_TYPE_SENSOR
 
 
-volatile bool idSent = false;
-volatile bool idAccepted = false;
-volatile bool idDenied = false;
-volatile bool registrationDenied = false;
-volatile bool registrationResumed = false;
+bool idSent = false;
+bool idAccepted = false;
+bool idDenied = false;
+bool registrationDenied = false;
+bool registrationResumed = false;
 bool waitingTimedOut = false;
 
 uint32_t randomAddress;
@@ -25,11 +25,8 @@ int sensorPin = A0;
 uint16_t sensorValue = 0;
 
 void setup() {
-  //eraseEEPROM(0);
-  //eraseEEPROM(4);
   Serial.begin(9600);
   while(!Serial);
-  //pinMode(sensorPin,INPUT);
   uint32_t memoryContent = readEEPROM();
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
@@ -45,11 +42,10 @@ void setup() {
   subscribeToReceivePacketEvent(handleResponsePacket);
   
   Serial.println("INIITS");
-  delay(SENSOR_SEND_DATA_WAITING_TIME); //Se non aspetti questo tempo la funzione isWaitingRegularDelay() torna sempre false per i primi 3 secondi perché millis vale troppo poco.
 }
 
 void loop() {
-  checkIncoming();
+  //checkIncoming();
   if(!isFirstBoot){
     if(!isWaitingRegularDelay()){
       Serial.print("I have already an ID and it is ");
@@ -60,7 +56,6 @@ void loop() {
       Serial.flush();
       int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
       Helpers::printResponseMessage(result);
-      //delay(SENSOR_SEND_DATA_WAITING_TIME);
       regularDelayStart = millis();
     }
     return;
@@ -84,7 +79,6 @@ void loop() {
         sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
         Serial.print("My ID 0x");
         Serial.println(randomAddress,HEX);
-        //Serial.flush();
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -142,6 +136,7 @@ void handleResponsePacket(Packet response){
 }
 
 bool isWaitingRegularDelay(){
+  if(millis() < SENSOR_SEND_DATA_WAITING_TIME) return true;
   return (millis() - SENSOR_SEND_DATA_WAITING_TIME) <= regularDelayStart; 
 }
 

@@ -26,7 +26,7 @@ void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
   if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
       Serial.println("LoRa init failed. Check your connections.");
       tone(notificationPin,1000);
-      digitalWrite(notificationPin,HIGH);
+      //digitalWrite(notificationPin,HIGH);
       while (true);                       // if failed, do nothing
   }
 
@@ -78,10 +78,11 @@ int sendPacketAck(Packet packet, int retries){
 }
 
 void checkIncoming(){
+	//Serial.println("Check");
 	int packetSize = LoRa.parsePacket();
 	if(packetSize == 0)
 		return;
-
+    Serial.println("Incoming");
 	receivePacket(packetSize);
 }
 
