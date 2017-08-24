@@ -144,7 +144,8 @@ extern functionCall subscribedFunction;
 
 //exposed functions
 void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin);
-void activateReceiveMode();
+
+void checkIncoming();
 
 int sendPacket(Packet packet);
 

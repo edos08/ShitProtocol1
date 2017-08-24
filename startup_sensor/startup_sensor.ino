@@ -17,6 +17,7 @@ bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
+unsigned long long regularDelayStart = 0;
 
 volatile bool isFirstBoot = true;
 
@@ -44,19 +45,24 @@ void setup() {
   subscribeToReceivePacketEvent(handleResponsePacket);
   
   Serial.println("INIITS");
+  delay(SENSOR_SEND_DATA_WAITING_TIME); //Se non aspetti questo tempo la funzione isWaitingRegularDelay() torna sempre false per i primi 3 secondi perché millis vale troppo poco.
 }
 
 void loop() {
+  checkIncoming();
   if(!isFirstBoot){
-    Serial.print("I have already an ID and it is ");
-    Serial.println(randomAddress,HEX);
-    sensorValue = analogRead(sensorPin);
-    Serial.print("Valore fotoresistenza: ");
-    Serial.println(sensorValue);
-    Serial.flush();
-    int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
-    Helpers::printResponseMessage(result);
-    delay(SENSOR_SEND_DATA_WAITING_TIME);
+    if(!isWaitingRegularDelay()){
+      Serial.print("I have already an ID and it is ");
+      Serial.println(randomAddress,HEX);
+      sensorValue = analogRead(sensorPin);
+      Serial.print("Valore fotoresistenza: ");
+      Serial.println(sensorValue);
+      Serial.flush();
+      int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
+      Helpers::printResponseMessage(result);
+      //delay(SENSOR_SEND_DATA_WAITING_TIME);
+      regularDelayStart = millis();
+    }
     return;
   }
 
@@ -135,6 +141,9 @@ void handleResponsePacket(Packet response){
   }
 }
 
+bool isWaitingRegularDelay(){
+  return (millis() - SENSOR_SEND_DATA_WAITING_TIME) <= regularDelayStart; 
+}
 
 uint32_t readEEPROM(){
   uint32_t result = 0;

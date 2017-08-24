@@ -1,7 +1,7 @@
 #include "LoRaProtocol.h"
 
 //int csPin = 8;
-//int resetPin = 4;
+//int resetPin = 4;  // default values used.
 //int irqPin = 3;
 
 // Global varialbles
@@ -30,8 +30,6 @@ void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
       while (true);                       // if failed, do nothing
   }
 
-  LoRa.onReceive(receivePacket);
-  activateReceiveMode();
   //Serial.println("LoRa init succeeded.");
 }
 
@@ -40,7 +38,6 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
-	//LoRa.idle();
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
@@ -59,7 +56,6 @@ int sendNonAckPacket(Packet packet) {
 	int result = LoRa.endPacket();
 	if (result == SUCCESFUL_RESPONSE)
 		packetCounter++;
-	activateReceiveMode();
 	return result;
 }
 
@@ -81,19 +77,20 @@ int sendPacketAck(Packet packet, int retries){
 	return HOST_UNREACHABLE_RESPONSE;
 }
 
-void activateReceiveMode(){
-    LoRa.receive();
+void checkIncoming(){
+	int packetSize = LoRa.parsePacket();
+	if(packetSize == 0)
+		return;
+
+	receivePacket(packetSize);
 }
 
 void receivePacket(int packetSize) {
-  if (packetSize == 0) return;          // if there's no packet, return
-  //digitalWrite(notificationPin,HIGH);
   tone(notificationPin,1000,200);
   Packet receivedPacket = Helpers::readInputPacket();
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     while(LoRa.available())
         LoRa.read();
-    //Serial.println("This message is not for me.");
     return;
   }
 
@@ -108,7 +105,6 @@ void receivePacket(int packetSize) {
   }
 
   if (receivedPacket.requestsAck()) {
-    //Serial.println("Responding to ack");
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
 	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
   }
