@@ -137,8 +137,6 @@ int LoRaClass::beginPacket(int implicitHeader)
 
 int LoRaClass::endPacket()
 {
-  int irqFlags = readRegister(REG_IRQ_FLAGS);
-  writeRegister(REG_IRQ_FLAGS, irqFlags);
   // put in TX mode
   writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX);
   //LoRa.dumpRegisters(Serial);
