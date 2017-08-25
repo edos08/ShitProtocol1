@@ -45,11 +45,9 @@ void setup() {
 }
 
 void loop() {
-  //checkIncoming();
+  checkIncoming();
   if(!isFirstBoot){
     if(!isWaitingRegularDelay()){
-      Serial.print("I have already an ID and it is ");
-      Serial.println(randomAddress,HEX);
       sensorValue = analogRead(sensorPin);
       Serial.print("Valore fotoresistenza: ");
       Serial.println(sensorValue);
