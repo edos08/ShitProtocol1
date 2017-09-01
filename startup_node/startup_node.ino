@@ -31,7 +31,7 @@ void setup() {
 }
 
 void loop() {
-
+  checkIncoming();
   if(Serial.available()){
     serialEvent();
   }

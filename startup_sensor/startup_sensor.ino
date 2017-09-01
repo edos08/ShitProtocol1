@@ -19,7 +19,7 @@ uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 unsigned long long regularDelayStart = 0;
 
-volatile bool isFirstBoot = true;
+bool isFirstBoot = true;
 
 int sensorPin = A0;
 uint16_t sensorValue = 0;

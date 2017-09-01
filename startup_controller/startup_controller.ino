@@ -7,29 +7,29 @@
 #define TYPE DEVICE_TYPE_CONTROLLER
 
 
-volatile bool idSent = false;
-volatile bool idAccepted = false;
-volatile bool idDenied = false;
-volatile bool registrationDenied = false;
-volatile bool registrationResumed = false;
-volatile bool waitingTimedOut = false;
+bool idSent = false;
+bool idAccepted = false;
+bool idDenied = false;
+bool registrationDenied = false;
+bool registrationResumed = false;
+bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-volatile bool isFirstBoot = true;
+bool isFirstBoot = true;
 
-volatile uint32_t mySensor = 0xFFFFFFFF;
-volatile uint16_t lightCurrentValue = 0;
+uint32_t mySensor = 0xFFFFFFFF;
+uint16_t lightCurrentValue = 0;
 
 int dimmerTot = 500;
-volatile int maxBrightness = 600;
-volatile int minBrightness = 400;
-volatile int lightValue = 500;
+int maxBrightness = 600;
+int minBrightness = 400;
+int lightValue = 500;
 
 int photocellPin = 6;
 
-volatile bool hasToSendPingResponse = false;
+bool hasToSendPingResponse = false;
 
 void setup() {
   //eraseEEPROM(0);
@@ -61,6 +61,7 @@ void setup() {
 }
 
 void loop() {
+  checkIncoming();
   if(!isFirstBoot){
     //Serial.print("I have already an ID and it is ");
     //Serial.println(randomAddress,HEX);
