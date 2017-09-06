@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="src/github-pandoc.css" type="text/css" />
+</head>
+<body>
+<h1 id="pacchetti">Pacchetti</h1>
+<p>Qui viene descritto il formato dei pacchetti utilizzati nelle trasmissioni LoRa con <a href="LoRaProtocol.html">LoRaProtocol</a>.</p>
+<p>Legenda:</p>
+<p>I bit vengono considerati ordinati da sinistra a desta in questo modo:</p>
+<table>
+<thead>
+<tr class="header">
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Il bit 1 è il più significativo (128)</p>
+<h2 id="descrizione-del-formato-del-pacchetto">Descrizione del formato del pacchetto</h2>
+<p>Il pacchetto è diviso in due parti:</p>
+<ul>
+<li>Header</li>
+<li>Payload</li>
+</ul>
+<p>L'insieme di queste due parti non può superare i 255 byte.</p>
+<h2 id="header">Header</h2>
+<p>L'header di un pacchetto LoRa è formato da 11 bytes:</p>
+<ul>
+<li>4 bytes per l'indirizzo del destinatario</li>
+<li>4 bytes per l'indirizzo del mittente</li>
+<li>1 byte per il tipo di messaggio</li>
+<li>1 byte per il numero di sequenza del pacchetto</li>
+<li>1 byte per la lunghezza del payload (par avere un leggero controllo d'integrità, considerare l'uso di un crc16 o 32)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>1 - 2 - 3 - 4</th>
+<th>5 - 6 - 7 - 8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Destinatario</td>
+<td>Mittente</td>
+<td>Tipo</td>
+<td>Numero</td>
+<td>Lunghezza</td>
+</tr>
+</tbody>
+</table>
+<p>Descrizione del byte riservato per il tipo di messaggio:</p>
+<ul>
+<li>bit 1 : indica se il pacchetto contiene un messaggio (bit settato a 1) oppure se è un messaggio ACK (bit settato a 0)</li>
+<li>bit 2-6: riservati per indicare il tipo di messaggio (specifici per ogni applicazione)</li>
+<li>bit 7-8: indicano il livello di QoS (Quality of service) utilizzato:
+<ul>
+<li>0 = no ACK.</li>
+<li>1 = ACK.</li>
+<li>2 = ACK a tre passi. (Non ancora implementato per non utilizzo).</li>
+</ul></li>
+</ul>
+<h2 id="byte-di-tipo-per-questa-applicazione">Byte di tipo per questa applicazione</h2>
+<p>Qui sono riportati i valori che può assumere il byte di tipo per i tre livelli:</p>
+<h3 id="livello-1-flag">Livello 1: flag</h3>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">    <span class="dv">00000000</span> (<span class="dv">0</span>)   <span class="co">// pacchetto ack</span>
+    <span class="dv">10000000</span> (<span class="dv">128</span>) <span class="co">// pacchetto con messaggio</span></code></pre></div>
+<h3 id="livello-2-tipo">Livello 2: tipo</h3>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">    <span class="dv">00000100</span> (<span class="dv">4</span>)  <span class="co">// pacchetto di registrazione</span>
+    <span class="dv">00001000</span> (<span class="dv">8</span>)  <span class="co">// pacchetto di iscrizione di una lampada ad un sensore</span>
+    <span class="dv">00001100</span> (<span class="dv">12</span>) <span class="co">// pacchetto di invio del valore di un sensore</span>
+    <span class="dv">00010000</span> (<span class="dv">16</span>) <span class="co">// pacchetto di invio variazione di impostazioni di luminosità</span>
+    <span class="dv">00010100</span> (<span class="dv">20</span>) <span class="co">// pacchetto di ping</span></code></pre></div>
+<h3 id="livello-3-qos">Livello 3: QoS</h3>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">    <span class="dv">00000000</span> (<span class="dv">0</span>) <span class="co">// pacchetto che non richiede ack</span>
+    <span class="dv">00000001</span> (<span class="dv">1</span>) <span class="co">// pacchetto che richiede ack</span>
+    <span class="dv">00000010</span> (<span class="dv">2</span>) <span class="co">// pacchetto che richiede ack a tre livelli (non ancora implementato)</span></code></pre></div>
+<p>Naturalmente i tre livelli possono essere sovrapposti, in questo modo il byte tipo di un pacchetto con messaggio di registrazione che richiede ack è:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">    <span class="dv">1</span>|<span class="dv">00001</span>|<span class="dv">01</span> (<span class="dv">133</span>) </code></pre></div>
+<h2 id="payload">Payload</h2>
+<p>Il payload del messaggio varia a seconda del tipo di pacchetto scelto.</p>
+<p>Per i pacchetti ACK il payload è vuoto ed il byte di lunghezza del payload deve essere settato a 0</p>
+<p>I pacchetti non ack avranno un payload diverso a seconda del tipo specificato nei bit 2-6 del campo tipo</p>
+<h1 id="indirizzi-speciali">Indirizzi speciali</h1>
+<p>Il nodo deve avere indirizzo <code>0xFFFFFFFF</code>.<br />
+L'indirizzo di broadcast è <code>0x00000000</code>.</p>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>LoRaProtocol: Riferimenti per la struct Helpers</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">LoRaProtocol
+   </div>
+   <div id="projectbrief">A simple LoRa library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Cerca');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-static-methods">Membri pubblici statici</a> &#124;
+<a href="struct_helpers-members.html">Elenco di tutti i membri</a>  </div>
+  <div class="headertitle">
+<div class="title">Riferimenti per la struct Helpers</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Struct per semplificare la lettura e scrittura di pacchetti LoRa.  
+ <a href="struct_helpers.html#details">Continua...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_lo_ra_protocol_8h_source.html">LoRaProtocol.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Membri pubblici statici</h2></td></tr>
+<tr class="memitem:aea0ae6b0372873ba6012ed44b64a298e"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_helpers.html#aea0ae6b0372873ba6012ed44b64a298e">read32bitInt</a> (uint8_t bytes[])</td></tr>
+<tr class="memdesc:aea0ae6b0372873ba6012ed44b64a298e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legge 4 bytes da un array.  <a href="#aea0ae6b0372873ba6012ed44b64a298e">Continua...</a><br /></td></tr>
+<tr class="separator:aea0ae6b0372873ba6012ed44b64a298e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ea132a2d459912ef5cdf6066ca8212f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_helpers.html#a4ea132a2d459912ef5cdf6066ca8212f">write32bitIntToPacket</a> (uint32_t value)</td></tr>
+<tr class="memdesc:a4ea132a2d459912ef5cdf6066ca8212f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scrive 4 bytes nel pacchetto LoRa corrente.  <a href="#a4ea132a2d459912ef5cdf6066ca8212f">Continua...</a><br /></td></tr>
+<tr class="separator:a4ea132a2d459912ef5cdf6066ca8212f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c46f3bc7a70c81553aa0c6d63239693"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_helpers.html#a4c46f3bc7a70c81553aa0c6d63239693">read4BytesInto</a> (uint8_t buffer[])</td></tr>
+<tr class="memdesc:a4c46f3bc7a70c81553aa0c6d63239693"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legge primi 4 bytes disponibili in un pacchetto LoRa.  <a href="#a4c46f3bc7a70c81553aa0c6d63239693">Continua...</a><br /></td></tr>
+<tr class="separator:a4c46f3bc7a70c81553aa0c6d63239693"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a181125a367bcfa50fbf717b410f22754"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_helpers.html#a181125a367bcfa50fbf717b410f22754">printResponseMessage</a> (int response_code)</td></tr>
+<tr class="memdesc:a181125a367bcfa50fbf717b410f22754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stampa l'esito di una operazione di invio pacchetto su <code>Serial</code>.  <a href="#a181125a367bcfa50fbf717b410f22754">Continua...</a><br /></td></tr>
+<tr class="separator:a181125a367bcfa50fbf717b410f22754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef9577b32d30ae772a7e9c0cf7a98f7f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_packet.html">Packet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_helpers.html#aef9577b32d30ae772a7e9c0cf7a98f7f">readInputPacket</a> ()</td></tr>
+<tr class="memdesc:aef9577b32d30ae772a7e9c0cf7a98f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legge un pacchetto ricevuto in LoRa.  <a href="#aef9577b32d30ae772a7e9c0cf7a98f7f">Continua...</a><br /></td></tr>
+<tr class="separator:aef9577b32d30ae772a7e9c0cf7a98f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrizione dettagliata</h2>
+<div class="textblock"><p>Struct per semplificare la lettura e scrittura di pacchetti LoRa. </p>
+</div><h2 class="groupheader">Documentazione delle funzioni membro</h2>
+<a id="a181125a367bcfa50fbf717b410f22754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a181125a367bcfa50fbf717b410f22754">&#9670;&nbsp;</a></span>printResponseMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Helpers::printResponseMessage </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>response_code</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stampa l'esito di una operazione di invio pacchetto su <code>Serial</code>. </p>
+<dl class="section see"><dt>Si veda anche</dt><dd><code><a class="el" href="_lo_ra_protocol_8cpp.html#a3eea7170df892d921ffcbbfe1788cdaf" title="Invia un pacchetto in LoRa. ">sendPacket()</a></code> </dd></dl>
+<dl class="params"><dt>Parametri</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">response_code</td><td>il valore di return di <code>sendPacket</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aea0ae6b0372873ba6012ed44b64a298e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea0ae6b0372873ba6012ed44b64a298e">&#9670;&nbsp;</a></span>read32bitInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t Helpers::read32bitInt </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bytes</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Legge 4 bytes da un array. </p>
+<p>I bytes vengono letti con MSB a sinistra. </p><dl class="params"><dt>Parametri</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bytes</td><td>array da cui leggere i dati </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Restituisce</dt><dd>una variabile di tipo uint32_t contenente i primi 4 bytes dell'array. </dd></dl>
+
+</div>
+</div>
+<a id="a4c46f3bc7a70c81553aa0c6d63239693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c46f3bc7a70c81553aa0c6d63239693">&#9670;&nbsp;</a></span>read4BytesInto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Helpers::read4BytesInto </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>buffer</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Legge primi 4 bytes disponibili in un pacchetto LoRa. </p>
+<p>Due chiamate sucessive leggeranno bytes diversi.<br />
+ I dati possono essere letti una volta sola.<br />
+ I bytes vengono letti con MSB a sinistra.<br />
+ </p><dl class="params"><dt>Parametri</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>un array di minimo 4 bytes in cui verranno scritti i dati letti </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aef9577b32d30ae772a7e9c0cf7a98f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef9577b32d30ae772a7e9c0cf7a98f7f">&#9670;&nbsp;</a></span>readInputPacket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_packet.html">Packet</a> Helpers::readInputPacket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Legge un pacchetto ricevuto in LoRa. </p>
+<p>Due chiamate sucessive leggeranno bytes diversi.<br />
+ I dati possono essere letti una volta sola.<br />
+ I bytes vengono letti con MSB a sinistra.<br />
+ </p><dl class="section return"><dt>Restituisce</dt><dd>una istanza della classe <code><a class="el" href="class_packet.html" title="Classe che rappresenta un pacchetto in circolazione nella rete LoRa. ">Packet</a></code> contenete le informazioni sul pacchetto ricevuto </dd></dl>
+
+</div>
+</div>
+<a id="a4ea132a2d459912ef5cdf6066ca8212f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ea132a2d459912ef5cdf6066ca8212f">&#9670;&nbsp;</a></span>write32bitIntToPacket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Helpers::write32bitIntToPacket </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scrive 4 bytes nel pacchetto LoRa corrente. </p>
+<p>I bytes vengono scritti con MSB a sinistra. </p><dl class="params"><dt>Parametri</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>i 4 bytes da scrivere </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>La documentazione per questa struct è stata generata a partire dal seguente file:<ul>
+<li><a class="el" href="_lo_ra_protocol_8h_source.html">LoRaProtocol.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

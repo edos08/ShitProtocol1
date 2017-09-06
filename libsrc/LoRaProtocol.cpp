@@ -1,3 +1,8 @@
+/**
+* Protocollo LoRaProtocol
+* @file LoRaProtocol.cpp
+*/
+
 #include "LoRaProtocol.h"
 
 //int csPin = 8;
@@ -6,16 +11,27 @@
 
 // Global varialbles
 
-uint32_t myAddress;
-uint8_t packetCounter = 0;
-AckHolder ackHolder;
-functionCall subscribedFunction = NULL;
-int notificationPin = 7;
+uint32_t myAddress;                                    /**< Indirizzo del dispositivo nella rete.*/
+uint8_t packetCounter = 0;                             
+AckHolder ackHolder;                                   /**< Struttura che contiene gli ACK ricevuti.*/
+functionCall subscribedFunction = NULL;               
+int notificationPin = 7;                               /**< Pin a cui si può collegare un buzzer per avere una notifica uditiva della ricezione di messaggi.*/
 //Global functions not declared in LoRaProtocol.h
 
+/** Invia un pacchetto e si aspetta un ACK in risposta (usata internamente).
+* @param packet il pacchetto da inviare
+* @param retries il numero di tentativi fatti (fino a 3)
+* @return il risultato dell'operazione
+* @see `sendPacket()`
+*/
 int sendPacketAck(Packet packet, int retries);
+
+/** Invia un pacchetto senza aspettarsi un ACK in risposta (usata internamente).
+* @param packet il pacchetto da inviare
+* @return il risultato dell'operazione
+* @see `sendPacket()`
+*/
 int sendNonAckPacket(Packet packet);
-int sendPacketAck(Packet packet, int retries);
 
 //Function bodies
 

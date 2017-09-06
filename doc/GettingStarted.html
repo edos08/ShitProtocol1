@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="src/github-pandoc.css" type="text/css" />
+</head>
+<body>
+<h1 id="getting-started">Getting started</h1>
+<p>Qui viene descritto come fare il setup dei componenti per iniziare a lavorare al progetto.</p>
+<h2 id="hardware-necessario">Hardware necessario:</h2>
+<ul>
+<li>Un pc</li>
+<li>Una raspberry con sistema operativo raspbian (con GUI) installato</li>
+<li>Almeno tre microcontrollori (con la configurazione attuale uno deve essere una feather M0 con chip lora integrato)</li>
+<li>Almeno due chip LoRa sx1276</li>
+<li>Cavetti</li>
+<li>Almeno una fotoresisteza</li>
+<li>Almeno un led</li>
+</ul>
+<h2 id="software-necessario">Software necessario</h2>
+<h3 id="pc">PC:</h3>
+<p>Controllare di avere installato l'ultima versione dell'IDE <a href="https://www.arduino.cc/en/Main/Software">Arduino</a>. Seguire <a href="https://learn.adafruit.com/adafruit-feather-m0-basic-proto/setup">questa guida</a> per utilizzare il featherM0 con l'IDE di arduino.</p>
+<p>Avere almeno un buon text editor (come <a href="https://code.visualstudio.com/download">Visual Studio Code</a> o <a href="https://flight-manual.atom.io/getting-started/sections/installing-atom/">Atom</a>)</p>
+<p>Scaricare la repository del progetto da <a href="https://github.com/edos08/ShitProtocol1">github</a></p>
+<h3 id="raspberry">Raspberry:</h3>
+<p>Scaricare la repository del progetto da <a href="https://github.com/edos08/ShitProtocol1">github</a></p>
+<p>Scaricare <a href="https://www.postgresql.org/download/">postgresql</a> e creare un nuovo server locale <code>LoRa</code> con un database <code>LoRaServices</code> contenente uno schema <code>LoRa</code> con dentro le tabelle come descritte alla fine di <a href="WorkingProtocol.html">WorkingProtocol</a></p>
+<h3 id="dispositivi">Dispositivi:</h3>
+<p>Nodo (fetaherM0): caricare il codice di <code>startup_node</code></p>
+<p>Controllore (microcontrollore con led collegato sul pin D6): caricare il codice di <code>startup_controller</code></p>
+<p>Sensore (microcontrollore con fotoresistore collegato sul pin A0): caricare il codice di <code>startup_sensor</code></p>
+<h2 id="wiring">Wiring</h2>
+<p>Collegare via usb il nodo alla raspberry e tutti gli altri microcontrollori alla corrente</p>
+<h2 id="utilizzo">Utilizzo</h2>
+<p>Modificare il codice dal proprio PC, fare il commit dei cambiamenti e fare il pull della directory sulla raspberry.</p>
+<p>Dopo aver modificato le librerie in <code>libsrc</code> copiare i file contenuti in tale cartella nella cartella delle librerie di arduino del dispositivo da cui si carica lo sketch.</p>
+<p>Per avviare il programma di controllo dalla raspberry spostarsi in <code>Raspberry-controller</code> da llinea di comando e digitare <code>npm start</code>.</p>
+</body>
+</html>
