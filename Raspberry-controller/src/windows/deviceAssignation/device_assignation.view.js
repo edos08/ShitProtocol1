@@ -46,9 +46,9 @@ function onDeviceRenameButtonClick(button){
 }
 
 function onDeviceAssignToRoomButtonClick(button){
-  ipc.send('room_assignation_button_pressed',button.parentNode.id);
+  ipc.send('room_assignation_button_pressed',button.parentNode.parentNode.id);
 }
 
 function onDeviceAssignSensorButtonClick(button){
-  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
+  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.parentNode.id);
 }
