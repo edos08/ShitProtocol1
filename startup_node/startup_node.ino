@@ -135,8 +135,7 @@ void sendDeviceTypeToSerial(){
 void handleSubmissionPacket(Packet idSubmissionPacket){
     if(!isWaitingForDeviceIDCheck && hasReceivedNumberOfDevicesToRegister){
       if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLength)){
-        if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have al that i need
-          Serial.println("Ridondante");
+        if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have all that i need
           notifyDevicesIDsAcceptedTrigger = true;
           return;
         }
