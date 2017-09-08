@@ -39,11 +39,11 @@ void setup() {
   uint32_t memoryContent = readEEPROM(0);
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
-  if(memoryContent == 0xFFFFFFFF){
+  //if(memoryContent == 0xFFFFFFFF){
     randomSeed(analogRead(0));
     randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
-  }else{
+  /*}else{
       randomAddress = memoryContent;
       mySensor = readEEPROM(4);
       Serial.print("Sensor: ");
@@ -54,7 +54,7 @@ void setup() {
       maxBrightness = lightValue + 100;
       minBrightness = lightValue - 100;
       isFirstBoot = false;
-  }
+  }*/
   initLoRa(randomAddress, 8, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);

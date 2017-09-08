@@ -43,7 +43,7 @@ function initMain(){
   });
 
   registration.init(pingCallback);
-  setTimeout(checkDevicesStatus, 1000 * 10);
+  //setTimeout(checkDevicesStatus, 1000 * 10);
 }
 
 app.on('window-all-closed', () => {
@@ -134,6 +134,7 @@ ipc.on("register_devices_pressed",function(event){
 });
 
 ipc.on('registration-device-start',(event,devicesNumber) => {
+  console.log("registration started");
   registration.start(onRegistrationEnd,devicesNumber);
   registrationActive = true;
 })
