@@ -9,6 +9,7 @@
 #define SERIAL_BUFFER_SIZE 15
 
 #define CONTROLLER_TIMEOUT 6000
+
 #define SENSOR_TIMEOUT 15000
 
 char serialBuffer[SERIAL_BUFFER_SIZE];

@@ -6,6 +6,8 @@
 #define RETRY_WAITING_TIME 8000
 #define TYPE DEVICE_TYPE_CONTROLLER
 
+#define ADJUST_LIGHT_INTERVAL 5000
+
 
 bool idSent = false;
 bool idAccepted = false;
@@ -16,6 +18,8 @@ bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
+
+unsigned long long regularDelayStart = 0;
 
 bool isFirstBoot = true;
 
@@ -39,11 +43,11 @@ void setup() {
   uint32_t memoryContent = readEEPROM(0);
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
-  if(memoryContent == 0xFFFFFFFF){
+  //if(memoryContent == 0xFFFFFFFF){
     randomSeed(analogRead(0));
     randomAddress = generateRandomAddress();
     Serial.println("RANDOM");
-  }else{
+  /*}else{
       randomAddress = memoryContent;
       mySensor = readEEPROM(4);
       Serial.print("Sensor: ");
@@ -54,7 +58,7 @@ void setup() {
       maxBrightness = lightValue + 100;
       minBrightness = lightValue - 100;
       isFirstBoot = false;
-  }
+  }*/
   initLoRa(randomAddress, 8, 4, 3);
   Serial.println("INIITS");
   subscribeToReceivePacketEvent(handleResponsePacket);
@@ -63,17 +67,14 @@ void setup() {
 void loop() {
   checkIncoming();
   if(!isFirstBoot){
-    //Serial.print("I have already an ID and it is ");
-    //Serial.println(randomAddress,HEX);
-    //Serial.print("I'm listening to the sensor ");
-    //Serial.println(mySensor,HEX);
-
-    //adjust light dimmer
     if(hasToSendPingResponse){
       sendPacket(PingResponsePacket(NODE_ADDRESS,randomAddress,dimmerTot));
       hasToSendPingResponse = false;
     }
-    photo(lightCurrentValue);
+    if(!isWaitingRegularDelay()){
+      photo(lightCurrentValue);
+      regularDelayStart = millis();
+    }
 
   }else if(!registrationDenied){
     if(!idAccepted){
@@ -129,6 +130,7 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
+  Serial.println("got");
   if(isFirstBoot && isRegistrationResponsePacket(response.type, response.packetLength)){
 
     switch(response_result((uint8_t)response.body[0])){
@@ -168,6 +170,11 @@ void handleResponsePacket(Packet response){
      hasToSendPingResponse = true;
   }
 
+}
+
+bool isWaitingRegularDelay(){
+  if(millis() < ADJUST_LIGHT_INTERVAL) return true;
+  return (millis() - ADJUST_LIGHT_INTERVAL) <= regularDelayStart; 
 }
 
 

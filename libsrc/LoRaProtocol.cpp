@@ -80,7 +80,10 @@ int sendPacketAck(Packet packet, int retries){
 	if (sendNonAckPacket(packet) == PACKET_SENDING_ERROR)
 		return PACKET_SENDING_ERROR;
 	unsigned long long currTime = millis();
-	while (!ackHolder.hasAck && millis() - currTime < ACK_WAITING_MILLIS);
+
+	while (!ackHolder.hasAck && millis() - currTime < ACK_WAITING_MILLIS)
+		checkIncoming();
+		
 	ackHolder.hasAck = false;
 	LoRa.idle();
 	if (ackHolder.ack.sender == packet.dest && ackHolder.ack.packetNumber == packet.packetNumber) {
@@ -94,11 +97,9 @@ int sendPacketAck(Packet packet, int retries){
 }
 
 void checkIncoming(){
-	//Serial.println("Check");
 	int packetSize = LoRa.parsePacket();
 	if(packetSize == 0)
 		return;
-    Serial.println("Incoming");
 	receivePacket(packetSize);
 }
 
@@ -107,7 +108,8 @@ void receivePacket(int packetSize) {
   Packet receivedPacket = Helpers::readInputPacket();
   if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
     while(LoRa.available())
-        LoRa.read();
+		LoRa.read();
+	Serial.flush();
     return;
   }
 
@@ -120,6 +122,7 @@ void receivePacket(int packetSize) {
   if((receivedPacket.packetLength) != position){
       return;
   }
+  Serial.flush();
 
   if (receivedPacket.requestsAck()) {
 	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
