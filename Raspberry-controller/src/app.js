@@ -236,10 +236,7 @@ ipc.on('room-request',(event) => {
 })
 
 ipc.on('cancel',function(){
-  if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
-    chooseSensorWindow.close();
-  if(chooseRoomWindow != null && !chooseRoomWindow.isDestroyed())
-    chooseRoomWindow.close();
+  BrowserWindow.getCurrentWindow().close();
 })
 
 ipc.on('devices-with-no-room-request',(event) => {
