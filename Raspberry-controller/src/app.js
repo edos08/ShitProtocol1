@@ -43,7 +43,7 @@ function initMain(){
   });
 
   registration.init(pingCallback);
-  //setTimeout(checkDevicesStatus, 1000 * 10);
+  setTimeout(checkDevicesStatus, 1000 * 10);
 }
 
 app.on('window-all-closed', () => {
