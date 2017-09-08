@@ -134,10 +134,9 @@ void sendDeviceTypeToSerial(){
 
 
 void handleSubmissionPacket(Packet idSubmissionPacket){
-    if(!isWaitingForDeviceIDCheck){
+    if(!isWaitingForDeviceIDCheck && hasReceivedNumberOfDevicesToRegister){
       if(isRegistrationRequestPacket(idSubmissionPacket.type, idSubmissionPacket.packetLength)){
         if(devices_ids_index >= devices_to_register && devices_to_register != -1){ //redundant packet, already have al that i need
-          Serial.println("Ridondante");
           notifyDevicesIDsAcceptedTrigger = true;
           return;
         }
@@ -209,7 +208,6 @@ void serialEvent(){
       devices_to_register = (uint8_t)serialBuffer[1];
       devices_ids = new uint32_t[devices_to_register];
       devices_types = new uint8_t[devices_to_register];
-      Serial.println("Dev no received");
       return;
     }
   }

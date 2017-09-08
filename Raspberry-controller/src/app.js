@@ -235,7 +235,7 @@ ipc.on('room-request',(event) => {
 })
 
 ipc.on('cancel',function(){
-  BrowserWindow.getFocusedWindow().close();
+  BrowserWindow.getCurrentWindow().close();
 })
 
 ipc.on('devices-with-no-room-request',(event) => {
