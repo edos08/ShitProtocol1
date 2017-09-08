@@ -24,6 +24,7 @@ ipc.on('devices-with-no-room-response',(event,devices) => {
 })
 
 function populateListItemWithDeviceInfo(device){
+  console.log(device);
   var content = "<li id = \"" + device.id +"\" class = \"list-group-item\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
