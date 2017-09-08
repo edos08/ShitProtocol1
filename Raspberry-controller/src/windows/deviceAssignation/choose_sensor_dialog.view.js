@@ -32,6 +32,6 @@ ipc.on('sensors-response',(event,sensors) => {
 })
 
 
-function calcel(){
+function cancel(){
   ipc.send('cancel');
 }
