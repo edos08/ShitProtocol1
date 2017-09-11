@@ -93,7 +93,7 @@ function gatherDeviceInfo(event,deviceID){
   dbHelper.getDeviceInfo(deviceID,(device) => {
     var tstr = String(device.statTime).substring(0,device.statTime.length-4);
     console.log(tstr);
-    var datee = new Date(device.statTime.substring(0,device.statTime.length-4));
+    var datee = new Date(tstr);
     console.log("date: " + datee);
     event.sender.send('device-info-gathered',device);
   })
