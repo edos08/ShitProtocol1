@@ -182,16 +182,16 @@ typedef struct Helpers {
 	* I bytes vengono letti con MSB a sinistra.<br/>
 	* @return una istanza della classe `Packet` contenete le informazioni sul pacchetto ricevuto
 	*/
-	static Packet readInputPacket() {
-		Packet result = Packet();
+	static Packet* readInputPacket() {
+		Packet* result = new Packet();
 		uint8_t buffer[4];
 		read4BytesInto(buffer);
-		result.dest = read32bitInt(buffer);
+		result->dest = read32bitInt(buffer);
 		read4BytesInto(buffer);
-		result.sender = read32bitInt(buffer);
-		result.type = (uint8_t)LoRa.read();
-		result.packetNumber = (uint8_t)LoRa.read();
-		result.packetLength = (uint8_t)LoRa.read();
+		result->sender = read32bitInt(buffer);
+		result->type = (uint8_t)LoRa.read();
+		result->packetNumber = (uint8_t)LoRa.read();
+		result->packetLength = (uint8_t)LoRa.read();
 		return result;
 	}
 
