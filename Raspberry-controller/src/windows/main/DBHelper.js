@@ -194,6 +194,7 @@ function getDeviceInfo(deviceID,after){
   .where('devs.ID',deviceID)
   .orderBy('stats.Time','desc')
   .then((devices) =>{
+    console.log(devices[0]);
     after(devices[0]);
   })
 }
