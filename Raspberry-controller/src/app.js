@@ -91,7 +91,7 @@ ipc.on('gather-device-info',(event,deviceID) => {
 
 function gatherDeviceInfo(event,deviceID){
   dbHelper.getDeviceInfo(deviceID,(device) => {
-    console.log(new Date(String(device.statTime)).toISOString());
+    console.log(new Date(String(device.statTime)).toGMTString());
     event.sender.send('device-info-gathered',device);
   })
 }
