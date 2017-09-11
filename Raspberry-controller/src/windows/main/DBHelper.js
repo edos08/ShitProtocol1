@@ -187,9 +187,10 @@ function fillRoomNameContainer(roomID,after){
 
 function getDeviceInfo(deviceID,after){
   knex.withSchema('LoRa')
-  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value','stats.Time as time')
+  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID',
+          'devs2.Description as sensor','devs.LightValue as value','stats.Time as time','stats.Value')
   .leftJoin('Devices as devs2','devs.Sensor','devs2.ID')
-  .leftJoin('Status_log as stats','devs.ID','stats.ID')
+  .leftJoin('Status_log as stats','devs.ID','stats.Device')
   .from('Devices as devs')
   .where('devs.ID',deviceID)
   .orderBy('stats.Time','desc')
