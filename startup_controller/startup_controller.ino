@@ -8,7 +8,6 @@
 
 #define ADJUST_LIGHT_INTERVAL 5000
 
-
 bool idSent = false;
 bool idAccepted = false;
 bool idDenied = false;
@@ -130,7 +129,9 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
-  Serial.println("got");
+  Serial.println("-------NEW MESSAGE-------");
+  Serial.flush();
+  response.printPacket();
   if(isFirstBoot && isRegistrationResponsePacket(response.type, response.packetLength)){
 
     switch(response_result((uint8_t)response.body[0])){
@@ -152,6 +153,8 @@ void handleResponsePacket(Packet response){
   }
   if(isSensorSubmissionPacket(response.type,response.packetLength)){
     mySensor = Helpers::read32bitInt((uint8_t*)response.body);
+    Serial.print("New sensor: ");
+    Serial.println(mySensor,HEX);
     writeEEPROM(mySensor,4);
   }  else if(isSensorValuePacket(response.type, response.packetLength)){
     if(response.sender == mySensor){

@@ -7,7 +7,6 @@ var dialogs = Dialogs();
 window.onload = setUpElements;
 
 ipc.on('rooms-filled',(event,rooms) =>{
-  console.log("refresh");
   var content = "";
   for(var a = 0; a < rooms.length; a++){
     content += "<button type=\"button\" class = \"list-group-item\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
@@ -42,7 +41,6 @@ function setupInsertRoomButton(){
     ipc.send('insert_room_button_pressed');
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
-        console.log(ok);
         ipc.send('insert_new_room',ok);
       }
     });
@@ -62,7 +60,7 @@ function displayEmptyDBMessage(){
 }
 
 function onRoomClicked(id){
-  console.log("Congratulations, you clicked on the room!");
+  console.log("loading room " + id);
   ipc.send('fill_room_view',id);
 }
 
@@ -99,7 +97,7 @@ function createDeviceItemForList(device){
 }
 
 function onDeviceClicked(device){
-  console.log("Device clicked");
+  console.log("Loading device: " + device.id);
   ipc.send('gather-device-info',device.id);
 }
 
@@ -108,7 +106,7 @@ ipc.on('device-info-gathered',(event,device) => {
 })
 
 function showDeviceInfos(device){
-  console.log("Displaying infoos");
+  console.log("Displaying infos for device " + device.id);
   content = ""
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
   + ((device.type == 2)?showDeviceSensorInfo(device):"")

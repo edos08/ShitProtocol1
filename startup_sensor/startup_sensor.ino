@@ -4,7 +4,7 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
-#define SENSOR_SEND_DATA_WAITING_TIME 3000
+#define SENSOR_SEND_DATA_WAITING_TIME 5000
 #define TYPE DEVICE_TYPE_SENSOR
 
 
@@ -41,7 +41,7 @@ void setup() {
   initLoRa(randomAddress, 8, 4, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
   
-  Serial.println("INIITS");
+  Serial.println("INITS");
 }
 
 void loop() {
@@ -51,7 +51,6 @@ void loop() {
       sensorValue = analogRead(sensorPin);
       Serial.print("Valore fotoresistenza: ");
       Serial.println(sensorValue);
-      Serial.flush();
       int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
       Helpers::printResponseMessage(result);
       regularDelayStart = millis();

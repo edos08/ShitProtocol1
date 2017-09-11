@@ -105,35 +105,38 @@ void checkIncoming(){
 
 void receivePacket(int packetSize) {
   tone(notificationPin,1000,200);
-  Packet receivedPacket = Helpers::readInputPacket();
-  if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
+  Packet* receivedPacket = Helpers::readInputPacket();
+  if (myAddress != receivedPacket->dest && receivedPacket->dest != 0x00000000) {
     while(LoRa.available())
 		LoRa.read();
-	Serial.flush();
+	delete receivedPacket;
     return;
   }
 
   int position = 0;
   while (LoRa.available()) {
-	  receivedPacket.body[position] = (char)LoRa.read();      // add bytes one by one
+	  receivedPacket->body[position] = (char)LoRa.read();      // add bytes one by one
     position++;
   }
 
-  if((receivedPacket.packetLength) != position){
-      return;
+  if((receivedPacket->packetLength) != position){
+	delete receivedPacket;  
+	return;
   }
-  Serial.flush();
 
-  if (receivedPacket.requestsAck()) {
-	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
-	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
+  if (receivedPacket->requestsAck()) {
+	  sendPacket(AckPacket(receivedPacket->sender,myAddress,receivedPacket->packetNumber));
   }
-  if (receivedPacket.isAck()) {
+
+  if (receivedPacket->isAck()) {
 	  ackHolder.hasAck = true;
-	  ackHolder.ack = receivedPacket;
+	  ackHolder.ack = *receivedPacket;
   } else if (subscribedFunction != NULL) {
-	  subscribedFunction(receivedPacket);
+	//receivedPacket->printPacket();
+	subscribedFunction(*receivedPacket);
   }
+  //receivedPacket->printPacket();
+  delete receivedPacket;
 }
 
 void subscribeToReceivePacketEvent(functionCall function) {

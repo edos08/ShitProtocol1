@@ -38,9 +38,9 @@ class Packet{
      uint32_t dest;            /**< Il destinatario del pacchetto. */
      uint32_t sender;          /**< Il mittente del pacchetto. */
      uint8_t type;             /**< Il tipo di pacchetto. */
-     uint8_t packetNumber;     /**< Il numero di sequenza del pacchetto. */
-     char body[245];           /**< Il payload del pacchetto. */
+	 uint8_t packetNumber;     /**< Il numero di sequenza del pacchetto. */
 	 uint8_t packetLength;     /**< La lunghezza del payload. */
+     char body[245];           /**< Il payload del pacchetto. */
 	 
 	 /**
 	   * Costruttore completo per inizializzare un pacchetto.
@@ -56,7 +56,7 @@ class Packet{
          dest = _dest;
          sender = _sender;
          type = _type;
-         packetNumber = _packetNumber;
+		 packetNumber = _packetNumber;
          for(int a = 0; a < _packetLength; a++)
             body[a] = _body[a];
          packetLength = _packetLength;
@@ -105,6 +105,55 @@ class Packet{
 	 */
 	bool isUninitialized(){
 		return dest == -1;
+	}
+
+	void printPacket(){
+		Serial.print("dest: ");
+		Serial.println(dest,HEX);
+		Serial.print("sender: ");
+		Serial.println(sender,HEX);
+		Serial.print("type: ");
+		Serial.println(type);
+		if((type & 128) == 128){
+			Serial.println("Message");
+		}else{
+			Serial.println("ACK");
+		}
+		uint8_t packType = type & PACKET_TYPE_MASK;
+		Serial.println(packType);
+		/*if(packType == 16){
+			Serial.println("CHANGE LIGHT");
+		}*/
+		/*switch(packType){
+			case PACKET_TYPE_REGISTRATION:
+				Serial.println("REGISTRATION");
+				break;
+			case PACKET_TYPE_SENSOR_SUBMISSION:
+				Serial.println("SENSOR SUBMISSION");
+				break;
+			case PACKET_TYPE_LIGHT_VALUE_CHANGED:
+				Serial.println("NEW LIGHT VALUE");
+				break;
+			case PACKET_TYPE_PING: 
+				Serial.println("PING");
+				break;
+			case PACKET_TYPE_SENSOR_VALUE:
+				Serial.println("SENSOR VALUE");
+				break;
+			default:
+				Serial.println("UNRECOGNIZED");
+				break;
+		}*/
+		/*if(type % 2 == 0)
+			Serial.println("NO ACK");
+		else
+			Serial.println("REQUESTS ACK");*/
+		
+		Serial.print("packetNumber: ");
+		Serial.println(packetNumber);
+		Serial.print("packetLength: ");
+		Serial.println(packetLength);
+		Serial.println("-----------------");
 	}
 };
 

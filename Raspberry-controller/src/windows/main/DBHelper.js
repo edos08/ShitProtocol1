@@ -186,14 +186,14 @@ function fillRoomNameContainer(roomID,after){
 }
 
 function getDeviceInfo(deviceID,after){
-  console.log("DBHELPER id " + deviceID);
   knex.withSchema('LoRa')
-  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value')
+  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value','desc.Time as time')
   .leftJoin('Devices as devs2','devs.Sensor','devs2.ID')
+  .leftJoin('Status_log as stats','devs.ID','stats.id')
   .from('Devices as devs')
   .where('devs.ID',deviceID)
+  .orderBy('stats.Time','desc')
   .then((devices) =>{
-    console.log("im in the after " + devices[0]);
     after(devices[0]);
   })
 }
