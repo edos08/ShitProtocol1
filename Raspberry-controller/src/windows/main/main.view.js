@@ -118,8 +118,8 @@ function showDeviceInfos(device){
 function showManangingInfos(device){
   return (
     "<div class =\"card\">"
-    + "<div class = \"card-heading\">"
-      + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
+    + "<div class = \"card-header\">"
+      + "<h3 class = > " + device.description.trim() + " </h3>"
     + "</div>"
     + "<div class = \"card-text\">"
       + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
