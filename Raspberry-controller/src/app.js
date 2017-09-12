@@ -170,14 +170,13 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
       dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
         deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
       }); 
+    } else {
+      dbHelper.getDeviceInfo(currentDeviceForWhichTheRoomIsBeingChosen,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
     }
   });
   chooseRoomWindow.on('closed',() =>{
-      if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
-        
-      }
-      else
-        window.reload();
       if(selectSensorAfterwardsTrigger){
         selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
       }else {
