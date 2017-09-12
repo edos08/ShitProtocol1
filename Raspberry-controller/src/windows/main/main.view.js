@@ -119,7 +119,7 @@ function showManangingInfos(device){
   return (
     "<div class =\"panel panel-primary\">"
     + "<div class = \"panel-heading\">"
-      + "<h3 class = \"panel-title\"> Gestione </h3>"
+      + "<h3 class = \"panel-title\"> " + device.description.trim() + " </h3>"
     + "</div>"
     + "<div class = \"panel-body\">"
       + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
