@@ -139,11 +139,13 @@ function showStatInfo(device){
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
 
   return (
-    "<div class =\"card\">"
-  + "<div class = \"card-body\">"   
-  + "<h3> Informazioni </h3> <br/>"
+    "<div class =\"panel panel-default\">"
+  + "<div class = \"panel-heading\">"   
+  + "<h3 class = \"card-title\"> Informazioni </h3> <br/>"
+  + "</div>"
+  * "<div class = \"panel-body\">"
   + "Stato: "
-  + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
+  + ((device.statValue > 1023) ? "<fontcolor=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
   + "<br/>"
   + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
   + "<br/>"
