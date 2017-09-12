@@ -16,6 +16,10 @@ body{
   height: 100%;
 }
 
+.room{
+  min-height: 30;
+}
+
 #left{
   padding-top: 15px;
   background-color: rgba(210, 210, 210, 0.5);
