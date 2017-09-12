@@ -138,14 +138,14 @@ function showStatInfo(device){
   var statDate = new Date(String(device.statTime));
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
 
-  return  "<h3> Informazioni </h3> <br/>"
+  return ("<h3> Informazioni </h3> <br/>"
   + "Stato: "
   + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
   + "<br/>"
   + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
   + "<br/>"
   + "Ultimo controllo: <br/>"
-  +  statDate.toLocaleString("it-it");
+  +  statDate.toLocaleString("it-it"));
 }
 
 function onDeviceRenameButtonClick(button){
