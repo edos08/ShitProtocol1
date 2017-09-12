@@ -197,12 +197,6 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
     currentRoomInWhichTheSensorsAreHeld = -1;
     if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
-    else{
-      console.log("closed");
-      dbHelper.getDeviceInfo(deviceID,(device) => {
-        window.webContents.send('device-info-gathered',device);
-      });
-    }
   });
 })
 
@@ -210,6 +204,10 @@ function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
     displaySuccessDialog("Sensore aggiornato correttamente");
+    console.log("closed");
+    dbHelper.getDeviceInfo(deviceID,(device) => {
+      window.webContents.send('device-info-gathered',device);
+    });
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
