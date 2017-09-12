@@ -6,7 +6,6 @@ body{
 
 #top-level{
   background-color: rgba(230, 231, 230, 0.5);
-  align-items: stretch;
 }
 
 /*#rooms_container{
@@ -19,7 +18,6 @@ body{
   background-color: rgba(210, 210, 210, 0.5);
   border-color: rgba(210, 210, 210, 0.1);
   border-style: outset;
-  align-items: stretch;
 }
 
 #content{
