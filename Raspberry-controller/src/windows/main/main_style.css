@@ -3,26 +3,21 @@ body{
   height: 100vh;
 }
 
-/*.bottom-button{
-  position: absolute;
-  bottom: 0;
-  height: 70px;
-}*/
-
 /*#rooms_container{
   height: 400px;
   overflow-y: auto;
 }*/
 #left{
   padding-top: 15px;
-  background-color: rgba(230, 231, 230, 0.5);
   height: 100vh;
+  background-color: rgba(210, 210, 210, 0.5);
+  border-style: outset;
 }
 
 #content{
   padding-top: 15px;
-  background-color: rgba(210, 210, 210, 0.5);
   
+  background-color: rgba(230, 231, 230, 0.5);
   height: 100vh;
 }
 
