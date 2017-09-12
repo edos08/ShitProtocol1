@@ -120,6 +120,21 @@ function showDeviceInfos(device){
   return content;
 }
 
+function showManangingInfos(device){
+  return (
+  + "<div  class =\"panel panel-default\">"
+    + "<div class = \"panel-heading\">"
+      + "<h3 class = \"panel-title\"> Gestione </h3>"
+    + "</div>"
+    + "<div class = \"panel-body\">"
+      + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
+      + ((device.type == 2)?showDeviceSensorInfo(device):"")
+      + ((device.type == 2)?showDeviceValueForm(device):"")
+      + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"/> Cambia stanza </button> </br></td>"
+    + "</div>"  
+  + "</div>");
+}
+
 function showDeviceSensorInfo(device){
   return ("<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
   + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>");
