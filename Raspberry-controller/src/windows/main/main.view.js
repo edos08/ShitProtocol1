@@ -107,11 +107,26 @@ ipc.on('device-info-gathered',(event,device) => {
 
 function showDeviceInfos(device){
   console.log("Displaying infos for device " + device.id);
+  
+  
+  var statDate = new Date(String(device.statTime));
+  statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
+  
   content = ""
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
   + ((device.type == 2)?showDeviceSensorInfo(device):"")
   + ((device.type == 2)?showDeviceValueForm(device):"")
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"> Cambia stanza </br></td>"
+  + "<br/> <br/>"
+  + "<h3> Informazioni </h3> <br/>"
+  + "Stato: "
+  + (device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>"
+  + "<br/>"
+  + (device.statValue > 1023) ? "Ultimo valore registrato: " + device.statValue : "" 
+  + "<br/>"
+  + "Ultimo controllo: <br/>"
+  +  statDate.toLocaleString("it-it");
+  
   document.getElementById('content').innerHTML = content;
   return content;
 }
