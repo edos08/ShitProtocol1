@@ -141,7 +141,7 @@ function showStatInfo(device){
   return (
     "<div class =\"panel panel-default\">"
       + "<div class = \"panel-heading\">"   
-        + "<h3 class = \"panel-title\"> Informazioni </h3> <br/>"
+        + "<h3 class = \"panel-title\"> Informazioni </h3>"
       + "</div>"
       * "<div class = \"panel-body\">"
         + "Stato: "
