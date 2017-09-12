@@ -116,16 +116,9 @@ function showDeviceInfos(device){
   + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
   + ((device.type == 2)?showDeviceSensorInfo(device):"")
   + ((device.type == 2)?showDeviceValueForm(device):"")
-  + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"> Cambia stanza </br></td>"
+  + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"/> Cambia stanza </button> </br></td>"
   + "<br/> <br/>"
-  + "<h3> Informazioni </h3> <br/>"
-  + "Stato: "
-  + (device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>"
-  + "<br/>"
-  + (device.statValue > 1023) ? "Ultimo valore registrato: " + device.statValue : "" 
-  + "<br/>"
-  + "Ultimo controllo: <br/>"
-  +  statDate.toLocaleString("it-it");
+  + showStatInfo();
   
   document.getElementById('content').innerHTML = content;
   return content;
@@ -144,6 +137,16 @@ function showDeviceValueForm(device){
   + "</form>");
 }
 
+function showStatInfo(device){
+  return  "<h3> Informazioni </h3> <br/>"
+  + "Stato: "
+  + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
+  + "<br/>"
+  + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
+  + "<br/>"
+  + "Ultimo controllo: <br/>"
+  +  statDate.toLocaleString("it-it");
+}
 
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
