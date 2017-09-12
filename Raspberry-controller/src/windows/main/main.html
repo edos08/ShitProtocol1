@@ -12,23 +12,24 @@
   <div class = "container-fluid">
       <div class = "row">
           <div  class="col-md-4" id = "left">
-            <div class = "register_container">
-              <h1>Welcome</h1>
-      
-              <button id = "register_devices_button" class = "btn btn-default btn-block">
-                    Registra nuovi dispositivi
-              </button>
-      
-              <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-default btn-block">
-                Assegna nuovi dispositivi alle stanze
-              </button>
-      
-              <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-default btn-block">
-                Assegna sensori ai dispositivi sprovvisti
-              </button>
+            <div class = "panel panel-primary">
+              <h1 class="panel-heading">Registrazione</h1>
+              <div class = "panel-body">
+                <button id = "register_devices_button" class = "btn btn-default btn-block">
+                  Registra nuovi dispositivi
+                </button>
+        
+                <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-default btn-block">
+                  Assegna nuovi dispositivi alle stanze
+                </button>
+        
+                <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-default btn-block">
+                  Assegna sensori ai dispositivi sprovvisti
+                </button>
+              </div>
       
             </div>
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
               <h3 id="header" class="panel-heading">Stanze</h3>
       
               <ul id = "rooms_container" class = "panel-body list-group">
