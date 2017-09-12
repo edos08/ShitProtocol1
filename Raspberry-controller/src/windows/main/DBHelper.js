@@ -171,6 +171,8 @@ function fillSensorsList(roomID,after){
   .andWhere('Room', roomID)
   .then(function(sensors){
     after(sensors);
+  }).catch(() => {
+    console.log("window was already closed");
   });
 }
 
@@ -181,6 +183,8 @@ function fillRoomNameContainer(roomID,after){
   .where('ID',"=",roomID)
   .then(function(rooms){
     after(rooms[0].Description);
+  }).catch(() => {
+    console.log("window was already closed");
   })
 }
 
