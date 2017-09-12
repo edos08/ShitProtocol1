@@ -265,11 +265,15 @@ ipc.on('devices-with-no-sensor-request',(event) => {
 
 ipc.on('rename-device',(event,deviceID,name) => {
   dbHelper.renameDevice(deviceID,name,() => {
-    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
-      sensorsAssignationWindow.reload();
-    else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
-      deviceAssignationWindow.reload();
-    else{
+    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+      dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
+        sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+      });
+    } else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
+      dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+      });
+    } else{
       dbHelper.getDeviceInfo(deviceID,(device) => {
         window.webContents.send('device-info-gathered',device);
       });
