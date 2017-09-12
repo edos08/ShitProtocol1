@@ -143,7 +143,7 @@ function showStatInfo(device){
       + "<div class = \"panel-heading\">"   
         + "<h3 class = \"panel-title\"> Informazioni </h3>"
       + "</div>"
-      * "<div class = \"panel-body\">"
+      + "<div class = \"panel-body\">"
         + "Stato: "
         + ((device.statValue > 1023) ? "<fontcolor=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
         + "<br/>"
