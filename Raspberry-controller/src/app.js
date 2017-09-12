@@ -198,6 +198,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
     if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
     else{
+      console.log("closed");
       dbHelper.getDeviceInfo(deviceID,(device) => {
         window.webContents.send('device-info-gathered',device);
       });
