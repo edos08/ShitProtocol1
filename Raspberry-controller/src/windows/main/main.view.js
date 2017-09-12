@@ -119,7 +119,7 @@ function showManangingInfos(device){
   return (
     "<div class =\"card card-outline-primary\">"
     + "<div class = \"card-header\">"
-      + "<h3 class = > " + device.description.trim() + " </h3>"
+      + "<h3 class = \"card-title\" " + device.description.trim() + " </h3>"
     + "</div>"
     + "<div class = \"card-block\">"
       + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></td></br> "
@@ -149,11 +149,11 @@ function showStatInfo(device){
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
   var active = (device.statValue <= 1023);
   return (
-    "<div class =\"panel panel-" + ((active) ? "success" : "warning") +"\">"
-      + "<div class = \"panel-heading\">"   
-        + "<h3 class = \"panel-title\"> Informazioni </h3>"
+    "<div class =\"card card-outline" + ((active) ? "success" : "warning") +"\">"
+      + "<div class = \"card-header\">"   
+        + "<h3 class = \"card-title\"> Informazioni </h3>"
       + "</div>"
-      + "<div class = \"panel-body\">"
+      + "<div class = \"card-block\">"
         + "Stato: "
         + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
         + "<br/>"
