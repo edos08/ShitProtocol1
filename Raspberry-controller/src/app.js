@@ -171,8 +171,8 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
         deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
       }); 
     } else {
-      dbHelper.getDeviceInfo(currentDeviceForWhichTheRoomIsBeingChosen,(device) => {
-        window.webContents.send('device-info-gathered',device);
+      dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
+        window.webContents.send('devices-loaded',devices,roomID)
       });
     }
   });
