@@ -12,7 +12,7 @@ function setUpComponents(){
 ipc.on('devices-with-no-sensor-response',(event,devices) => {
     var content = "";
     if(devices.length > 0){
-      content = "<ul class = \"list-group dev-inf\">";
+      content = "<ul class = \"list-group\">";
       for(var a = 0; a < devices.length; a++){
           content += populateListItemWithDeviceInfo(devices[a],false);
       }
@@ -24,7 +24,7 @@ ipc.on('devices-with-no-sensor-response',(event,devices) => {
 })
 
 function populateListItemWithDeviceInfo(device){
-  var content = "<li id = \"" + device.id +"\" class = \"list-group-item\"> "
+  var content = "<li id = \"" + device.id +"\" class = \"list-group-item dev-inf\"> "
   + ((device.dev_desc != null)?device.dev_desc:"Dispositivo senza nome")
   + " - " + device.dev_type
   + "<div class=\"btn-group\" role=\"group\">"
