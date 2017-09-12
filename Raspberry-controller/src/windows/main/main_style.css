@@ -17,7 +17,7 @@ body{
 }
 
 .room{
-  min-height: 30;
+  min-height: 30px;
 }
 
 #left{
