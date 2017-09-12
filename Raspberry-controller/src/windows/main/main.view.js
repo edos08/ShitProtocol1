@@ -117,17 +117,19 @@ function showDeviceInfos(device){
 
 function showManangingInfos(device){
   return (
-    "<div class =\"card card-outline-primary\" padding-bottom=15px>"
-    + "<div class = \"card-header\">"
-      + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
-    + "</div>"
-    + "<div class = \"card-block\">"
-      + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></td></br> "
-      + ((device.type == 2)?showDeviceSensorInfo(device):"")
-      + ((device.type == 2)?showDeviceValueForm(device):"")
-      + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"/> Cambia stanza </button> </br></td>"
-    + "</div>"  
-  + "</div>");
+    
+      + "<div class =\"card card-outline-primary mb-3\" padding-bottom=15px>"
+        + "<div class = \"card-header\">"
+          + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
+        + "</div>"
+        + "<div class = \"card-block\">"
+          + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></td></br> "
+          + ((device.type == 2)?showDeviceSensorInfo(device):"")
+          + ((device.type == 2)?showDeviceValueForm(device):"")
+          + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"/> Cambia stanza </button> </br></td>"
+        + "</div>"  
+      + "</div>");
+    
 }
 
 function showDeviceSensorInfo(device){
