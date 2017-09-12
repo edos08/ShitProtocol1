@@ -9,7 +9,7 @@ body{
 
 #rooms_container{
   max-height: 50vh;
-  height: 10vh;
+  min-height: 10vh;
   overflow: hidden;
   overflow-y: scroll;
 }
