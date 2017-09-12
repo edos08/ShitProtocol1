@@ -9,7 +9,7 @@ window.onload = setUpElements;
 ipc.on('rooms-filled',(event,rooms) =>{
   var content = "";
   for(var a = 0; a < rooms.length; a++){
-    content += "<button type=\"button\" class = \"list-group-item list-group-item-action\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
+    content += "<button class = \"list-group-item list-group-item-action\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
   document.getElementById('rooms_container').innerHTML = content;
 })
