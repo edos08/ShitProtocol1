@@ -12,6 +12,7 @@ ipc.on('rooms-filled',(event,rooms) =>{
     content += "<button class = \"list-group-item list-group-item-action room\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
   document.getElementById('rooms_container').innerHTML = content;
+  decument.getElementById('content').innerHTML = "Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti";
 })
 
 ipc.on('dev-no-dialog',(event) => {
