@@ -9,7 +9,7 @@ body{
 
 #rooms_container{
   max-height: 50vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 #second-level{
