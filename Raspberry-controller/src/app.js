@@ -205,7 +205,7 @@ function onSensorSubmissionAction(result){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
     displaySuccessDialog("Sensore aggiornato correttamente");
     console.log("closed");
-    dbHelper.getDeviceInfo(deviceID,(device) => {
+    dbHelper.getDeviceInfo(currentDeviceForWhichTheRoomIsBeingChosen,(device) => {
       window.webContents.send('device-info-gathered',device);
     });
   }else{
