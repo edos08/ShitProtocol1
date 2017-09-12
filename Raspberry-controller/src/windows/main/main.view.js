@@ -9,7 +9,7 @@ window.onload = setUpElements;
 ipc.on('rooms-filled',(event,rooms) =>{
   var content = "";
   for(var a = 0; a < rooms.length; a++){
-    content += "<button type=\"button\" class = \"list-group-item\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
+    content += "<button type=\"button\" class = \"list-group-item list-group-item-action\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
   document.getElementById('rooms_container').innerHTML = content;
 })
@@ -66,11 +66,11 @@ function onRoomClicked(id){
 ipc.on('devices-loaded',(event,devices,roomID) =>{
   var content = "";
   if(devices.length > 0){
-    content += "<ul class=\"list-group\">";
+    content += "<div class=\"list-group\">";
     for(var a = 0; a < devices.length; a++){
       content += createDeviceItemForList(devices[a]);
     }
-    content += "</ul>";
+    content += "</div>";
   }else{
     content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
@@ -84,7 +84,7 @@ function deleteRoomButton(button){
 
 
 function createDeviceItemForList(device){
-    return "<button class=\" list-group-item list-group-item-action\""
+    return "<button class=\"list-group-item list-group-item-action\""
     + " id = \"" + device.ID + "\""
     + ((device.type != 1)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
