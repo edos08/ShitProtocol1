@@ -15,18 +15,12 @@ body{
 .left.col{
   width: 30%;
   height: 100%;
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
   position: relative;
 }
 .right.col{
   width: 70%;
   height: 100%;
   margin-left: -1px;
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
   padding: 10px;
 }
 
