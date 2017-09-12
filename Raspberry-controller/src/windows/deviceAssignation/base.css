@@ -3,6 +3,6 @@ body{
 	background-color: rgba(230, 231, 230, 0.5);
 }
 
-.clear{
-	clear: both;
+.dev-inf{
+	flex-direction: column;
 }
