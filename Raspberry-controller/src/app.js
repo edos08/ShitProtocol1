@@ -81,7 +81,9 @@ ipc.on('fill_room_view',(event,roomID) => {
 
 ipc.on('delete-room',(event,roomID) => {
   dbHelper.deleteRoom(roomID,() => {
-    window.reload();
+    dbHelper.fillRoomsScreen((rooms) =>{
+      event.sender.send('rooms-filled',rooms);
+    });
   })
 });
 
