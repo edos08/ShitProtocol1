@@ -9,44 +9,47 @@
     <script src="./main.view.js"></script>
 </head>
 <body onload="setUpElements()">
-  <div class = "row">
-    <div  class="col" id = "left">
-      <div class = "register_container">
-        <h1>Welcome</h1>
-
-        <button id = "register_devices_button" class = "btn btn-default btn-block">
-              Registra nuovi dispositivi
-        </button>
-
-        <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-default btn-block">
-          Assegna nuovi dispositivi alle stanze
-        </button>
-
-        <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-default btn-block">
-          Assegna sensori ai dispositivi sprovvisti
-        </button>
-
-      </div>
-      <div class="room_div panel panel-default">
-        <h3 id="header" class="panel-heading">Stanze</h3>
-
-        <ul id = "rooms_container" class = "panel-body list-group">
-
-        </ul>
-
-        <div class = " panel-footer">
-          <button id = "insert_room_button" class="btn btn-default btn-block">
-              Inserisci una nuova stanza
-          </button>
+  <div class = "container-fluid">
+      <div class = "row">
+          <div  class="col" id = "left">
+            <div class = "register_container">
+              <h1>Welcome</h1>
+      
+              <button id = "register_devices_button" class = "btn btn-default btn-block">
+                    Registra nuovi dispositivi
+              </button>
+      
+              <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-default btn-block">
+                Assegna nuovi dispositivi alle stanze
+              </button>
+      
+              <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-default btn-block">
+                Assegna sensori ai dispositivi sprovvisti
+              </button>
+      
+            </div>
+            <div class="room_div panel panel-default">
+              <h3 id="header" class="panel-heading">Stanze</h3>
+      
+              <ul id = "rooms_container" class = "panel-body list-group">
+      
+              </ul>
+      
+              <div class = " panel-footer">
+                <button id = "insert_room_button" class="btn btn-default btn-block">
+                    Inserisci una nuova stanza
+                </button>
+              </div>
+      
+            </div>
+          </div>
+      
+          <div id = "content" class="col">
+            Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti
+          </div>
         </div>
-
-      </div>
-    </div>
-
-    <div id = "content" class="col">
-      Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti
-    </div>
   </div>
+  
 
 
 </body>
