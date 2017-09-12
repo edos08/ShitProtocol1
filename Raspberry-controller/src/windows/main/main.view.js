@@ -117,7 +117,7 @@ function showDeviceInfos(device){
 
 function showManangingInfos(device){
   return (
-    "<div class =\"card card-outline-primary\">"
+    "<div class =\"card card-outline-primary\" padding-bottom=15px>"
     + "<div class = \"card-header\">"
       + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
     + "</div>"
