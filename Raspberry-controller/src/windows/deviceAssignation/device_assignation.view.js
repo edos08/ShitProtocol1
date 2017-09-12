@@ -10,6 +10,7 @@ function setUpComponents(){
 }
 
 ipc.on('devices-with-no-room-response',(event,devices) => {
+    console.log("loading");
     var content = "";
     if(devices.length > 0){
       content = "<ul class = \"list-group\">";
