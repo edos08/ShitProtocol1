@@ -117,7 +117,7 @@ function showDeviceInfos(device){
 
 function showManangingInfos(device){
   return (
-    "<div class =\"panel panel-default\">"
+    "<div class =\"panel panel-primary\">"
     + "<div class = \"panel-heading\">"
       + "<h3 class = \"panel-title\"> Gestione </h3>"
     + "</div>"
@@ -147,9 +147,9 @@ function showStatInfo(device){
   
   var statDate = new Date(String(device.statTime));
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
-
+  var active = (device.statValue <= 1023);
   return (
-    "<div class =\"panel panel-default\">"
+    "<div class =\"panel panel-" + ((active) ? "success" : "warning") +"\">"
       + "<div class = \"panel-heading\">"   
         + "<h3 class = \"panel-title\"> Informazioni </h3>"
       + "</div>"
