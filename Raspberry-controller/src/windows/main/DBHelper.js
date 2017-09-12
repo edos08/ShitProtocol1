@@ -124,13 +124,14 @@ function assignDeviceToRoom(deviceID,roomID){
   })
 }
 
-function assignSensorToController(controllerID,sensorID){
+function assignSensorToController(controllerID,sensorID,after){
   knex('Devices').withSchema('LoRa')
   .where('ID',controllerID)
   .update('Sensor',sensorID)
   .then(function(result){
     if(result == 1){
       console.log("Sensore assegnato al dispositivo con successo");
+      after(controllerID);
     }
   })
 }

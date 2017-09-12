@@ -202,12 +202,14 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 function onSensorSubmissionAction(result){
   if(result == 1){
-    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
-    displaySuccessDialog("Sensore aggiornato correttamente");
-    console.log("closed");
-    dbHelper.getDeviceInfo(currentDeviceForWhichTheRoomIsBeingChosen,(device) => {
-      window.webContents.send('device-info-gathered',device);
+    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
+      console.log("closed");
+      dbHelper.getDeviceInfo(controllerID,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
     });
+    displaySuccessDialog("Sensore aggiornato correttamente");
+    
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
