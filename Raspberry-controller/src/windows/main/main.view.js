@@ -114,7 +114,7 @@ function showDeviceInfos(device){
   + ((device.type == 2)?showDeviceValueForm(device):"")
   + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"/> Cambia stanza </button> </br></td>"
   + "<br/> <br/>"
-  + showStatInfo();
+  + (showStatInfo());
   
   document.getElementById('content').innerHTML = content;
   return content;
