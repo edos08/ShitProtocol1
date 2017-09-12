@@ -2,10 +2,13 @@ body{
   background-color: rgba(230, 231, 230, 0.5);
   width: 100%;
   height: 100vh;
+  display: flex;
+  align-items: stretch;
 }
 
 #top-level{
   background-color: rgba(230, 231, 230, 0.5);
+  height: 100%;
 }
 
 /*#rooms_container{
