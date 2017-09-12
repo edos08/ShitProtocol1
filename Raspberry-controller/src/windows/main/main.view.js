@@ -121,25 +121,25 @@ function showManangingInfos(device){
     + "<div class = \"card-header\">"
       + "<h3 class = > " + device.description.trim() + " </h3>"
     + "</div>"
-    + "<div class = \"card-text\">"
+    + "<div class = \"card-block\">"
       + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
       + ((device.type == 2)?showDeviceSensorInfo(device):"")
       + ((device.type == 2)?showDeviceValueForm(device):"")
-      + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"/> Cambia stanza </button> </br></td>"
+      + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"/> Cambia stanza </button> </br></td>"
     + "</div>"  
   + "</div>");
 }
 
 function showDeviceSensorInfo(device){
   return ("<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
-  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>");
+  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-secondary\"> Cambia sensore </button></td></br>");
 }
 
 function showDeviceValueForm(device){
   return ("<td>Valore corrente: </td></br>"
   + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
-  + "<input type=\"submit\" class=\"btn btn-default\"/>"
+  + "<input type=\"submit\" class=\"btn btn-secondary\"/>"
   + "</form>");
 }
 
