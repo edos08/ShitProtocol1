@@ -91,7 +91,9 @@ ipc.on('gather-device-info',(event,deviceID) => {
 
 function gatherDeviceInfo(event,deviceID){
   dbHelper.getDeviceInfo(deviceID,(device) => {
-    console.log(new Date(String(device.statTime)).toGMTString());
+    var statDate = new Date(device.statTime);
+    statDate.setHours(device.statTime.getHours + 2); //la locale della raspberry è sballata di 2 ore
+    console.log(statDate);
     event.sender.send('device-info-gathered',device);
   })
 }
