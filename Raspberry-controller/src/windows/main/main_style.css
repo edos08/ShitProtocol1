@@ -19,7 +19,7 @@ body{
 }
 
 .room{
-  min-height: 30px;
+  min-height: 5vh;
 }
 
 #left{
