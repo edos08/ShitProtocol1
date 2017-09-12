@@ -168,7 +168,7 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID,() => {
     if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
       dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
-        deviceAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
       }); 
     }
   });
