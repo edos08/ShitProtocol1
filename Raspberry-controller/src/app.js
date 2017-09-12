@@ -192,12 +192,16 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   })
 
   chooseSensorWindow.on('closed',() =>{
+    var deviceID = currentDeviceForWhichTheRoomIsBeingChosen;
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
     if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
       sensorsAssignationWindow.reload();
-    else
-      window.reload();
+    else{
+      dbHelper.getDeviceInfo(deviceID,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
+    }
   });
 })
 
