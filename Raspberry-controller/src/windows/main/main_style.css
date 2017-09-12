@@ -1,4 +1,4 @@
-/*body{
+body{
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -6,24 +6,6 @@
   margin: 0px;
   display: flex;
 }
-
-
-.register_container{
-  padding: 10px;
-}
-
-/*.left.col{
-  width: 30%;
-  height: 100%;
-  position: relative;
-}
-.right.col{
-  width: 70%;
-  height: 100%;
-  margin-left: -1px;
-  padding: 10px;
-}*/
-
 
 /*.bottom-button{
   position: absolute;
@@ -38,4 +20,4 @@
 
 #header{
   padding-left: 10px;
-}*/
+}
