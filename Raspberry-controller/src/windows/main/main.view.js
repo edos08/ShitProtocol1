@@ -117,11 +117,11 @@ function showDeviceInfos(device){
 
 function showManangingInfos(device){
   return (
-    "<div class =\"panel panel-primary\">"
-    + "<div class = \"panel-heading\">"
-      + "<h3 class = \"panel-title\"> " + device.description.trim() + " </h3>"
+    "<div class =\"card\">"
+    + "<div class = \"card-heading\">"
+      + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
     + "</div>"
-    + "<div class = \"panel-body\">"
+    + "<div class = \"card-text\">"
       + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
       + ((device.type == 2)?showDeviceSensorInfo(device):"")
       + ((device.type == 2)?showDeviceValueForm(device):"")
