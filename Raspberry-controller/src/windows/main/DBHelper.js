@@ -25,8 +25,9 @@ function fillRoomsScreen(after){
 function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
   .innerJoin('Device_types','Devices.Type','Device_types.ID')
+  .innerJoin('Rooms','Devices.Room','Rooms.ID')
   .where('Devices.Room',roomID)
-  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
+  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type','Rooms.Description as roomName')
   .from('Devices')
   .orderBy('ID','asc')
   .then(function(devices){

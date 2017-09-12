@@ -65,7 +65,7 @@ function onRoomClicked(id){
 }
 
 ipc.on('devices-loaded',(event,devices,roomID) =>{
-  var content = "";
+  var content = "<h3>" + devices[0].roomName + "</h3>";
   if(devices.length > 0){
     content += "<div class=\"list-group\">";
     for(var a = 0; a < devices.length; a++){
