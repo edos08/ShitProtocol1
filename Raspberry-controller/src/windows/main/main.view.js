@@ -84,7 +84,7 @@ function deleteRoomButton(button){
 
 
 function createDeviceItemForList(device){
-    return "<button class=\"btn btn-secondary list-group-item\""
+    return "<button class=\" list-group-item list-group-item-action\""
     + " id = \"" + device.ID + "\""
     + ((device.type != 1)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
