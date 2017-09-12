@@ -149,7 +149,7 @@ function showStatInfo(device){
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
   var active = (device.statValue <= 1023);
   return (
-    "<div class =\"card card-outline" + ((active) ? "success" : "warning") +"\">"
+    "<div class =\"card card-outline-" + ((active) ? "success" : "warning") +"\">"
       + "<div class = \"card-header\">"   
         + "<h3 class = \"card-title\"> Informazioni </h3>"
       + "</div>"
