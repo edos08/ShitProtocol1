@@ -11,7 +11,7 @@ body{
   padding-top: 15px;
   height: 100vh;
   background-color: rgba(210, 210, 210, 0.5);
-  border-color: rgba(210, 210, 210, 0.5);
+  border-color: rgba(210, 210, 210, 0.1);
   border-style: outset;
 }
 
