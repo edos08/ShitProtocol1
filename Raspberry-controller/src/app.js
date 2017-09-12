@@ -167,8 +167,11 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
   chooseRoomWindow.on('closed',() =>{
-      if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed())
-        deviceAssignationWindow.reload();
+      if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
+        dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
+          deviceAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+        });
+      }
       else
         window.reload();
       if(selectSensorAfterwardsTrigger){
