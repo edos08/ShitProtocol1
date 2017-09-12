@@ -140,18 +140,18 @@ function showStatInfo(device){
 
   return (
     "<div class =\"panel panel-default\">"
-  + "<div class = \"panel-heading\">"   
-  + "<h3 class = \"card-title\"> Informazioni </h3> <br/>"
-  + "</div>"
-  * "<div class = \"panel-body\">"
-  + "Stato: "
-  + ((device.statValue > 1023) ? "<fontcolor=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
-  + "<br/>"
-  + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
-  + "<br/>"
-  + "Ultimo controllo: <br/>"
-  + statDate.toLocaleString("it-it")
-  + "</div>"
+      + "<div class = \"panel-heading\">"   
+        + "<h3 class = \"panel-title\"> Informazioni </h3> <br/>"
+      + "</div>"
+      * "<div class = \"panel-body\">"
+        + "Stato: "
+        + ((device.statValue > 1023) ? "<fontcolor=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
+        + "<br/>"
+        + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
+        + "<br/>"
+        + "Ultimo controllo: <br/>"
+        + statDate.toLocaleString("it-it")
+      + "</div>"
   + "</div>"
   );
 }
