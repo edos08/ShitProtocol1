@@ -74,7 +74,7 @@ ipc.on('devices-loaded',(event,devices,roomID) =>{
   }else{
     content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
-  content += "<button id = \"" + roomID +"\" class = \"btn btn-default\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
+  content += "<button id = \"" + roomID +"\" class = \"btn btn-secondary\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
   document.getElementById('content').innerHTML = content;
 })
 
@@ -84,7 +84,7 @@ function deleteRoomButton(button){
 
 
 function createDeviceItemForList(device){
-    return "<button class=\"list-group-item\""
+    return "<button class=\"btn btn-secondary list-group-item\""
     + " id = \"" + device.ID + "\""
     + ((device.type != 1)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
