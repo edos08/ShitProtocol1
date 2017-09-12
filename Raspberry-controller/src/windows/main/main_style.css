@@ -6,6 +6,7 @@ body{
 
 #top-level{
   background-color: rgba(230, 231, 230, 0.5);
+  align-items: stretch;
 }
 
 /*#rooms_container{
