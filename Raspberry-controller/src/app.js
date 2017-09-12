@@ -206,18 +206,22 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
     var deviceID = currentDeviceForWhichTheRoomIsBeingChosen;
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
-      sensorsAssignationWindow.reload();
+    
   });
 })
 
 function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
-      console.log("closed");
-      dbHelper.getDeviceInfo(controllerID,(device) => {
-        window.webContents.send('device-info-gathered',device);
-      });
+      if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+        dbHelper.queryAllDevicesWithNoSensorAssignedAndShowIn((devices) => {
+          sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+        }); 
+      } else {
+        dbHelper.getDeviceInfo(controllerID,(device) => {
+          window.webContents.send('device-info-gathered',device);
+        });
+      }
     });
     displaySuccessDialog("Sensore aggiornato correttamente");
     
