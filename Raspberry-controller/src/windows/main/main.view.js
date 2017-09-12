@@ -38,7 +38,6 @@ function setupRegisterDevicesButton(){
 function setupInsertRoomButton(){
   var insertRoomButton = document.getElementById('insert_room_button');
   insertRoomButton.addEventListener('click',function(){
-    ipc.send('insert_room_button_pressed');
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
         ipc.send('insert_new_room',ok);
@@ -184,7 +183,6 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 function handleValueSubmission(){
-  console.log("value-changed");
   var valueInserted = document.getElementById('lightValue').value;
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');

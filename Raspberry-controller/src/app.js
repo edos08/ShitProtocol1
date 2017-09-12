@@ -127,17 +127,12 @@ ipc.on('insert_new_room',function(event,roomName){
 
 
 ipc.on("register_devices_pressed",function(event){
-  console.log("Congratualtions, you have pressed the register devices button");
   event.sender.send('dev-no-dialog');
 });
 
 ipc.on('registration-device-start',(event,devicesNumber) => {
   registration.start(onRegistrationEnd,devicesNumber);
   registrationActive = true;
-})
-
-ipc.on("insert_room_button_pressed", function(){
-  console.log("Button rooms pressed");
 });
 
 ipc.on('assign_devices_button_pressed',function(){
@@ -164,7 +159,6 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 })
 
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
-  console.log("Ok button pressed with device = " + currentDeviceForWhichTheRoomIsBeingChosen + " and room " + roomID);
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
   chooseRoomWindow.on('closed',() =>{
       if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed())

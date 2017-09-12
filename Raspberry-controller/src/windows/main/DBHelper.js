@@ -77,7 +77,6 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(after){
 }
 
 function insertRoomIntoDB(roomName,windowToReload,errorAction){
-  console.log("Inserting : " + roomName);
   knex('Rooms').withSchema('LoRa')
   .insert({Description: roomName})
   .then(function(){
@@ -149,7 +148,6 @@ function getAddressesForControllerAndSensor(controllerID,sensorID,after){
 }
 
 function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selectDeviceFunction){
-  console.log("test-" + deviceID);
   knex.withSchema('LoRa')
   .select('Room')
   .from('Devices')
@@ -175,7 +173,6 @@ function fillSensorsList(roomID,after){
 }
 
 function fillRoomNameContainer(roomID,after){
-  console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
   .select('Description')
   .from('Rooms')
@@ -241,7 +238,6 @@ function insertCheckStateResult(address,value,callback){
   .from('Devices')
   .where('Address',address)
   .then((devices) => {
-    console.log(devices);
     knex('Status_log').withSchema('LoRa')
     .insert({
       Device: devices[0].dev_id,
@@ -249,7 +245,6 @@ function insertCheckStateResult(address,value,callback){
       Time: date
     })
     .then(function(){
-      console.log('Succesful');
       callback(value);
     })
 
