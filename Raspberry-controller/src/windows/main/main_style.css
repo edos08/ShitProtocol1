@@ -11,7 +11,7 @@ body{
   max-height: 65vh;
   min-height: 10vh;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #second-level{
