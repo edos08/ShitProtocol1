@@ -269,8 +269,11 @@ ipc.on('rename-device',(event,deviceID,name) => {
       sensorsAssignationWindow.reload();
     else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
       deviceAssignationWindow.reload();
-    else
-      window.reload();
+    else{
+      dbHelper.getDeviceInfo(deviceID,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
+    }
   },() => {
       dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
   });
