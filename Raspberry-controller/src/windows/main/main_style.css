@@ -1,17 +1,17 @@
 body{
   width: 100%;
   height: 100vh;
-  
 }
 
 #top-level{
   height: 100%;
 }
 
-/*#rooms_container{
-  height: 400px;
+#rooms_container{
+  max-height: 50vh;
   overflow-y: auto;
-}*/
+}
+
 #second-level{
   height: 100%;
 }
