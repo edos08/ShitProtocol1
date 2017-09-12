@@ -214,7 +214,7 @@ function onSensorSubmissionAction(result){
   if(result == 1){
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
       if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
-        dbHelper.queryAllDevicesWithNoSensorAssignedAndShowIn((devices) => {
+        dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
           sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
         }); 
       } else {
