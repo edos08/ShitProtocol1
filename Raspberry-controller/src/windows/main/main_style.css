@@ -15,11 +15,11 @@ body{
   height: 400px;
   overflow-y: auto;
 }*/
-
-#header{
-  padding-left: 10px;
+#left{
+  background-color: #e5e6e6;
 }
 
 #content{
+  background-color: #313534;
 }
 
