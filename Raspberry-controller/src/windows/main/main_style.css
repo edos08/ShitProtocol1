@@ -4,6 +4,10 @@ body{
   background-color: rgba(230, 231, 230, 0.5);
 }
 
+#top-level{
+  background-color: rgba(230, 231, 230, 0.5);
+}
+
 /*#rooms_container{
   height: 400px;
   overflow-y: auto;
