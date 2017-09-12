@@ -155,7 +155,7 @@ function showStatInfo(device){
       + "</div>"
       + "<div class = \"panel-body\">"
         + "Stato: "
-        + ((device.statValue > 1023) ? "<fontcolor=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
+        + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
         + "<br/>"
         + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
         + "<br/>"
