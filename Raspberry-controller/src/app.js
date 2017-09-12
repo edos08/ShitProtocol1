@@ -122,7 +122,11 @@ function onLightChangedAction(result){
 }
 
 ipc.on('insert_new_room',function(event,roomName){
-  dbHelper.insertRoomIntoDB(roomName,window,() => {
+  dbHelper.insertRoomIntoDB(roomName,() => {
+    dbHelper.fillRoomsScreen((rooms) =>{
+      event.sender.send('rooms-filled',rooms);
+    });
+  },() => {
       dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
   });
 })

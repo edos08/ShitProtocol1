@@ -76,11 +76,11 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(after){
   });
 }
 
-function insertRoomIntoDB(roomName,windowToReload,errorAction){
+function insertRoomIntoDB(roomName,after,errorAction){
   knex('Rooms').withSchema('LoRa')
   .insert({Description: roomName})
   .then(function(){
-    windowToReload.reload();
+    after();
   })
   .catch((error) =>{
     errorAction();
