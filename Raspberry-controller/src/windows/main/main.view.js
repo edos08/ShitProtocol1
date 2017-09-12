@@ -109,11 +109,7 @@ function showDeviceInfos(device){
   console.log("Displaying infos for device " + device.id);
   
   content = ""
-  + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
-  + ((device.type == 2)?showDeviceSensorInfo(device):"")
-  + ((device.type == 2)?showDeviceValueForm(device):"")
-  + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"/> Cambia stanza </button> </br></td>"
-  + "<br/> <br/>"
+  + (showManangingInfos(device))
   + (showStatInfo(device));
   
   document.getElementById('content').innerHTML = content;
