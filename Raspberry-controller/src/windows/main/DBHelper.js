@@ -24,7 +24,7 @@ function fillRoomsScreen(after){
 
 function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
-  .select('Rooms.description as roomName')
+  .select('Rooms.Description as roomName')
   .from('Rooms')
   .where('ID',roomID)
   .then((room) => {
