@@ -28,6 +28,10 @@ Scaricare la repository del progetto da [github](https://github.com/edos08/ShitP
 
 Scaricare [postgresql](https://www.postgresql.org/download/) e creare un nuovo server locale `LoRa` con un database `LoRaServices` contenente uno schema `LoRa` con dentro le tabelle come descritte alla fine di [WorkingProtocol](WorkingProtocol.html) 
 
+Assicurarsi di avere installate le versioni aggiornate di `npm` e `NodeJS`   
+
+Navigare fino alla cartella del progetto e da li nella cartella `Raspberry-controller`. Da li digitare il comando `npm install` che provvederà ad installare tutte le dependecies di cui il progetto ha bisogno.  
+
 ### Dispositivi:
 
 Nodo (fetaherM0): caricare il codice di `startup_node`
@@ -46,5 +50,5 @@ Modificare il codice dal proprio PC, fare il commit dei cambiamenti e fare il pu
 
 Dopo aver modificato le librerie in `libsrc` copiare i file contenuti in tale cartella nella cartella delle librerie di arduino del dispositivo da cui si carica lo sketch.
 
-Per avviare il programma di controllo dalla raspberry spostarsi in `Raspberry-controller` da llinea di comando e digitare `npm start`.
+Per avviare il programma di controllo dalla raspberry spostarsi in `Raspberry-controller` da linea di comando e digitare `npm start`.
 

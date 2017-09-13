@@ -1,9 +1,12 @@
 @echo off
-pandoc -o ../index.html index.md --css src/github-pandoc.css
-pandoc -o ../ArduinoNano.html ArduinoNano.md --css src/github-pandoc.css
-pandoc -o ../Packet.html Packet.md --css src/github-pandoc.css
-pandoc -o ../API.html API.md --css src/github-pandoc.css
-pandoc -o ../WorkingProtocol.html WorkingProtocol.md --css src/github-pandoc.css
-pandoc -o ../Serial.html Serial.md --css src/github-pandoc.css
-pandoc -o ../GettingStarted.html GettingStarted.md --css src/github-pandoc.css
+
+REM For use in visual studio code 
+
+pandoc -o doc/index.html doc/src/index.md --css src/github-pandoc.css
+pandoc -o doc/ArduinoNano.html doc/src/ArduinoNano.md --css src/github-pandoc.css
+pandoc -o doc/Packet.html doc/src/Packet.md --css src/github-pandoc.css
+pandoc -o doc/API.html doc/src/API.md --css src/github-pandoc.css
+pandoc -o doc/WorkingProtocol.html doc/src/WorkingProtocol.md --css src/github-pandoc.css
+pandoc -o doc/Serial.html doc/src/Serial.md --css src/github-pandoc.css
+pandoc -o doc/GettingStarted.html doc/src/GettingStarted.md --css src/github-pandoc.css
 echo Build succeded

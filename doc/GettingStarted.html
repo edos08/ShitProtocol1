@@ -29,6 +29,8 @@
 <h3 id="raspberry">Raspberry:</h3>
 <p>Scaricare la repository del progetto da <a href="https://github.com/edos08/ShitProtocol1">github</a></p>
 <p>Scaricare <a href="https://www.postgresql.org/download/">postgresql</a> e creare un nuovo server locale <code>LoRa</code> con un database <code>LoRaServices</code> contenente uno schema <code>LoRa</code> con dentro le tabelle come descritte alla fine di <a href="WorkingProtocol.html">WorkingProtocol</a></p>
+<p>Assicurarsi di avere installate le versioni aggiornate di <code>npm</code> e <code>NodeJS</code></p>
+<p>Navigare fino alla cartella del progetto e da li nella cartella <code>Raspberry-controller</code>. Da li digitare il comando <code>npm install</code> che provvederà ad installare tutte le dependecies di cui il progetto ha bisogno.</p>
 <h3 id="dispositivi">Dispositivi:</h3>
 <p>Nodo (fetaherM0): caricare il codice di <code>startup_node</code></p>
 <p>Controllore (microcontrollore con led collegato sul pin D6): caricare il codice di <code>startup_controller</code></p>
@@ -38,6 +40,6 @@
 <h2 id="utilizzo">Utilizzo</h2>
 <p>Modificare il codice dal proprio PC, fare il commit dei cambiamenti e fare il pull della directory sulla raspberry.</p>
 <p>Dopo aver modificato le librerie in <code>libsrc</code> copiare i file contenuti in tale cartella nella cartella delle librerie di arduino del dispositivo da cui si carica lo sketch.</p>
-<p>Per avviare il programma di controllo dalla raspberry spostarsi in <code>Raspberry-controller</code> da llinea di comando e digitare <code>npm start</code>.</p>
+<p>Per avviare il programma di controllo dalla raspberry spostarsi in <code>Raspberry-controller</code> da linea di comando e digitare <code>npm start</code>.</p>
 </body>
 </html>
