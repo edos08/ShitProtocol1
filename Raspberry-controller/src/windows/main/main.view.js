@@ -139,10 +139,10 @@ function showDeviceSensorInfo(device){
 }
 
 function showDeviceValueForm(device){
-  return ("<td>Valore corrente: </td></br>"
-  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
+  return ("Valore corrente: " + device.value +"</br>"
+  + "<form class=\"form-inline\" onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
   + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
-  + "<input type=\"submit\" class=\"btn btn-secondary\"/>"
+  + "<input type=\"submit\" class=\"btn btn-secondary\">Cambia</submit>"
   + "</form>");
 }
 
