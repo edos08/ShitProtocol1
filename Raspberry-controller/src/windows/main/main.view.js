@@ -184,12 +184,12 @@ function chooseCardColor(device){
 
 function printLastValue(device){
   if(device.statValue != null){
-    if (device.statValue < 1023) 
-      return"Ultimo valore registrato: " + device.statValue;
+    if (device.statValue <= 1023) 
+      return "Ultimo valore registrato: " + device.statValue;
     else 
-      return "Irraggiungibile";
+      return "Ultimo valore registrato: Irraggiungibile";
   } else {
-    return "Attendere"
+    return "Ultimo valore registrato: Attendere"
   }
 }
 
