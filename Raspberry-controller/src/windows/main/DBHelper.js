@@ -35,7 +35,7 @@ function fillContentDivWithDevices(roomID,after){
     .from('Devices')
     .orderBy('ID','asc')
     .then(function(devices){
-      console.log(room);
+      console.log(room[0]);
       after(room.roomName,devices);
     });
   })
