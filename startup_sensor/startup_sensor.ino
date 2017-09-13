@@ -25,6 +25,7 @@ int sensorPin = A0;
 uint16_t sensorValue = 0;
 
 void setup() {
+  eraseEEPROM(0);
   Serial.begin(9600);
   while(!Serial);
   uint32_t memoryContent = readEEPROM();
@@ -78,6 +79,7 @@ void loop() {
         Serial.println(randomAddress,HEX);
         idSent = true;
         timerStartTime = millis();
+        while(true);
       }else{
         if(millis() - timerStartTime > RETRY_WAITING_TIME)
           waitingTimedOut = true;

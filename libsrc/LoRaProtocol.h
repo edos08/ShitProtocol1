@@ -107,6 +107,9 @@ class Packet{
 		return dest == -1;
 	}
 
+	/**
+	* Visualizza le informazioni del pacchetto
+	*/
 	void printPacket(){
 		Serial.print("dest: ");
 		Serial.println(dest,HEX);
@@ -121,34 +124,6 @@ class Packet{
 		}
 		uint8_t packType = type & PACKET_TYPE_MASK;
 		Serial.println(packType);
-		/*if(packType == 16){
-			Serial.println("CHANGE LIGHT");
-		}*/
-		/*switch(packType){
-			case PACKET_TYPE_REGISTRATION:
-				Serial.println("REGISTRATION");
-				break;
-			case PACKET_TYPE_SENSOR_SUBMISSION:
-				Serial.println("SENSOR SUBMISSION");
-				break;
-			case PACKET_TYPE_LIGHT_VALUE_CHANGED:
-				Serial.println("NEW LIGHT VALUE");
-				break;
-			case PACKET_TYPE_PING: 
-				Serial.println("PING");
-				break;
-			case PACKET_TYPE_SENSOR_VALUE:
-				Serial.println("SENSOR VALUE");
-				break;
-			default:
-				Serial.println("UNRECOGNIZED");
-				break;
-		}*/
-		/*if(type % 2 == 0)
-			Serial.println("NO ACK");
-		else
-			Serial.println("REQUESTS ACK");*/
-		
 		Serial.print("packetNumber: ");
 		Serial.println(packetNumber);
 		Serial.print("packetLength: ");

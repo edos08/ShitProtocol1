@@ -54,12 +54,25 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
-function onRegistrationEnd(result){
-  console.log("Registration succesful: " + result);
+function onRegistrationEnd(registered,requested){
+  var result = (registered == requested);
+  console.log("Registration succesful: " + (result));
+  
+  
   registrationActive = false;
-  deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
-  //deviceAssignationWindow.openDevTools();
-  deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
+  
+  if(result){
+    displaySuccessDialog("Registrazione completata per " + registered + " dispositivi");
+    
+    deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
+    //deviceAssignationWindow.openDevTools();
+    deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
+    
+  } else {
+    dialog.showErrorBox("Azione non completamente riuscita", 
+                        "Sono stati registrati " + registered + " dispositivi su " + requested + ".\n"
+                        + "I dispositivi non registrati non sono raggiungibili al momento");
+  }
 }
 
 ipc.on('check-first-startup',function(event,filler){
