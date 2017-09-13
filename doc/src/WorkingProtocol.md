@@ -64,14 +64,18 @@ Il database contenuto nel computer centrale è un database postgres relazionale.
 
 ###Schema logico-relazionale
 
-Device_types(ID(PK), Description)
-
-Devices(ID(PK), Type(FK), Room(FK), Description, Address, Sensor(FK), LightValue)
-
-Rooms(ID(PK), Description)
-
-Status_log(ID(PK), Time, Value, Device(FK))
-
+```
+	Device_types(ID(PK), Description)
+```
+```
+	Devices(ID(PK), Type(FK), Room(FK), Description, Address, Sensor(FK), LightValue)
+```
+```
+	Rooms(ID(PK), Description)
+```
+```
+	Status_log(ID(PK), Time, Value, Device(FK))
+```
 `Device_types` contiene i valori delle diverse tipologie di dispositivi presenti. Al momento i valori sono:
 
 * 1 - Node
@@ -91,3 +95,10 @@ Status_log(ID(PK), Time, Value, Device(FK))
 * `Address`: L'indirizzo LoRa del dispositivo
 * `Sensor`: Chiave esterna sulla tabella `Devices`. Se `Type` è `1` o `3` il campo deve essere `NULL`, altrimenti può essere `NULL` o contenere l'`ID` di un elemento della tabella `Devices` con `Type = 2`
 * `LightValue`: ultimo valore di luminosità assegnato ad un controllore. Se `Type` è `1` o `3` questo campo deve essere `NULL`. 
+
+`Status_log` contiene le informazioni sullo stato dei dispositivi nel tempo.
+
+* `ID` identificativo univoco autoincrementante
+* `Time` Il timestamp del momento in cui è stato fatto il controllo
+* `Value` Il valore del dispositivo al momento del controllo (valore del dimmer del controlloe oppure della fotoresistenza del sensore. Vale `-65k` se il dispositivo non è raggiungibile)
+* `Device` il dispositivo controllato. Chiave esterna sulla tabella `Devices`
