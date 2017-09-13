@@ -162,7 +162,7 @@ function showStatInfo(device){
       + "<div class = \"card-block\">"
         + (printStatus(device))
         + "<br/>"
-        + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
+        + (printLastValue(device))
         + "<br/>"
         + "Ultimo controllo: <br/>"
         + (isFinite(statDate)? statDate.toLocaleString("it-it") : "Ancora nessun controllo effettuato su questo dispositivio")
@@ -179,6 +179,17 @@ function chooseCardColor(device){
       return "danger";
   } else {
     return "info";
+  }
+}
+
+function printLastValue(device){
+  if(device.statValue != null){
+    if (device.statValue < 1023) 
+      return"Ultimo valore registrato: " + device.statValue;
+    else 
+      return "Irraggiungibile";
+  } else {
+    return "Attendere"
   }
 }
 
