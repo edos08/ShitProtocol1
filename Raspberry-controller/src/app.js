@@ -74,8 +74,8 @@ ipc.on('fill-rooms-screen',function(event){
 })
 
 ipc.on('fill_room_view',(event,roomID) => {
-  dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
-    event.sender.send('devices-loaded',devices,roomID)
+  dbHelper.fillContentDivWithDevices(roomID,(roomName,devices) =>{
+    event.sender.send('devices-loaded',roomName,devices,roomID)
   });
 });
 

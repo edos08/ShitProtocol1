@@ -24,15 +24,22 @@ function fillRoomsScreen(after){
 
 function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
-  .innerJoin('Device_types','Devices.Type','Device_types.ID')
-  .innerJoin('Rooms','Devices.Room','Rooms.ID')
-  .where('Devices.Room',roomID)
-  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type','Rooms.Description as roomName')
-  .from('Devices')
-  .orderBy('ID','asc')
-  .then(function(devices){
-    after(devices);
-  });
+  .select('Rooms.description as roomName')
+  .from('Rooms')
+  .where('ID',roomID)
+  .then((room) => {
+    knex.withSchema('LoRa')
+    .innerJoin('Device_types','Devices.Type','Device_types.ID')
+    .where('Devices.Room',roomID)
+    .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
+    .from('Devices')
+    .orderBy('ID','asc')
+    .then(function(devices){
+      console.log(room);
+      after(room.roomName,devices);
+    });
+  })
+  
 }
 
 function checkIfIdIsInDB(id,resultHandler){

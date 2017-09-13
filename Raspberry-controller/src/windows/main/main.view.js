@@ -64,8 +64,8 @@ function onRoomClicked(id){
   ipc.send('fill_room_view',id);
 }
 
-ipc.on('devices-loaded',(event,devices,roomID) =>{
-  var content = "<h3>" + devices[0].roomName + "</h3>";
+ipc.on('devices-loaded',(event,roomName,devices,roomID) =>{
+  var content = "<h3>" + roomName + "</h3>";
   if(devices.length > 0){
     content += "<div class=\"list-group\">";
     for(var a = 0; a < devices.length; a++){
