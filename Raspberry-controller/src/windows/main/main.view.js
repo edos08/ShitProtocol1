@@ -153,23 +153,47 @@ function showStatInfo(device){
   
   var statDate = new Date(String(device.statTime));
   statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
-  var active = (device.statValue <= 1023);
+
   return (
-    "<div class =\"card card-outline-" + ((active) ? "success" : "danger") +" mb-3\">"
+    "<div class =\"card card-outline-" + (chooseCardColor(device)) +" mb-3\">"
       + "<div class = \"card-header\">"   
         + "<h3 class = \"card-title\"> Informazioni </h3>"
       + "</div>"
       + "<div class = \"card-block\">"
-        + "Stato: "
-        + ((device.statValue > 1023) ? "<font color=\"red\"> IRRAGGIUNGIBILE </font>" : "<font color = \"green\"> ATTIVO </font>")
+        + (printStatus(device))
         + "<br/>"
         + ((device.statValue < 1023) ? "Ultimo valore registrato: " + device.statValue : "" )
         + "<br/>"
         + "Ultimo controllo: <br/>"
-        + statDate.toLocaleString("it-it")
+        + (isFinite(statDate)? statDate.toLocaleString("it-it") : "Ancora nessun controllo effettuato su questo dispositivio")
       + "</div>"
   + "</div>"
   );
+}
+
+function chooseCardColor(device){
+  if(device.statValue != null){
+    if(device.statValue <= 1023)
+      return "success";
+    else
+      return "danger";
+  } else {
+    return "info";
+  }
+}
+
+function printStatus(device){
+  var status = "Stato: ";
+  if(device.statValue != null){
+    if(device.statValue > 1023){
+      status += "<font color=\"red\"> IRRAGGIUNGIBILE </font>";
+    } else {
+      status += "<font color = \"green\"> ATTIVO </font>";
+    }
+  } else {
+    status += "Attendere il prossimo controllo";
+  }
+  return status;
 }
 
 function onDeviceRenameButtonClick(button){

@@ -67,11 +67,11 @@ function onRegistrationEnd(registered,requested){
     deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
     //deviceAssignationWindow.openDevTools();
     deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
-    
+
   } else {
     dialog.showErrorBox("Azione non completamente riuscita", 
                         "Sono stati registrati " + registered + " dispositivi su " + requested + ".\n"
-                        + "I dispositivi non registrati non sono raggiungibili al momento");
+                        + "I dispositivi non registrati non sono raggiungibili al momento.");
   }
 }
 
