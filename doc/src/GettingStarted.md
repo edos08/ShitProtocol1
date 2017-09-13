@@ -28,9 +28,24 @@ Scaricare la repository del progetto da [github](https://github.com/edos08/ShitP
 
 Scaricare [postgresql](https://www.postgresql.org/download/) e creare un nuovo server locale `LoRa` con un database `LoRaServices` contenente uno schema `LoRa` con dentro le tabelle come descritte alla fine di [WorkingProtocol](WorkingProtocol.html) 
 
-Assicurarsi di avere installate le versioni aggiornate di `npm` e `NodeJS`   
+Assicurarsi di avere installate le versioni aggiornate di `npm` e `NodeJS`  
+
+`Electron` il framework utilizzato per la realizzazione dell'interfaccia grafica si porta una propria versione di `NodeJS`. La libreria `serialport` deve essere compilata in riferimento alla versione di Electron utilizzata. Al momento l'ultima versione di Electron è la `1.7.6`. Il modulo `serialport` viene adeguato alla versione di Electron nella riga `8` del `package.json`:
+
+```json
+	"install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.7.6 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell"
+``` 
+
+dove su `target` va messa la versione di electron installata sulla macchina. Se all'avvio dell'applicazione si vede un errore di compilazione per `serialport` controllare che la versione su `target` sia la stessa della versione di electron Installata.
 
 Navigare fino alla cartella del progetto e da li nella cartella `Raspberry-controller`. Da li digitare il comando `npm install` che provvederà ad installare tutte le dependecies di cui il progetto ha bisogno.  
+
+Per qualche motivo `bootstrap` alla versione 4 non viene installato correttamente, in quanto viene installata la versione beta e non la alpha. Per visualizzare correttamente l'interfaccia grafica eseguire questo comando all'interno di `Raspberry controller`:
+
+```bash
+	npm install bootstrap@4.0.0-alpha.6
+```
+
 
 ### Dispositivi:
 

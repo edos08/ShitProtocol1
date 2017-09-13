@@ -33,7 +33,7 @@ La modalità di registrazione degli ID dei dispositivi è questa:
 
 * Il nodo continua a ricevere pacchetti di registrazione finchè non ha `Y` dispositivi nella sua coda interna e a quel punto ingnora tutti i pacchetti di registrazione sucessivi ed inizia uno stream di invio informazioni dei dispositivi con il computer centrale.
 
-* Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).
+* Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Se il riscontro ACK non viene ricevuto il nodo riprova ad inviare il messaggio di accettazione altre 2 volte, e se non riceve ancora ACK allor aconsidera il dispositivo come irraggiungibile e passa al successivo. L'utente verrà notificato se il numero dei dispositivi registrati è minore del numero di dispositivi richiesti. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).
 
 * Per ogni controllore ricevuto il computer centrale chiede inoltre all'utente di assegnare un sensore che dovrà ascoltare per regolare la propria luminosità.
 
