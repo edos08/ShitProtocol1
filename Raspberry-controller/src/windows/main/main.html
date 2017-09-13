@@ -5,47 +5,43 @@
     <title>Management app</title>
     <link rel="stylesheet" type="text/css" href="main_style.css">
     <link href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../sb-admin-2.min.css" rel="stylesheet">
+    <!--<link href="../sb-admin-2.min.css" rel="stylesheet">-->
     <script src="./main.view.js"></script>
 </head>
 <body onload="setUpElements()">
-
-  <div  class="left col" id = "left">
-    <div class = "register_container">
-      <h1>Welcome</h1>
-
-      <button id = "register_devices_button" class = "btn btn-default btn-block">
-            Registra nuovi dispositivi
-      </button>
-
-      <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-default btn-block">
-        Assegna nuovi dispositivi alle stanze
-      </button>
-
-      <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-default btn-block">
-        Assegna sensori ai dispositivi sprovvisti
-      </button>
-
-    </div>
-    <div class="room_div panel panel-default">
-      <h3 id="header" class="panel-heading">Stanze</h3>
-
-      <ul id = "rooms_container" class = "panel-body list-group">
-
-      </ul>
-
-      <div class = " panel-footer">
-        <button id = "insert_room_button" class="btn btn-default btn-block">
-            Inserisci una nuova stanza
-        </button>
+  <div class = "container-fluid " id="top-level">
+      <div class = "row align-items-stretch" id="second-level">
+          <div  class="col-md-5 " id = "left">
+            <div class="mb-3">
+              <h3>Registrazione</h3>
+              <div class = "btn-group-vertical btn-block" role="group">
+                <button id = "register_devices_button" class = "btn btn-secondary btn-block">
+                  Registra nuovi dispositivi
+                </button>
+        
+                <button id = "assign_devices_button" onclick="onAssignButtonCLick()" class = "btn btn-secondary btn-block">
+                  Assegna nuovi dispositivi alle stanze
+                </button>
+        
+                <button id= "assign_sensors_button" onclick="onSensorAssignButtonClick()" class = "btn btn-secondary btn-block">
+                  Assegna sensori ai dispositivi sprovvisti
+                </button>
+              </div>
+          </div>
+              
+          <h3>Stanze</h3>
+            <ul id = "rooms_container" class = "list-group"></ul>
+            <button id = "insert_room_button" class="btn btn-primary btn-block ">
+                Inserisci una nuova stanza
+            </button>
       </div>
-
+      
+      <div class="col-md-7" id = "content" >
+         Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti
+      </div>
     </div>
   </div>
-
-  <div id = "content" class="right col container">
-    Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti
-  </div>
+  
 
 
 </body>

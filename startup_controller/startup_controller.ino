@@ -6,30 +6,33 @@
 #define RETRY_WAITING_TIME 8000
 #define TYPE DEVICE_TYPE_CONTROLLER
 
+#define ADJUST_LIGHT_INTERVAL 5000
 
-volatile bool idSent = false;
-volatile bool idAccepted = false;
-volatile bool idDenied = false;
-volatile bool registrationDenied = false;
-volatile bool registrationResumed = false;
-volatile bool waitingTimedOut = false;
+bool idSent = false;
+bool idAccepted = false;
+bool idDenied = false;
+bool registrationDenied = false;
+bool registrationResumed = false;
+bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
 
-volatile bool isFirstBoot = true;
+unsigned long long regularDelayStart = 0;
 
-volatile uint32_t mySensor = 0xFFFFFFFF;
-volatile uint16_t lightCurrentValue = 0;
+bool isFirstBoot = true;
+
+uint32_t mySensor = 0xFFFFFFFF;
+uint16_t lightCurrentValue = 0;
 
 int dimmerTot = 500;
-volatile int maxBrightness = 600;
-volatile int minBrightness = 400;
-volatile int lightValue = 500;
+int maxBrightness = 600;
+int minBrightness = 400;
+int lightValue = 500;
 
 int photocellPin = 6;
 
-volatile bool hasToSendPingResponse = false;
+bool hasToSendPingResponse = false;
 
 void setup() {
   //eraseEEPROM(0);
@@ -61,18 +64,16 @@ void setup() {
 }
 
 void loop() {
+  checkIncoming();
   if(!isFirstBoot){
-    //Serial.print("I have already an ID and it is ");
-    //Serial.println(randomAddress,HEX);
-    //Serial.print("I'm listening to the sensor ");
-    //Serial.println(mySensor,HEX);
-
-    //adjust light dimmer
     if(hasToSendPingResponse){
       sendPacket(PingResponsePacket(NODE_ADDRESS,randomAddress,dimmerTot));
       hasToSendPingResponse = false;
     }
-    photo(lightCurrentValue);
+    if(!isWaitingRegularDelay()){
+      photo(lightCurrentValue);
+      regularDelayStart = millis();
+    }
 
   }else if(!registrationDenied){
     if(!idAccepted){
@@ -128,6 +129,9 @@ int generateRandomWaitingTime(){
 }
 
 void handleResponsePacket(Packet response){
+  Serial.println("-------NEW MESSAGE-------");
+  Serial.flush();
+  response.printPacket();
   if(isFirstBoot && isRegistrationResponsePacket(response.type, response.packetLength)){
 
     switch(response_result((uint8_t)response.body[0])){
@@ -149,6 +153,8 @@ void handleResponsePacket(Packet response){
   }
   if(isSensorSubmissionPacket(response.type,response.packetLength)){
     mySensor = Helpers::read32bitInt((uint8_t*)response.body);
+    Serial.print("New sensor: ");
+    Serial.println(mySensor,HEX);
     writeEEPROM(mySensor,4);
   }  else if(isSensorValuePacket(response.type, response.packetLength)){
     if(response.sender == mySensor){
@@ -167,6 +173,11 @@ void handleResponsePacket(Packet response){
      hasToSendPingResponse = true;
   }
 
+}
+
+bool isWaitingRegularDelay(){
+  if(millis() < ADJUST_LIGHT_INTERVAL) return true;
+  return (millis() - ADJUST_LIGHT_INTERVAL) <= regularDelayStart; 
 }
 
 

@@ -81,7 +81,7 @@ function handleIDStreamEndMessage(){
     console.log("Operation failed");
   }
   if(onEnd){
-    onEnd(accepted_ids == devicesToRegister);
+    onEnd(accepted_ids,devicesToRegister);
   }
   accepted_ids = 0;
 }

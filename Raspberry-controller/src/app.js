@@ -54,12 +54,25 @@ app.on('quit',()=>{
     registration.terminate();
 })
 
-function onRegistrationEnd(result){
-  console.log("Registration succesful: " + result);
+function onRegistrationEnd(registered,requested){
+  var result = (registered == requested);
+  console.log("Registration succesful: " + (result));
+  
+  
   registrationActive = false;
-  deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
-  //deviceAssignationWindow.openDevTools();
-  deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
+  
+  if(result){
+    displaySuccessDialog("Registrazione completata per " + registered + " dispositivi");
+    
+    deviceAssignationWindow = new BrowserWindow({parent: window, modal: true});
+    //deviceAssignationWindow.openDevTools();
+    deviceAssignationWindow.loadURL('file://' + __dirname + '/windows/deviceAssignation/device_assignation.html');
+
+  } else {
+    dialog.showErrorBox("Azione non completamente riuscita", 
+                        "Sono stati registrati " + registered + " dispositivi su " + requested + ".\n"
+                        + "I dispositivi non registrati non sono raggiungibili al momento.");
+  }
 }
 
 ipc.on('check-first-startup',function(event,filler){
@@ -74,14 +87,16 @@ ipc.on('fill-rooms-screen',function(event){
 })
 
 ipc.on('fill_room_view',(event,roomID) => {
-  dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
-    event.sender.send('devices-loaded',devices,roomID)
+  dbHelper.fillContentDivWithDevices(roomID,(roomName,devices) =>{
+    event.sender.send('devices-loaded',roomName,devices,roomID)
   });
 });
 
 ipc.on('delete-room',(event,roomID) => {
   dbHelper.deleteRoom(roomID,() => {
-    window.reload();
+    dbHelper.fillRoomsScreen((rooms) =>{
+      event.sender.send('rooms-filled',rooms);
+    });
   })
 });
 
@@ -90,9 +105,7 @@ ipc.on('gather-device-info',(event,deviceID) => {
 })
 
 function gatherDeviceInfo(event,deviceID){
-  console.log("device id " + deviceID);
   dbHelper.getDeviceInfo(deviceID,(device) => {
-    console.log("sending event back");
     event.sender.send('device-info-gathered',device);
   })
 }
@@ -122,14 +135,17 @@ function onLightChangedAction(result){
 }
 
 ipc.on('insert_new_room',function(event,roomName){
-  dbHelper.insertRoomIntoDB(roomName,window,() => {
+  dbHelper.insertRoomIntoDB(roomName,() => {
+    dbHelper.fillRoomsScreen((rooms) =>{
+      event.sender.send('rooms-filled',rooms);
+    });
+  },() => {
       dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
   });
 })
 
 
 ipc.on("register_devices_pressed",function(event){
-  console.log("Congratualtions, you have pressed the register devices button");
   event.sender.send('dev-no-dialog');
 });
 
@@ -137,10 +153,6 @@ ipc.on('registration-device-start',(event,devicesNumber) => {
   console.log("registration started");
   registration.start(onRegistrationEnd,devicesNumber);
   registrationActive = true;
-})
-
-ipc.on("insert_room_button_pressed", function(){
-  console.log("Button rooms pressed");
 });
 
 ipc.on('assign_devices_button_pressed',function(){
@@ -167,13 +179,18 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 })
 
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
-  console.log("Ok button pressed with device = " + currentDeviceForWhichTheRoomIsBeingChosen + " and room " + roomID);
-  dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+  dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID,() => {
+    if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
+      dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+      }); 
+    } else {
+      dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
+        window.webContents.send('devices-loaded',devices,roomID)
+      });
+    }
+  });
   chooseRoomWindow.on('closed',() =>{
-      if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed())
-        deviceAssignationWindow.reload();
-      else
-        window.reload();
       if(selectSensorAfterwardsTrigger){
         selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
       }else {
@@ -199,19 +216,28 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   })
 
   chooseSensorWindow.on('closed',() =>{
+    var deviceID = currentDeviceForWhichTheRoomIsBeingChosen;
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
     currentRoomInWhichTheSensorsAreHeld = -1;
-    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
-      sensorsAssignationWindow.reload();
-    else
-      window.reload();
+    
   });
 })
 
 function onSensorSubmissionAction(result){
   if(result == 1){
-    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected);
+    dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
+      if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+        dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
+          sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+        }); 
+      } else {
+        dbHelper.getDeviceInfo(controllerID,(device) => {
+          window.webContents.send('device-info-gathered',device);
+        });
+      }
+    });
     displaySuccessDialog("Sensore aggiornato correttamente");
+    
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
@@ -253,12 +279,19 @@ ipc.on('devices-with-no-sensor-request',(event) => {
 
 ipc.on('rename-device',(event,deviceID,name) => {
   dbHelper.renameDevice(deviceID,name,() => {
-    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed())
-      sensorsAssignationWindow.reload();
-    else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
-      deviceAssignationWindow.reload();
-    else
-      window.reload();
+    if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+      dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
+        sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
+      });
+    } else if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
+      dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+      });
+    } else{
+      dbHelper.getDeviceInfo(deviceID,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
+    }
   },() => {
       dialog.showErrorBox("Valore inserito non valido", "Il nome non può essere ripetuto")
   });

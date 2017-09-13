@@ -1,19 +1,6 @@
-# Arduino Nano (versione cinese)
+# Arduino Nano 
 
-Documentazione scritta in seguito alla risoluzione del seguente problema:
-Impossibile caricare sketch su arduino nano atmega328.
-
-## Soluzioni tentate:
-
-| Tentativo | Esito | Motivazione |
-|-----------|-------|-------------|
-| Scaricare ed installare driver FTDI | Negativo | I driver FTDI sono per l'arduino nano originale |
-| Scaricare ed installare driver CH340G | Parziale | I dirver sono giusti ma non ha risolto il problema |
-| Cambio della cablatura del chip LoRa | Positivo | Spiegate sotto |
-
-## Cambio del cablaggio
-
-### Nuovo schema di cablatura
+## Schema di cablatura
 
 | LoRa | Arduino Nano |
 |------|--------------|
@@ -26,14 +13,17 @@ Impossibile caricare sketch su arduino nano atmega328.
 | RESET | D4 |
 | DIO0 | D3 |
 
-Il DIO0 deve rimanere sul 3 perchè i pin 2 e 3 sono gli unici a cui ci si può iscrivere per ricevere cambiamenti di stato (callback)
 
-NSS e RESET non devono andare sui pin 6,7,8 perchè altrimenti non carica lo sketch
+Chiamando initLoRa si abbia cura di chiamarlo con gli argomenti (indirizzo,8,4,3)
 
-Chiamando initLoRa si abbia cura di chiamarlo con gli argomenti (indirizzo,10,9,3)
+## Errore: 'can't set com state for ...'
 
-# Errore 'can't set com state for ...'
+All'inizio era un errore molto ricorrente durante il caricamento dello sketch dall'IDE di arduino. La soluzione è semplicemente staccare e riattaccare la microusb dal dispositivo e riprovare fincè parte. Sembra essere quasi scomparso col tempo.
 
-Succede quando si stacca la scheda dalla corrente.
+## Errore: Il dispositivo si ferma dopo l'invio di pochi messaggi
 
-Occorre togliere il modulo lora, ricaricare lo sketch e reinserire il modulo LoRa
+Questo errore è dovuto ad un problema di alimentazione, l'arduino nano non riesce a fornire abbastanza ampere di corrente al pin 3v3 del chip LoRa. La soluzione è cablare 3v3 e groung del chip ad un altra fonte di corrente (es raspberry). 
+
+Si può vedere il problema discusso [qui](https://github.com/sandeepmistry/arduino-LoRa/issues/34)
+
+

@@ -49,6 +49,7 @@ void setup() {
 }
 
 void loop() {
+  checkIncoming();
   if(!isFirstBoot){
     //Serial.print("I have already an ID and it is ");
     //Serial.println(randomAddress,HEX);

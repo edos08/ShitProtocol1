@@ -9,6 +9,7 @@
 #define SERIAL_BUFFER_SIZE 15
 
 #define CONTROLLER_TIMEOUT 6000
+
 #define SENSOR_TIMEOUT 15000
 
 char serialBuffer[SERIAL_BUFFER_SIZE];
@@ -31,7 +32,7 @@ void setup() {
 }
 
 void loop() {
-
+  checkIncoming();
   if(Serial.available()){
     serialEvent();
   }
@@ -60,8 +61,18 @@ void loop() {
                   return;
                 }
                 if(identified_devices < devices_to_register){
-                  int result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
-                  sendDeviceTypeToSerial();
+                  int result = -1;
+                  int retries = 0;
+                  while(result != SUCCESFUL_RESPONSE && retries < 3){
+                    result = sendPacket(RegistrationIDAcceptedPacket(devices_ids[identified_devices],NODE_ADDRESS));
+                    retries++;
+                  } 
+                  
+                  if(result == SUCCESFUL_RESPONSE)
+                    sendDeviceTypeToSerial();  //manda il tipo e alza identified_devices
+                   else
+                    identified_devices++; // dispositivo non confermato, passa al prossimo
+                    
                   delay(50);
                   return;
                 }else{

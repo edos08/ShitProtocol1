@@ -1,21 +1,37 @@
+/**
+* Protocollo LoRaProtocol
+* @file LoRaProtocol.cpp
+*/
+
 #include "LoRaProtocol.h"
 
 //int csPin = 8;
-//int resetPin = 4;
+//int resetPin = 4;  // default values used.
 //int irqPin = 3;
 
 // Global varialbles
 
-uint32_t myAddress;
-uint8_t packetCounter = 0;
-AckHolder ackHolder;
-functionCall subscribedFunction = NULL;
-int notificationPin = 7;
+uint32_t myAddress;                                    /**< Indirizzo del dispositivo nella rete.*/
+uint8_t packetCounter = 0;                             
+AckHolder ackHolder;                                   /**< Struttura che contiene gli ACK ricevuti.*/
+functionCall subscribedFunction = NULL;               
+int notificationPin = 7;                               /**< Pin a cui si può collegare un buzzer per avere una notifica uditiva della ricezione di messaggi.*/
 //Global functions not declared in LoRaProtocol.h
 
+/** Invia un pacchetto e si aspetta un ACK in risposta (usata internamente).
+* @param packet il pacchetto da inviare
+* @param retries il numero di tentativi fatti (fino a 3)
+* @return il risultato dell'operazione
+* @see `sendPacket()`
+*/
 int sendPacketAck(Packet packet, int retries);
+
+/** Invia un pacchetto senza aspettarsi un ACK in risposta (usata internamente).
+* @param packet il pacchetto da inviare
+* @return il risultato dell'operazione
+* @see `sendPacket()`
+*/
 int sendNonAckPacket(Packet packet);
-int sendPacketAck(Packet packet, int retries);
 
 //Function bodies
 
@@ -26,12 +42,10 @@ void initLoRa(uint32_t _myAddress, int csPin, int resetPin, int irqPin){
   if (!LoRa.begin(866E6)) {             // initialize ratio at 866 MHz
       Serial.println("LoRa init failed. Check your connections.");
       tone(notificationPin,1000);
-      digitalWrite(notificationPin,HIGH);
+      //digitalWrite(notificationPin,HIGH);
       while (true);                       // if failed, do nothing
   }
 
-  LoRa.onReceive(receivePacket);
-  activateReceiveMode();
   //Serial.println("LoRa init succeeded.");
 }
 
@@ -40,7 +54,6 @@ void changeAddress(uint32_t newAddress) {
 }
 
 int sendPacket(Packet packet){
-	//LoRa.idle();
 	if (packet.requestsAck())
 		return sendPacketAck(packet,0);
 	return sendNonAckPacket(packet);
@@ -59,7 +72,6 @@ int sendNonAckPacket(Packet packet) {
 	int result = LoRa.endPacket();
 	if (result == SUCCESFUL_RESPONSE)
 		packetCounter++;
-	activateReceiveMode();
 	return result;
 }
 
@@ -68,7 +80,10 @@ int sendPacketAck(Packet packet, int retries){
 	if (sendNonAckPacket(packet) == PACKET_SENDING_ERROR)
 		return PACKET_SENDING_ERROR;
 	unsigned long long currTime = millis();
-	while (!ackHolder.hasAck && millis() - currTime < ACK_WAITING_MILLIS);
+
+	while (!ackHolder.hasAck && millis() - currTime < ACK_WAITING_MILLIS)
+		checkIncoming();
+		
 	ackHolder.hasAck = false;
 	LoRa.idle();
 	if (ackHolder.ack.sender == packet.dest && ackHolder.ack.packetNumber == packet.packetNumber) {
@@ -81,43 +96,47 @@ int sendPacketAck(Packet packet, int retries){
 	return HOST_UNREACHABLE_RESPONSE;
 }
 
-void activateReceiveMode(){
-    LoRa.receive();
+void checkIncoming(){
+	int packetSize = LoRa.parsePacket();
+	if(packetSize == 0)
+		return;
+	receivePacket(packetSize);
 }
 
 void receivePacket(int packetSize) {
-  if (packetSize == 0) return;          // if there's no packet, return
-  //digitalWrite(notificationPin,HIGH);
   tone(notificationPin,1000,200);
-  Packet receivedPacket = Helpers::readInputPacket();
-  if (myAddress != receivedPacket.dest && receivedPacket.dest != 0x00000000) {
+  Packet* receivedPacket = Helpers::readInputPacket();
+  if (myAddress != receivedPacket->dest && receivedPacket->dest != 0x00000000) {
     while(LoRa.available())
-        LoRa.read();
-    //Serial.println("This message is not for me.");
+		LoRa.read();
+	delete receivedPacket;
     return;
   }
 
   int position = 0;
   while (LoRa.available()) {
-	  receivedPacket.body[position] = (char)LoRa.read();      // add bytes one by one
+	  receivedPacket->body[position] = (char)LoRa.read();      // add bytes one by one
     position++;
   }
 
-  if((receivedPacket.packetLength) != position){
-      return;
+  if((receivedPacket->packetLength) != position){
+	delete receivedPacket;  
+	return;
   }
 
-  if (receivedPacket.requestsAck()) {
-    //Serial.println("Responding to ack");
-	  Packet ackPacket = Packet(receivedPacket.sender, myAddress, PACKET_TYPE_ACK, receivedPacket.packetNumber, "", 0);
-	  sendPacket(AckPacket(receivedPacket.sender,myAddress,receivedPacket.packetNumber));
+  if (receivedPacket->requestsAck()) {
+	  sendPacket(AckPacket(receivedPacket->sender,myAddress,receivedPacket->packetNumber));
   }
-  if (receivedPacket.isAck()) {
+
+  if (receivedPacket->isAck()) {
 	  ackHolder.hasAck = true;
-	  ackHolder.ack = receivedPacket;
+	  ackHolder.ack = *receivedPacket;
   } else if (subscribedFunction != NULL) {
-	  subscribedFunction(receivedPacket);
+	//receivedPacket->printPacket();
+	subscribedFunction(*receivedPacket);
   }
+  //receivedPacket->printPacket();
+  delete receivedPacket;
 }
 
 void subscribeToReceivePacketEvent(functionCall function) {

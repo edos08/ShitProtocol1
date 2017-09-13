@@ -7,12 +7,12 @@ var dialogs = Dialogs();
 window.onload = setUpElements;
 
 ipc.on('rooms-filled',(event,rooms) =>{
-  console.log("refresh");
   var content = "";
   for(var a = 0; a < rooms.length; a++){
-    content += "<button type=\"button\" class = \"list-group-item\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
+    content += "<button class = \"list-group-item list-group-item-action room\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
   document.getElementById('rooms_container').innerHTML = content;
+  document.getElementById('content').innerHTML = "Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti";
 })
 
 ipc.on('dev-no-dialog',(event) => {
@@ -39,10 +39,8 @@ function setupRegisterDevicesButton(){
 function setupInsertRoomButton(){
   var insertRoomButton = document.getElementById('insert_room_button');
   insertRoomButton.addEventListener('click',function(){
-    ipc.send('insert_room_button_pressed');
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
-        console.log(ok);
         ipc.send('insert_new_room',ok);
       }
     });
@@ -62,22 +60,22 @@ function displayEmptyDBMessage(){
 }
 
 function onRoomClicked(id){
-  console.log("Congratulations, you clicked on the room!");
+  console.log("loading room " + id);
   ipc.send('fill_room_view',id);
 }
 
-ipc.on('devices-loaded',(event,devices,roomID) =>{
-  var content = "";
+ipc.on('devices-loaded',(event,roomName,devices,roomID) =>{
+  var content = "<h3>" + roomName + "</h3>";
   if(devices.length > 0){
-    content += "<ul class=\"list-group\">";
+    content += "<div class=\"list-group\">";
     for(var a = 0; a < devices.length; a++){
       content += createDeviceItemForList(devices[a]);
     }
-    content += "</ul>";
+    content += "</div>";
   }else{
     content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
-  content += "<button id = \"" + roomID +"\" class = \"btn btn-default\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
+  content += "<button id = \"" + roomID +"\" class = \"btn btn-secondary\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
   document.getElementById('content').innerHTML = content;
 })
 
@@ -87,7 +85,7 @@ function deleteRoomButton(button){
 
 
 function createDeviceItemForList(device){
-    return "<button class=\"list-group-item\""
+    return "<button class=\"list-group-item list-group-item-action\""
     + " id = \"" + device.ID + "\""
     + ((device.type != 1)?"onClick = \"onDeviceClicked(this)\"":"")
     + "> "
@@ -99,7 +97,7 @@ function createDeviceItemForList(device){
 }
 
 function onDeviceClicked(device){
-  console.log("Device clicked");
+  console.log("Loading device: " + device.id);
   ipc.send('gather-device-info',device.id);
 }
 
@@ -108,29 +106,106 @@ ipc.on('device-info-gathered',(event,device) => {
 })
 
 function showDeviceInfos(device){
-  console.log("Displaying infoos");
+  console.log("Displaying infos for device " + device.id);
+  
   content = ""
-  + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-default\"> Rinomina </button></td></br> "
-  + ((device.type == 2)?showDeviceSensorInfo(device):"")
-  + ((device.type == 2)?showDeviceValueForm(device):"")
-  + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-default\"> Cambia stanza </br></td>"
+  + (showManangingInfos(device))
+  + (showStatInfo(device));
+  
   document.getElementById('content').innerHTML = content;
   return content;
 }
 
+function showManangingInfos(device){
+  return (
+    
+       "<div class =\"card card-outline-primary mb-3\" padding-bottom=15px>"
+        + "<div class = \"card-header\">"
+          + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
+        + "</div>"
+        + "<div class = \"card-block\">"
+          + "<td> Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></td></br> "
+          + ((device.type == 2)?showDeviceSensorInfo(device):"")
+          + ((device.type == 2)?showDeviceValueForm(device):"")
+          + "<td><button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"/> Cambia stanza </button> </br></td>"
+        + "</div>"  
+      + "</div>");
+    
+}
+
 function showDeviceSensorInfo(device){
   return ("<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
-  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-default\"> Cambia sensore </button></td></br>");
+  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-secondary\"> Cambia sensore </button></td></br>");
 }
 
 function showDeviceValueForm(device){
-  return ("<td>Valore corrente: </td></br>"
-  + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
-  + "Valore (0 - 1023): <input type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
-  + "<input type=\"submit\" class=\"btn btn-default\"/>"
+  return ("Valore corrente: " + device.value +"</br>"
+    + "<div class = \"form-group\">"  
+      + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
+      + "<label for=\"lightValue\">Inserisci un nuovo valore (0 - 1023): </label>"
+      + "<input class=\"form-control\" type=\"number\" id = \"lightValue\" placeholder=\"" + device.value + "\"/>"
+      + "<button type=\"submit\" class=\"btn btn-secondary\">Cambia</button>"
+    + "</div>"
   + "</form>");
 }
 
+function showStatInfo(device){
+  
+  var statDate = new Date(String(device.statTime));
+  statDate.setHours(statDate.getHours() + 2); //la locale della raspberry è sballata di 2 ore
+
+  return (
+    "<div class =\"card card-outline-" + (chooseCardColor(device)) +" mb-3\">"
+      + "<div class = \"card-header\">"   
+        + "<h3 class = \"card-title\"> Informazioni </h3>"
+      + "</div>"
+      + "<div class = \"card-block\">"
+        + (printStatus(device))
+        + "<br/>"
+        + (printLastValue(device))
+        + "<br/>"
+        + "Ultimo controllo: <br/>"
+        + (isFinite(statDate)? statDate.toLocaleString("it-it") : "Ancora nessun controllo effettuato su questo dispositivio")
+      + "</div>"
+  + "</div>"
+  );
+}
+
+function chooseCardColor(device){
+  if(device.statValue != null){
+    if(device.statValue <= 1023)
+      return "success";
+    else
+      return "danger";
+  } else {
+    return "info";
+  }
+}
+
+function printLastValue(device){
+  if(device.statValue != null){
+    if (device.statValue <= 1023) 
+      return "Ultimo valore registrato: " + device.statValue;
+    else 
+      return "Ultimo valore registrato: Irraggiungibile";
+  } else {
+    return "Ultimo valore registrato: Attendere"
+  }
+}
+
+function printStatus(device){
+  var status = "Stato: ";
+  if(device.statValue != null){
+    if(device.statValue > 1023){
+      status += "<font color=\"red\"> IRRAGGIUNGIBILE </font>";
+    } else {
+      status += "<font color = \"green\"> ATTIVO </font>";
+    }
+  } else {
+    status += "Attendere il prossimo controllo";
+  }
+  return status;
+}
 
 function onDeviceRenameButtonClick(button){
   dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
@@ -149,7 +224,6 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 function handleValueSubmission(){
-  console.log("value-changed");
   var valueInserted = document.getElementById('lightValue').value;
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');

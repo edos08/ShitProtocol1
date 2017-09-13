@@ -24,14 +24,22 @@ function fillRoomsScreen(after){
 
 function fillContentDivWithDevices(roomID,after){
   knex.withSchema('LoRa')
-  .innerJoin('Device_types','Devices.Type','Device_types.ID')
-  .where('Devices.Room',roomID)
-  .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
-  .from('Devices')
-  .orderBy('ID','asc')
-  .then(function(devices){
-    after(devices);
-  });
+  .select('Rooms.Description as roomName')
+  .from('Rooms')
+  .where('ID',roomID)
+  .then((room) => {
+    knex.withSchema('LoRa')
+    .innerJoin('Device_types','Devices.Type','Device_types.ID')
+    .where('Devices.Room',roomID)
+    .select('Devices.ID','Devices.Description as desc ','Device_types.Description as dev_type','Device_types.ID as type')
+    .from('Devices')
+    .orderBy('ID','asc')
+    .then(function(devices){
+      console.log(room[0].roomName);
+      after(room[0].roomName,devices);
+    });
+  })
+  
 }
 
 function checkIfIdIsInDB(id,resultHandler){
@@ -76,12 +84,11 @@ function queryAllDevicesWithRoomAssignedButNoSensorAndShowIn(after){
   });
 }
 
-function insertRoomIntoDB(roomName,windowToReload,errorAction){
-  console.log("Inserting : " + roomName);
+function insertRoomIntoDB(roomName,after,errorAction){
   knex('Rooms').withSchema('LoRa')
   .insert({Description: roomName})
   .then(function(){
-    windowToReload.reload();
+    after();
   })
   .catch((error) =>{
     errorAction();
@@ -115,24 +122,26 @@ function fillRoomsList(after){
   });
 }
 
-function assignDeviceToRoom(deviceID,roomID){
+function assignDeviceToRoom(deviceID,roomID,after){
   knex('Devices').withSchema('LoRa')
   .where('ID',deviceID)
   .update('Room',roomID)
   .then(function(result){
     if(result == 1){
       console.log("Dispositivo assegnato alla stanza con successo!");
+      after();
     }
   })
 }
 
-function assignSensorToController(controllerID,sensorID){
+function assignSensorToController(controllerID,sensorID,after){
   knex('Devices').withSchema('LoRa')
   .where('ID',controllerID)
   .update('Sensor',sensorID)
   .then(function(result){
     if(result == 1){
       console.log("Sensore assegnato al dispositivo con successo");
+      after(controllerID);
     }
   })
 }
@@ -150,7 +159,6 @@ function getAddressesForControllerAndSensor(controllerID,sensorID,after){
 }
 
 function checkIfHasRoomAssignedAndSelectSensor(deviceID,selectRoomFunction,selectDeviceFunction){
-  console.log("test-" + deviceID);
   knex.withSchema('LoRa')
   .select('Room')
   .from('Devices')
@@ -172,29 +180,34 @@ function fillSensorsList(roomID,after){
   .andWhere('Room', roomID)
   .then(function(sensors){
     after(sensors);
+  }).catch(() => {
+    console.log("window was already closed");
   });
 }
 
 function fillRoomNameContainer(roomID,after){
-  console.log('ROOM:: '+ roomID);
   knex.withSchema('LoRa')
   .select('Description')
   .from('Rooms')
   .where('ID',"=",roomID)
   .then(function(rooms){
     after(rooms[0].Description);
+  }).catch(() => {
+    console.log("window was already closed");
   })
 }
 
 function getDeviceInfo(deviceID,after){
-  console.log("DBHELPER id " + deviceID);
   knex.withSchema('LoRa')
-  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID','devs2.Description as sensor','devs.LightValue as value')
+  .select('devs.ID as id','devs.Type as type','devs.Description as description','devs.Sensor as sensorID',
+          'devs2.Description as sensor','devs.LightValue as value','stats.Time as statTime','stats.Value as statValue')
   .leftJoin('Devices as devs2','devs.Sensor','devs2.ID')
+  .leftJoin('Status_log as stats','devs.ID','stats.Device')
   .from('Devices as devs')
   .where('devs.ID',deviceID)
+  .orderBy('stats.Time','desc')
   .then((devices) =>{
-    console.log("im in the after " + devices[0]);
+    console.log(devices[0]);
     after(devices[0]);
   })
 }
@@ -240,7 +253,6 @@ function insertCheckStateResult(address,value,callback){
   .from('Devices')
   .where('Address',address)
   .then((devices) => {
-    console.log(devices);
     knex('Status_log').withSchema('LoRa')
     .insert({
       Device: devices[0].dev_id,
@@ -248,7 +260,6 @@ function insertCheckStateResult(address,value,callback){
       Time: date
     })
     .then(function(){
-      console.log('Succesful');
       callback(value);
     })
 

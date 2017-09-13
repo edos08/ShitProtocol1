@@ -139,7 +139,7 @@ int LoRaClass::endPacket()
 {
   // put in TX mode
   writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX);
-
+  //LoRa.dumpRegisters(Serial);
   // wait for TX done
   while((readRegister(REG_IRQ_FLAGS) & IRQ_TX_DONE_MASK) == 0);
 

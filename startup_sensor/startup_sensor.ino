@@ -4,31 +4,29 @@
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define RETRY_WAITING_TIME 8000
-#define SENSOR_SEND_DATA_WAITING_TIME 3000
+#define SENSOR_SEND_DATA_WAITING_TIME 5000
 #define TYPE DEVICE_TYPE_SENSOR
 
 
-volatile bool idSent = false;
-volatile bool idAccepted = false;
-volatile bool idDenied = false;
-volatile bool registrationDenied = false;
-volatile bool registrationResumed = false;
+bool idSent = false;
+bool idAccepted = false;
+bool idDenied = false;
+bool registrationDenied = false;
+bool registrationResumed = false;
 bool waitingTimedOut = false;
 
 uint32_t randomAddress;
 unsigned long long timerStartTime = 0;
+unsigned long long regularDelayStart = 0;
 
-volatile bool isFirstBoot = true;
+bool isFirstBoot = true;
 
 int sensorPin = A0;
 uint16_t sensorValue = 0;
 
 void setup() {
-  //eraseEEPROM(0);
-  //eraseEEPROM(4);
   Serial.begin(9600);
   while(!Serial);
-  //pinMode(sensorPin,INPUT);
   uint32_t memoryContent = readEEPROM();
   Serial.print("Memory content ");
   Serial.println(memoryContent,HEX);
@@ -43,20 +41,20 @@ void setup() {
   initLoRa(randomAddress, 8, 4, 3);
   subscribeToReceivePacketEvent(handleResponsePacket);
   
-  Serial.println("INIITS");
+  Serial.println("INITS");
 }
 
 void loop() {
+  checkIncoming();
   if(!isFirstBoot){
-    Serial.print("I have already an ID and it is ");
-    Serial.println(randomAddress,HEX);
-    sensorValue = analogRead(sensorPin);
-    Serial.print("Valore fotoresistenza: ");
-    Serial.println(sensorValue);
-    Serial.flush();
-    int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
-    Helpers::printResponseMessage(result);
-    delay(SENSOR_SEND_DATA_WAITING_TIME);
+    if(!isWaitingRegularDelay()){
+      sensorValue = analogRead(sensorPin);
+      Serial.print("Valore fotoresistenza: ");
+      Serial.println(sensorValue);
+      int result = sendPacket(SensorValuePacket(randomAddress,sensorValue));
+      Helpers::printResponseMessage(result);
+      regularDelayStart = millis();
+    }
     return;
   }
 
@@ -78,7 +76,6 @@ void loop() {
         sendPacket(RegistrationPacket(NODE_ADDRESS,randomAddress,TYPE));
         Serial.print("My ID 0x");
         Serial.println(randomAddress,HEX);
-        //Serial.flush();
         idSent = true;
         timerStartTime = millis();
       }else{
@@ -135,6 +132,10 @@ void handleResponsePacket(Packet response){
   }
 }
 
+bool isWaitingRegularDelay(){
+  if(millis() < SENSOR_SEND_DATA_WAITING_TIME) return true;
+  return (millis() - SENSOR_SEND_DATA_WAITING_TIME) <= regularDelayStart; 
+}
 
 uint32_t readEEPROM(){
   uint32_t result = 0;
