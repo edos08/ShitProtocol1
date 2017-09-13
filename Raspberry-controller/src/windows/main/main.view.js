@@ -142,7 +142,7 @@ function showDeviceValueForm(device){
   return ("Valore corrente: " + device.value +"</br>"
     + "<div class = \"form-group\">"  
       + "<form onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
-      + "<label for=\"lightValue\">Valore (0 - 1023): </label>"
+      + "<label for=\"lightValue\">Inserisci un nuovo valore (0 - 1023): </label>"
       + "<input class=\"form-control\" type=\"number\" id = \"lightValue\" placeholder=\"" + device.value + "\"/>"
       + "<button type=\"submit\" class=\"btn btn-secondary\">Cambia</button>"
     + "</div>"
