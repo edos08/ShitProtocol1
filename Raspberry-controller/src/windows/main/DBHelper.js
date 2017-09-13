@@ -108,6 +108,7 @@ function renameDevice(id,name,after,errorAction){
     after();
   })
   .catch((error) => {
+    console.log(error);
     errorAction();
   })
 }

@@ -150,6 +150,7 @@ ipc.on("register_devices_pressed",function(event){
 });
 
 ipc.on('registration-device-start',(event,devicesNumber) => {
+  console.log("registration started");
   registration.start(onRegistrationEnd,devicesNumber);
   registrationActive = true;
 });
@@ -261,7 +262,7 @@ ipc.on('room-request',(event) => {
 })
 
 ipc.on('cancel',function(){
-  BrowserWindow.getFocusedWindow().close();
+  BrowserWindow.getCurrentWindow().close();
 })
 
 ipc.on('devices-with-no-room-request',(event) => {
