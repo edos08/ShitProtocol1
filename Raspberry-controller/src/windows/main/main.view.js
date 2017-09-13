@@ -142,7 +142,7 @@ function showDeviceValueForm(device){
   return ("Valore corrente: " + device.value +"</br>"
   + "<form class=\"form-inline\" onsubmit=\"return handleValueSubmission()\" id=\"" + device.id + "\">"
   + "<label for=\"lightValue\" class=\"sr-only\">Valore (0 - 1023): </label>"
-  + "<input class=\"form-control\" type=\"number\" id = \"lightValue\" value = \"" + device.value + "\"/>"
+  + "<input class=\"form-control\" type=\"number\" id = \"lightValue\" />"
   + "<button type=\"submit\" class=\"btn btn-secondary\">Cambia</button>"
   + "</form>");
 }
