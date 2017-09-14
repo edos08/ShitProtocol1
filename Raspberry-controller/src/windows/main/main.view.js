@@ -242,8 +242,8 @@ ipc.on('open_sensor_modal',() => {
 })
 
 ipc.on('open_room_modal',() => {
-  $('#assignSensorModal').load('../deviceAssignation/choose_room_dialog.html',() => {
-    $('#assignSensorModal').modal();
+  $('#assigRoomModal').load('../deviceAssignation/choose_room_dialog.html',() => {
+    $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
   });
 })
