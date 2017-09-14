@@ -218,8 +218,6 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
 
 function onSensorSubmissionAction(result){
   if(result == 1){
-    currentDeviceForWhichTheRoomIsBeingChosen = -1;
-    currentRoomInWhichTheSensorsAreHeld = -1;
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
       if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
         dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
@@ -236,6 +234,10 @@ function onSensorSubmissionAction(result){
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
+
+  currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  currentRoomInWhichTheSensorsAreHeld = -1;
+
 }
 
 ipc.on('room_id_request',function(event){
