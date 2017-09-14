@@ -210,8 +210,6 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   currentSensorTowhichTheDeviceIsBeingConnected = sensorID;
 
   registration.setAction(onSensorSubmissionAction);
-  if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
-    deviceAssignationWindow.webContents.send("pause");
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
     registration.sendSensorSubmissionPacket(devAddress,sensAddress); //This will call onSensorSubmissionAction once it's done
   })
@@ -227,7 +225,6 @@ function onSensorSubmissionAction(result){
         }); 
       } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
         console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
-        deviceAssignationWindow.webContents.send("play");
         if(selectSensorAfterwardsTrigger){
           selectSensorAfterwardsTrigger = false;
           dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
@@ -245,7 +242,6 @@ function onSensorSubmissionAction(result){
   }else{
     if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
       console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
-      deviceAssignationWindow.webContents.send("play");
       if(selectSensorAfterwardsTrigger){
         selectSensorAfterwardsTrigger = false;
         dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
