@@ -67,7 +67,7 @@ ipc.on('open_sensor_modal',() => {
 
 
 ipc.on('open_room_modal',() => {
-  $('#assignSensorModal').load('./choose_room_dialog.html',() => {
+  $('#assignRoomModal').load('./choose_room_dialog.html',() => {
     $('#assignSensorModal').modal();
     chooseRoomDialog.setUpComponents();
   });
