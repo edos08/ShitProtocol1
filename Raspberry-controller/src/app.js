@@ -310,6 +310,8 @@ function selectSensorFunction(deviceID,roomID){
 
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     currentRoomInWhichTheSensorsAreHeld = roomID;
+
+    BrowserWindow.webContents.send('open_sensor_modal');
 }
 
 function displaySuccessDialog(success_message){
