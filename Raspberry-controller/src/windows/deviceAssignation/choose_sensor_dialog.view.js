@@ -27,7 +27,7 @@ ipc.on('sensors-response',(event,sensors) => {
   for(var a = 0; a < sensors.length; a++){
     content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
   }
-  $('sensors_list').html(content);
+  $('#sensors_list').html(content);
 })
 
 
