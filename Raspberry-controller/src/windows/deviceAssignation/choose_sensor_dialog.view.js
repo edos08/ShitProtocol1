@@ -5,6 +5,8 @@ function setUpComponents(){
   addOkButtonClickListener();
 }
 
+
+
 function fillDevicesListAndRoomName(){
     ipc.send('room_id_request');
 }
@@ -20,7 +22,7 @@ function addOkButtonClickListener(){
 }
 
 ipc.on('room_name_response',(event,name) => {
-  $('#room_name').append(name);
+  $('#roomName').html(name);
 })
 
 ipc.on('sensors-response',(event,sensors) => {

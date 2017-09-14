@@ -375,6 +375,7 @@ function answerToIDCheckRequest(result){
   buf[0] = ID_CHECK_PACKET;
   buf[1] = result;
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -387,6 +388,7 @@ function sendDevicesNumberPacket(devicesNumber){
   buf[0] = DEVICES_NUMBER_PACKET;
   buf[1] = devicesNumber;
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -396,6 +398,7 @@ function sendDevicesNumberPacket(devicesNumber){
 function answerToHandshake(){
   var buf = Buffer.alloc(1,HANDSHAKE_RESPONSE);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -405,6 +408,7 @@ function answerToHandshake(){
 function sendEntrerRegistrationModeMessage(){
   var buf = Buffer.alloc(1,MESSAGE_TYPE_ENTER_REGISTRATION_MODE);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -427,6 +431,7 @@ function sendSensorSubmissionPacket(controllerID,sensorID){
   write32BitInt(buf,1,controllerID);
   write32BitInt(buf,5,sensorID);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -446,6 +451,7 @@ function terminate(){
 function sendResetMessage(){
   var buf = Buffer.alloc(1,HANDSHAKE_RESET);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -461,6 +467,7 @@ function sendLightValueChangedPacket(controllerAddress,newValue){
   buf[5] = ((newValue & 0xFF00) >> 8);
   buf[6] = ((newValue & 0x00FF) >> 0);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -474,6 +481,7 @@ function sendCheckSensorStatePacket(sensorAddress){
   buf[0] = CHECK_SENSOR_STATE_PACKET;
   write32BitInt(buf,1,sensorAddress);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
@@ -487,6 +495,7 @@ function sendCheckControllerStatePacket(controllerAddress){
   buf[0] = CHECK_CONTROLLER_STATE_PACKET;
   write32BitInt(buf,1,controllerAddress);
   port.write(buf);
+  port.drain();
   return buf;
 }
 
