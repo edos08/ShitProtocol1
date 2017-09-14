@@ -125,7 +125,7 @@ function showManangingInfos(device){
           + "Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
           + ((device.type == 2)?showDeviceSensorInfo(device):"")
           + ((device.type == 2)?showDeviceValueForm(device):"")
-          + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"/> Cambia stanza </button> </br>"
+          + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"> Cambia stanza </button> </br>"
         + "</div>"  
       + "</div>");
     
