@@ -184,7 +184,6 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
     if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
       if(selectSensorAfterwardsTrigger){
         selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-        deviceAssignationWindow.webContents.send("pause");
       } else {
         dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
           deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
@@ -211,7 +210,7 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   currentSensorTowhichTheDeviceIsBeingConnected = sensorID;
 
   registration.setAction(onSensorSubmissionAction);
-
+  deviceAssignationWindow.webContents.send("pause");
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
     registration.sendSensorSubmissionPacket(devAddress,sensAddress); //This will call onSensorSubmissionAction once it's done
   })
