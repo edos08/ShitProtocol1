@@ -223,6 +223,7 @@ function onSensorSubmissionAction(result){
           sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
         }); 
       } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
+        console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
         if(selectSensorAfterwardsTrigger){
           deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
           selectSensorAfterwardsTrigger = false;
