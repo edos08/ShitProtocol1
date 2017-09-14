@@ -68,7 +68,7 @@ ipc.on('open_sensor_modal',() => {
 
 ipc.on('open_room_modal',() => {
   console.log("tsdf " + $('#assignRoomModal').html());
-  if($('#assignRoomModal').html() === undefined){
+  if($('#assignRoomModal').html() == ""){
     console.log("new");
     $('#assignRoomModal').load('./choose_room_dialog.html',() => {
       $('#assignRoomModal').modal();
