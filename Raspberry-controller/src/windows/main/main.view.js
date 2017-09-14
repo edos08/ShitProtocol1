@@ -4,6 +4,8 @@ var Dialogs = require('dialogs');
 
 var dialogs = Dialogs();
 
+var chooseSensorDialog = require('../deviceAssignation/choose_sensor_dialog.view.js');
+
 window.onload = setUpElements;
 
 ipc.on('rooms-filled',(event,rooms) =>{
