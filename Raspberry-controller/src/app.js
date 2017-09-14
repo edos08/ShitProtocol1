@@ -225,8 +225,10 @@ function onSensorSubmissionAction(result){
       } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
         console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
         if(selectSensorAfterwardsTrigger){
-          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
-          selectSensorAfterwardsTrigger = false;
+          dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+            deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+            selectSensorAfterwardsTrigger = false;
+          });
         }
       }else {
         dbHelper.getDeviceInfo(controllerID,(device) => {
@@ -240,8 +242,10 @@ function onSensorSubmissionAction(result){
     if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
       console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
       if(selectSensorAfterwardsTrigger){
-        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
-        selectSensorAfterwardsTrigger = false;
+        dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+          selectSensorAfterwardsTrigger = false;
+        });
       }
     }
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
