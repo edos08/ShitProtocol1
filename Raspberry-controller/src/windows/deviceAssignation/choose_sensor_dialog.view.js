@@ -35,3 +35,8 @@ ipc.on('sensors-response',(event,sensors) => {
 function cancel(){
   ipc.send('cancel');
 }
+
+
+mmodule.exports = {
+  setUpComponents
+}
