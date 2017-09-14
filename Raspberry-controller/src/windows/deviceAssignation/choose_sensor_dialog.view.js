@@ -10,8 +10,7 @@ function fillDevicesListAndRoomName(){
 }
 
 function addOkButtonClickListener(){
-  var okButton = document.getElementById('ok_button');
-  okButton.addEventListener('click',function(){
+  $('#ok_button').click(function(){
     var sensorsList = document.getElementById('sensors_list');
     var sensorID = sensorsList.options[sensorsList.selectedIndex].value;
     ipc.send('sensor_assignation_ok_button_pressed',sensorID);
@@ -20,7 +19,7 @@ function addOkButtonClickListener(){
 }
 
 ipc.on('room_name_response',(event,name) => {
-  document.getElementById('room_name').innerHTML += name;
+  $('#room_name').append(name);
 })
 
 ipc.on('sensors-response',(event,sensors) => {
@@ -28,7 +27,7 @@ ipc.on('sensors-response',(event,sensors) => {
   for(var a = 0; a < sensors.length; a++){
     content += "<option value = \"" + sensors[a].ID + "\"> " + sensors[a].Description + "</option>";
   }
-  document.getElementById('sensors_list').innerHTML = content;
+  $('sensors_list').html(content);
 })
 
 
