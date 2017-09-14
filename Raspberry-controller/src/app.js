@@ -243,7 +243,7 @@ function onSensorSubmissionAction(result){
         deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
         selectSensorAfterwardsTrigger = false;
       }
-    
+    }
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
 
