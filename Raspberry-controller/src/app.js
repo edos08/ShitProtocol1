@@ -314,6 +314,7 @@ function selectRoomFunction(deviceID,selectSensorAfterwards){
     if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
       deviceAssignationWindow.webContents.send('open_room_modal');
     } else {
+      console.log("sending to window");
       window.webContents.send('open_room_modal');
     }
 }
