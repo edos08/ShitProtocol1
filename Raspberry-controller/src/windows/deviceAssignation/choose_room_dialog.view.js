@@ -34,5 +34,6 @@ function cancel(){
 
 
 module.exports = {
-  setUpComponents
+  setUpComponents,
+  fillRoomsList
 }

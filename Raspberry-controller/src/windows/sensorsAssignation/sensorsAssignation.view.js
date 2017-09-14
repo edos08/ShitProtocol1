@@ -58,7 +58,7 @@ ipc.on('open_sensor_modal',() => {
     });
   } else {
     $('#assignSensorModal').modal();
-    chooseSensorDialog.setUpComponents();
+    chooseSensorDialog.fillDevicesListAndRoomName();
   }
   
 })

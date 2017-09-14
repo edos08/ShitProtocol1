@@ -256,6 +256,6 @@ ipc.on('open_room_modal',() => {
     });
   } else {
     $('#assignRoomModal').modal();
-    chooseRoomDialog.setUpComponents();
+    chooseRoomDialog.fillRoomsList();
   }
 })
