@@ -45,5 +45,6 @@ function onDeviceRenameButtonClick(button){
 }
 
 function onDeviceAssignSensorButtonClick(button){
+  $('#assignSensorModal').modal();
   ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
 }
