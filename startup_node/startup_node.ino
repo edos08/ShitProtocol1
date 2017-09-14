@@ -281,8 +281,10 @@ void serialEvent(){
     retries = 0;
     return;
   }
-
+  Serial.flush();
   Serial.println("unrecognized");
+  Serial.flush();
+  delay(1);
 
 }
 
