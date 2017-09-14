@@ -9,6 +9,10 @@ body{
 	width: 100%;
 }
 
+#devicesContainer{
+	width: 100%;
+}
+
 .dev-inf{
 	flex-direction: column;
 	width: 100%;
