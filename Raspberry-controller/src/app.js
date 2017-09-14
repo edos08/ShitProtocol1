@@ -226,8 +226,8 @@ function onSensorSubmissionAction(result){
         console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
         if(selectSensorAfterwardsTrigger){
           dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
-            deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
             selectSensorAfterwardsTrigger = false;
+            deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
           });
         }
       }else {
@@ -243,8 +243,8 @@ function onSensorSubmissionAction(result){
       console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
       if(selectSensorAfterwardsTrigger){
         dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
-          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
           selectSensorAfterwardsTrigger = false;
+          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
         });
       }
     }
