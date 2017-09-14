@@ -244,6 +244,7 @@ function onSensorSubmissionAction(result){
   }else{
     if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
       console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
+      deviceAssignationWindow.webContents.send("play");
       if(selectSensorAfterwardsTrigger){
         selectSensorAfterwardsTrigger = false;
         dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
