@@ -8,7 +8,7 @@ var dbHelper =require('./windows/main/DBHelper');
 let window;
 let deviceAssignationWindow;
 let chooseRoomWindow;
-let chooseSensorWindow;
+//let chooseSensorWindow;
 let sensorsAssignationWindow;
 
 let registrationActive = false;
@@ -212,19 +212,15 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   registration.setAction(onSensorSubmissionAction);
 
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
-    registration.sendSensorSubmissionPacket(devAddress,sensAddress);
+    registration.sendSensorSubmissionPacket(devAddress,sensAddress); //This will call onSensorSubmissionAction once it's done
   })
 
-  chooseSensorWindow.on('closed',() =>{
-    var deviceID = currentDeviceForWhichTheRoomIsBeingChosen;
-    currentDeviceForWhichTheRoomIsBeingChosen = -1;
-    currentRoomInWhichTheSensorsAreHeld = -1;
-    
-  });
 })
 
 function onSensorSubmissionAction(result){
   if(result == 1){
+    currentDeviceForWhichTheRoomIsBeingChosen = -1;
+    currentRoomInWhichTheSensorsAreHeld = -1;
     dbHelper.assignSensorToController(currentDeviceForWhichTheRoomIsBeingChosen,currentSensorTowhichTheDeviceIsBeingConnected,(controllerID) =>{
       if(sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
         dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
@@ -241,8 +237,6 @@ function onSensorSubmissionAction(result){
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
-  if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
-    chooseSensorWindow.close();
 }
 
 ipc.on('room_id_request',function(event){
@@ -312,18 +306,18 @@ function selectRoomFunction(deviceID,selectSensorAfterwards){
 }
 
 function selectSensorFunction(deviceID,roomID){
-    chooseSensorWindow = new BrowserWindow({
+    /*chooseSensorWindow = new BrowserWindow({
       parent: deviceAssignationWindow,
       modal: true,
       width: 600,
       height: 200
-    });
+    });*/
 
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     currentRoomInWhichTheSensorsAreHeld = roomID;
 
-    var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
-    chooseSensorWindow.loadURL(chooseSensorWindowURL);
+   /* var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
+    chooseSensorWindow.loadURL(chooseSensorWindowURL);*/
 }
 
 function displaySuccessDialog(success_message){
