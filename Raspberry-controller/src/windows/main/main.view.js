@@ -236,10 +236,16 @@ function handleValueSubmission(){
 }
 
 ipc.on('open_sensor_modal',() => {
-  $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+  if($('#assignSensorModal').html() == ""){
+    $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+      $('#assignSensorModal').modal();
+      chooseSensorDialog.setUpComponents();
+    });
+  } else {
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
-  });
+  }
+  
 })
 
 ipc.on('open_room_modal',() => {
