@@ -3,7 +3,7 @@
 #include <WorkingProtocol.h>
 #include <SerialHelpers.h>
 //!!!!! Da mettere solo se la scheda è una Feather M0 !!!!!!
-#define Serial SerialUSB
+//#define Serial SerialUSB
 
 #define NODE_ADDRESS 0xFFFFFFFF
 #define SERIAL_BUFFER_SIZE 15

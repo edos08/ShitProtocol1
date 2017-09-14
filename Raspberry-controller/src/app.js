@@ -190,6 +190,7 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
         }); 
       }
     } else {
+      console.log("ok pressed");
       dbHelper.fillContentDivWithDevices(roomID,(roomName,devices) =>{
         window.webContents.send('devices-loaded',roomName,devices,roomID)
       });
