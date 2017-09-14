@@ -47,12 +47,12 @@ function onDeviceRenameButtonClick(button){
 }
 
 function onDeviceAssignSensorButtonClick(button){
-  
+ ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
+}
+
+ipc.on('open_sensor_modal',() => {
   $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
   });
-
-
-  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
-}
+})

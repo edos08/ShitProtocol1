@@ -312,6 +312,10 @@ function selectSensorFunction(deviceID,roomID){
     currentRoomInWhichTheSensorsAreHeld = roomID;
     if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
       deviceAssignationWindow.webContents.send('open_sensor_modal');
+    } else if (sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+      sensorsAssignationWindow.webContents.send('open_sensor_modal');
+    } else {
+      window.webContents.send('open_sensor_modal');
     }
 }
 
