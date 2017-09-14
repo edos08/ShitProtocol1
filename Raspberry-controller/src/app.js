@@ -8,7 +8,6 @@ var dbHelper =require('./windows/main/DBHelper');
 let window;
 let deviceAssignationWindow;
 let chooseRoomWindow;
-//let chooseSensorWindow;
 let sensorsAssignationWindow;
 
 let registrationActive = false;
@@ -306,18 +305,9 @@ function selectRoomFunction(deviceID,selectSensorAfterwards){
 }
 
 function selectSensorFunction(deviceID,roomID){
-    /*chooseSensorWindow = new BrowserWindow({
-      parent: deviceAssignationWindow,
-      modal: true,
-      width: 600,
-      height: 200
-    });*/
 
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     currentRoomInWhichTheSensorsAreHeld = roomID;
-
-   /* var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
-    chooseSensorWindow.loadURL(chooseSensorWindowURL);*/
 }
 
 function displaySuccessDialog(success_message){
