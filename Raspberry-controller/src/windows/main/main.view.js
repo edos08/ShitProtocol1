@@ -11,8 +11,8 @@ ipc.on('rooms-filled',(event,rooms) =>{
   for(var a = 0; a < rooms.length; a++){
     content += "<button class = \"list-group-item list-group-item-action room\" id=\""+ rooms[a].ID +"\" onClick = \""+ "onRoomClicked" + "(this.id)\">" + rooms[a].Description + " </button>";
   }
-  document.getElementById('rooms_container').innerHTML = content;
-  document.getElementById('content').innerHTML = "Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti";
+  $('#rooms_container').html(content);
+  $('#content').html("Clicca sul nome della stanza per vedere l'elenco dei dispositivi contenuti");
 })
 
 ipc.on('dev-no-dialog',(event) => {
@@ -37,8 +37,7 @@ function setupRegisterDevicesButton(){
 }
 
 function setupInsertRoomButton(){
-  var insertRoomButton = document.getElementById('insert_room_button');
-  insertRoomButton.addEventListener('click',function(){
+  $('#insert_room_button').click(() =>{
     dialogs.prompt("Inserisci il nome della nuova pagina"," ",function(ok){
       if(ok != null && ok != "" && ok != " " && ok != undefined){
         ipc.send('insert_new_room',ok);
@@ -76,7 +75,7 @@ ipc.on('devices-loaded',(event,roomName,devices,roomID) =>{
     content += "<p> Nessun dispositivo assegnato a questa stanza </p>";
   }
   content += "<button id = \"" + roomID +"\" class = \"btn btn-secondary\" onClick=\"deleteRoomButton(this)\" > Elimina la stanza </button>";
-  document.getElementById('content').innerHTML = content;
+  $('#content').html(content);
 })
 
 function deleteRoomButton(button){
@@ -112,7 +111,7 @@ function showDeviceInfos(device){
   + (showManangingInfos(device))
   + (showStatInfo(device));
   
-  document.getElementById('content').innerHTML = content;
+  $('#content').html(content);
   return content;
 }
 

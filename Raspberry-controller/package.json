@@ -11,15 +11,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "1.6.11",
     "electron-rebuild": "^1.5.11",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
     "proxyquire": "^1.8.0",
-    "serialport": "^5.0.0",
     "sinon": "^2.4.1"
   },
   "dependencies": {
+    "electron": "1.6.11",
+    "serialport": "^5.0.0",
     "bootstrap": "^4.0.0-alpha.6",
     "dialogs": "^1.1.20",
     "knex": "^0.13.0",
