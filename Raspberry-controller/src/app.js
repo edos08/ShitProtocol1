@@ -180,7 +180,9 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID,() => {
     if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
       dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
-        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+        if(selectSensorAfterwardsTrigger){
+          selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+        }
       }); 
     } else {
       dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
@@ -188,9 +190,7 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
       });
     }
   });
-  if(selectSensorAfterwardsTrigger){
-    selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-  }else {
+  if(!selectSensorAfterwardsTrigger){
     currentDeviceForWhichTheRoomIsBeingChosen = -1;
   }
 
@@ -219,7 +219,12 @@ function onSensorSubmissionAction(result){
         dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
           sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
         }); 
-      } else {
+      } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
+        if(selectSensorAfterwardsTrigger){
+          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+          selectSensorAfterwardsTrigger = false;
+        }
+      }else {
         dbHelper.getDeviceInfo(controllerID,(device) => {
           window.webContents.send('device-info-gathered',device);
         });
