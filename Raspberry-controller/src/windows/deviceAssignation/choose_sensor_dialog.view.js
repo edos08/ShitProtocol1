@@ -37,6 +37,6 @@ function cancel(){
 }
 
 
-mmodule.exports = {
+module.exports = {
   setUpComponents
 }
