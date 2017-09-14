@@ -11,8 +11,9 @@ function fillDevicesListAndRoomName(){
 
 function addOkButtonClickListener(){
   $('#ok_button').click(function(){
-    var sensorsList = document.getElementById('sensors_list');
-    var sensorID = sensorsList.options[sensorsList.selectedIndex].value;
+    //var sensorsList = document.getElementById('sensors_list');
+    var sensorID = $('#sensors_list').find(':selected').val();
+    console.log(sensorID);
     ipc.send('sensor_assignation_ok_button_pressed',sensorID);
     console.log('ok button clicked');
   });
