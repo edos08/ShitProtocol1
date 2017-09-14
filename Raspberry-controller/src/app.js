@@ -126,6 +126,9 @@ function onLightChangedAction(result){
   if(result == 1){
     dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
       displaySuccessDialog("Luminosità aggiornata correttamente");
+      dbHelper.getDeviceInfo(currentDeviceWhichValueIsBeingChanged,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
     });
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
