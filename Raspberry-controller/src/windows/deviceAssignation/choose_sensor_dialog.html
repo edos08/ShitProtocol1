@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 <head>
   <script src="./choose_sensor_dialog.view.js"></script>
   <link href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -6,16 +6,34 @@
 </head>
 <body onload = "setUpComponents()">
   <h4>Scegli il sensore da assegnare al dispositivo</h4>
-  <p id = "room_name"> Elenco dei sensori disponibili per la stanza </p>
-  <form>
-    <div class="form-group">
-      <select id = "sensors_list" class="form-control">
-      </select>
-    </div>
-    <div class="form-group">
-      <button id = "ok_button" class = "btn btn-secondary"> Ok </button>
-      <button id = "cancel_button" class = "btn btn-secondary" onclick = "cancel()"> Cancella </button>
-    </div>
-  </form>
+  
 </body>
-</html>
+</html>-->
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Scegli il sensore</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p id = "room_name"> Elenco dei sensori disponibili per la stanza </p>
+          <form>
+            <div class="form-group">
+              <select id = "sensors_list" class="form-control">
+              </select>
+            </div>
+            <div class="form-group">
+              <button id = "ok_button" class = "btn btn-secondary"> Ok </button>
+              <button id = "cancel_button" class = "btn btn-secondary" onclick = "cancel()"> Cancella </button>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>

@@ -4,6 +4,8 @@ var dialogs = Dialogs();
 var remote = require('electron').remote;
 var ipc = require('electron').ipcRenderer;
 
+var chooseSensorDialog = require('../deviceAssignation/choose_sensor_dialog.view.js');
+
 function setUpComponents(){
   console.log("Setting components up");
   ipc.send('devices-with-no-sensor-request');
@@ -45,5 +47,12 @@ function onDeviceRenameButtonClick(button){
 }
 
 function onDeviceAssignSensorButtonClick(button){
+  
+  $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+    $('#assignSensorModal').modal();
+    chooseSensorDialog.setUpComponents();
+  });
+
+
   ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
 }
