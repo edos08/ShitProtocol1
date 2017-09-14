@@ -59,23 +59,25 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 ipc.on('open_sensor_modal',() => {
-  $('#assignSensorModal').load('./choose_sensor_dialog.html',() => {
+  if($('#assignSensorModal').html() == ""){
+    $('#assignSensorModal').load('./choose_sensor_dialog.html',() => {
+      $('#assignSensorModal').modal();
+      chooseSensorDialog.setUpComponents();
+    });
+  } else {
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
-  });
+  }
 })
 
 
 ipc.on('open_room_modal',() => {
-  console.log("tsdf " + $('#assignRoomModal').html());
   if($('#assignRoomModal').html() == ""){
-    console.log("new");
     $('#assignRoomModal').load('./choose_room_dialog.html',() => {
       $('#assignRoomModal').modal();
       chooseRoomDialog.setUpComponents();
     });
   } else {
-    console.log("old");
     $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
   }

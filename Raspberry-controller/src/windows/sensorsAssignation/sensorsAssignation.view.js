@@ -51,8 +51,14 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 ipc.on('open_sensor_modal',() => {
-  $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+  if($('#assignSensorModal')){
+    $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+      $('#assignSensorModal').modal();
+      chooseSensorDialog.setUpComponents();
+    });
+  } else {
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
-  });
+  }
+  
 })

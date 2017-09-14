@@ -243,8 +243,13 @@ ipc.on('open_sensor_modal',() => {
 })
 
 ipc.on('open_room_modal',() => {
-  $('#assignRoomModal').load('../deviceAssignation/choose_room_dialog.html',() => {
+  if($('#assignRoomModal').html() == ""){
+    $('#assignRoomModal').load('../deviceAssignation/choose_room_dialog.html',() => {
+      $('#assignRoomModal').modal();
+      chooseRoomDialog.setUpComponents();
+    });
+  } else {
     $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
-  });
+  }
 })
