@@ -210,7 +210,8 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   currentSensorTowhichTheDeviceIsBeingConnected = sensorID;
 
   registration.setAction(onSensorSubmissionAction);
-  deviceAssignationWindow.webContents.send("pause");
+  if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed())
+    deviceAssignationWindow.webContents.send("pause");
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
     registration.sendSensorSubmissionPacket(devAddress,sensAddress); //This will call onSensorSubmissionAction once it's done
   })
