@@ -30,8 +30,7 @@ function setUpElements(){
 
 
 function setupRegisterDevicesButton(){
-  var registerDevicesButton = document.getElementById('register_devices_button');
-  registerDevicesButton.addEventListener('click',function(){
+  var registerDevicesButton = $('#register_devices_button').click(function(){
     ipc.send('register_devices_pressed');
   });
 }
@@ -133,8 +132,8 @@ function showManangingInfos(device){
 }
 
 function showDeviceSensorInfo(device){
-  return ("<td>Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "</td>"
-  + "<td><button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-secondary\"> Cambia sensore </button></td></br>");
+  return ("Sensore: " + ((device.sensorID != null)?((device.sensor != null)?device.sensor:"sensore senza nome"):"Nessun sensore collegato") + "<br/>"
+  + "<button id = \"" + device.id + "\" onClick =\"onDeviceAssignSensorButtonClick(this)\" class=\"btn btn-secondary\"> Cambia sensore </button></br>");
 }
 
 function showDeviceValueForm(device){
@@ -223,18 +222,12 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 function handleValueSubmission(){
-  var valueInserted = document.getElementById('lightValue').value;
+  var valueInserted = $('#lightValue').val();
   if(valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
   }else{
-    var deviceID = document.getElementById('lightValue').parentNode.id;
+    var deviceID = $('#lightValue').parent().attr('id');
     ipc.send('change-light-value',valueInserted,deviceID);
   }
   return false;
-}
-
-module.exports = {
-  handleValueSubmission,
-  showDeviceInfos,
-  window
 }
