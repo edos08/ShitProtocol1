@@ -5,6 +5,7 @@ var Dialogs = require('dialogs');
 var dialogs = Dialogs();
 
 var chooseSensorDialog = require('../deviceAssignation/choose_sensor_dialog.view.js');
+var chooseRoomDialog = require('../deviceAssignation/choose_room_dialog.view.js');
 
 window.onload = setUpElements;
 
