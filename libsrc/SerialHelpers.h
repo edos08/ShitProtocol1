@@ -204,6 +204,7 @@ static void sendSensorStatePacket(uint32_t address, uint16_t value){
   buffer[5] = ((value & 0xFF00) >> 8);
   buffer[6] = ((value & 0x00FF) >> 0);
   Serial.write(buffer,7);
+  Serial.flush();
 }
 
 /**
@@ -218,6 +219,7 @@ static void sendControllerStatePacket(uint32_t address, uint16_t value){
   buffer[5] = ((value & 0xFF00) >> 8);
   buffer[6] = ((value & 0x00FF) >> 0);
   Serial.write(buffer,7);
+  Serial.flush();
 }
 
 /**
@@ -229,6 +231,7 @@ static void sendIDCheckMessage(uint32_t ID){
   buffer[0] = MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE;
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   Serial.write(buffer,5);
+  Serial.flush();
 }
 
 /**
@@ -236,6 +239,7 @@ static void sendIDCheckMessage(uint32_t ID){
 */
 static void sendHandShakeEndMessage(){
   Serial.write(HANDSHAKE_END_MESSAGE);
+  Serial.flush();
 }
 
 /**
@@ -246,6 +250,7 @@ static void sendDevicesStreamStartMessage(){
   buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
   buffer[1] = MESSAGE_DEVICES_STREAM_START;
   Serial.write(buffer,2);
+  Serial.flush();
 }
 
 /**
@@ -256,6 +261,7 @@ static void sendDevicesStreamEndMessage(){
   buffer[0] = MESSAGE_TYPE_DEVICES_SUBMISSION;
   buffer[1] = MESSAGE_DEVICES_STREAM_END;
   Serial.write(buffer,2);
+  Serial.flush();
 }
 
 /**
@@ -269,6 +275,7 @@ static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   buffer[5] = type;
   Serial.write(buffer,6);
+  Serial.flush();
 }
 
 /**
@@ -280,6 +287,7 @@ static void sendResultMessage(int result){
   buffer[0] = MESSAGE_TYPE_SEND_RESULT;
   buffer[1] = result;
   Serial.write(buffer,2);
+  Serial.flush();
 }
 
 #endif
