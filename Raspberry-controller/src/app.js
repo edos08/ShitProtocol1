@@ -237,6 +237,13 @@ function onSensorSubmissionAction(result){
     displaySuccessDialog("Sensore aggiornato correttamente");
     
   }else{
+    if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
+      console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
+      if(selectSensorAfterwardsTrigger){
+        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+        selectSensorAfterwardsTrigger = false;
+      }
+    
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
 
