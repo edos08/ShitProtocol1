@@ -50,7 +50,7 @@
 <li><p>Il computer centrale (tramite maschera GUI) comunica al nodo centrale che vuole connettere <code>Y</code> dispositivi, con <code>Y</code> minore o uguale al numero <code>X</code> di dispositivi che attendono di essere registrati.</p></li>
 <li><p>Il nodo centrale si mette in ascolto di pacchetti di registrazione. Ogni volta che riceve un pacchetto ne legge l'indirizzo di provenienza e controlla che non coincida con quello di un altro dispositivo che sta cercando di collegarsi. Se supera questo test invia l'indirizzo al computer centrale che controlla che non coincida con un indirizzo già presente nel suo database.Se supera entrambi i test il nodo salva le informazioni del dispositivo in una coda e continua a ricevere altri pacchetti di registrazione. Se invece non supera uno dei due test il nodo invia un pacchetto a quell'indirizzo chiedendogli di cambiare il proprio indirizzo.</p></li>
 <li><p>Il nodo continua a ricevere pacchetti di registrazione finchè non ha <code>Y</code> dispositivi nella sua coda interna e a quel punto ingnora tutti i pacchetti di registrazione sucessivi ed inizia uno stream di invio informazioni dei dispositivi con il computer centrale.</p></li>
-<li><p>Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Se il riscontro ACK non viene ricevuto il nodo riprova ad inviare il messaggio di accettazione altre 2 volte, e se non riceve ancora ACK allor aconsidera il dispositivo come irraggiungibile e passa al successivo. L'utente verrà notificato se il numero dei dispositivi registrati è minore del numero di dispositivi richiesti. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).</p></li>
+<li><p>Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Se il riscontro ACK non viene ricevuto il nodo riprova ad inviare il messaggio di accettazione altre 2 volte, e se non riceve ancora ACK allora considera il dispositivo come irraggiungibile e passa al successivo. L'utente verrà notificato se il numero dei dispositivi registrati è minore del numero di dispositivi richiesti. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).</p></li>
 <li><p>Per ogni controllore ricevuto il computer centrale chiede inoltre all'utente di assegnare un sensore che dovrà ascoltare per regolare la propria luminosità.</p></li>
 </ul>
 <h2 id="funzione-a-regime">Funzione a regime</h2>
@@ -82,7 +82,7 @@
 <li>2 - Controller</li>
 <li>3 - Sensor</li>
 </ul>
-<p><code>Rooms</code> contiene le informazioni sulle sanze inserite dagli utenti nel formato ID - Descrizione. L'ID è autoincrementante.</p>
+<p><code>Rooms</code> contiene le informazioni sulle stanze inserite dagli utenti nel formato ID - Descrizione. L'ID è autoincrementante.</p>
 <ul>
 <li>Es: 3 - Cucina</li>
 </ul>
@@ -94,13 +94,13 @@
 <li><code>Description</code>: il nome assegnato al dispositivo dall'utente</li>
 <li><code>Address</code>: L'indirizzo LoRa del dispositivo</li>
 <li><code>Sensor</code>: Chiave esterna sulla tabella <code>Devices</code>. Se <code>Type</code> è <code>1</code> o <code>3</code> il campo deve essere <code>NULL</code>, altrimenti può essere <code>NULL</code> o contenere l'<code>ID</code> di un elemento della tabella <code>Devices</code> con <code>Type = 2</code></li>
-<li><code>LightValue</code>: ultimo valore di luminosità assegnato ad un controllore. Se <code>Type</code> è <code>1</code> o <code>3</code> questo campo deve essere <code>NULL</code>.</li>
+<li><code>LightValue</code>: ultimo valore di luminosità assegnato ad un controllore. Se <code>Type</code> è <code>1</code> o <code>3</code> questo campo resterà sempre a <code>300</code> (Default).</li>
 </ul>
 <p><code>Status_log</code> contiene le informazioni sullo stato dei dispositivi nel tempo.</p>
 <ul>
 <li><code>ID</code> identificativo univoco autoincrementante</li>
 <li><code>Time</code> Il timestamp del momento in cui è stato fatto il controllo</li>
-<li><code>Value</code> Il valore del dispositivo al momento del controllo (valore del dimmer del controlloe oppure della fotoresistenza del sensore. Vale <code>-65k</code> se il dispositivo non è raggiungibile)</li>
+<li><code>Value</code> Il valore del dispositivo al momento del controllo (valore del dimmer del controllore oppure della fotoresistenza del sensore. Vale <code>65k</code> se il dispositivo non è raggiungibile)</li>
 <li><code>Device</code> il dispositivo controllato. Chiave esterna sulla tabella <code>Devices</code></li>
 </ul>
 </article>

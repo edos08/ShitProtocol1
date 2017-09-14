@@ -14,7 +14,7 @@ Per iniziare a scambiarsi messaggi i due dispositivi devono connettersi tramite 
 
 Dato che, per ovvie ragioni, l'utente può chiudere e riaprire il programma di controllo sulla raspberry in qualsiasi momento, c'è bisogno che la raspberry possa inizializzare l'handshake. Per questo ad ogni avvio del programma di monitoraggio la raspberry invia al nodo un messaggio di [`HANDSHAKE_RESET`](html/_serial_helpers_8h.html#a89aebc7ab652f6641313788385c869a8).
 
-La raspberry cercherà il nodo nelle prome 20 porte e si fermerà se non lo trova. Se si è completamente certi che il nodo sia collegato ma il programma  non lo rileva riavviare la raspberry. 
+La raspberry cercherà il nodo nelle prome 20 porte e si fermerà se non lo trova. Se si è completamente certi che il nodo sia collegato ma il programma non lo rileva, riavviare la raspberry. 
 
 ## Registrazione
 
@@ -22,7 +22,7 @@ Quando l'utente dà al programma di controllo l'input per iniziare la registrazi
 
 Dopo che la raspberry ha ricevuto il messaggio di Ok dal nodo invia un pacchetto con header [`MESSAGE_TYPE_DEVICES_COUNT`](html/_serial_helpers_8h.html#ae2ce20aff2399a62ac34d4ef8d40a0d8) contenente il numero di dispositivi da registrare (valore inserito dall'utente).
 
-A questo punto il nodo inizia la procedure di registrazione come descritta in [WorkingProtocol](WorkingProtocol.html). Durante questa fase il nodo invierà gli indirizzi temporanei dei nodi appena li riceve per verificare che non coincidano con altri già presenti nel database della raspberry. Per fare questo invia alla raspberry un pacchetto con header [`MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE`](html/_serial_helpers_8h.html#ac2c4340003d1304446888ebd05f3c504), contenente l'indirizzo del dispositivo. Dopo aver controllato nel suo database se l'indirizzo è un duplicato la raspberry rispode con un messaggio con lo stesso header ma con payload [`MESSAGE_ID_VALID`](html/_serial_helpers_8h.html#a2cf28dfd8d82298695e6fc35b23d221d) se l'indirizzo non è duplicato, [`MESSAGE_ID_INVALID`](html/_serial_helpers_8h.html#aa8a621e1a90c21af0eac0087ec1ee57e) altrimenti.
+A questo punto il nodo inizia la procedura di registrazione come descritta in [WorkingProtocol](WorkingProtocol.html). Durante questa fase il nodo invierà gli indirizzi temporanei dei nodi appena li riceve per verificare che non coincidano con altri già presenti nel database della raspberry. Per fare questo invia alla raspberry un pacchetto con header [`MESSAGE_TYPE_ID_CHECK_REQUEST_RESPONSE`](html/_serial_helpers_8h.html#ac2c4340003d1304446888ebd05f3c504), contenente l'indirizzo del dispositivo. Dopo aver controllato nel suo database se l'indirizzo è un duplicato la raspberry rispode con un messaggio con lo stesso header ma con payload [`MESSAGE_ID_VALID`](html/_serial_helpers_8h.html#a2cf28dfd8d82298695e6fc35b23d221d) se l'indirizzo non è duplicato, [`MESSAGE_ID_INVALID`](html/_serial_helpers_8h.html#aa8a621e1a90c21af0eac0087ec1ee57e) altrimenti.
 
 Dopo che il nodo ha riempito la sua coda di dispositivi da registrare inizia uno stream verso la raspberry in cui invierà gli indirizzi di tutti i dispositivi ed il loro tipo. Ogni pacchetto di questo stream ha come header [`MESSAGE_TYPE_DEVICES_SUBMISSION`](html/_serial_helpers_8h.html#a251dda3cbcc1b5e35c461e46fff809c7). Per inizializzare lo stream il nodo invia il messaggio [`MESSAGE_DEVICES_STREAM_START`](html/_serial_helpers_8h.html#a8a434e0d5e9502abcd0bdd269a0af6fe), al quale la raspberry si prepara alla ricezione ma non risponde.
 

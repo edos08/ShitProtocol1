@@ -29,7 +29,7 @@ L'header di un pacchetto LoRa è formato da 11 bytes:
  * 4 bytes per l'indirizzo del mittente
  * 1 byte per il tipo di messaggio
  * 1 byte per il numero di sequenza del pacchetto
- * 1 byte per la lunghezza del payload (par avere un leggero controllo d'integrità, considerare l'uso di un crc16 o 32)
+ * 1 byte per la lunghezza del payload (per avere un leggero controllo d'integrità, considerare l'uso di un crc16 o 32)
 
  | 1 - 2 - 3 - 4 | 5 - 6 - 7 - 8 | 9 | 10 | 11 |
  | ------- | --------| - | -- | -- |

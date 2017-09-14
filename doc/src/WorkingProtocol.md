@@ -33,7 +33,7 @@ La modalità di registrazione degli ID dei dispositivi è questa:
 
 * Il nodo continua a ricevere pacchetti di registrazione finchè non ha `Y` dispositivi nella sua coda interna e a quel punto ingnora tutti i pacchetti di registrazione sucessivi ed inizia uno stream di invio informazioni dei dispositivi con il computer centrale.
 
-* Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Se il riscontro ACK non viene ricevuto il nodo riprova ad inviare il messaggio di accettazione altre 2 volte, e se non riceve ancora ACK allor aconsidera il dispositivo come irraggiungibile e passa al successivo. L'utente verrà notificato se il numero dei dispositivi registrati è minore del numero di dispositivi richiesti. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).
+* Per ogni elemento che deve essere registrato invia all'indirizzo dell'elemento un messaggio di accettazione dell'indirizzo che deve ricevere un riscontro ACK. Se il riscontro ACK non viene ricevuto il nodo riprova ad inviare il messaggio di accettazione altre 2 volte, e se non riceve ancora ACK allora considera il dispositivo come irraggiungibile e passa al successivo. L'utente verrà notificato se il numero dei dispositivi registrati è minore del numero di dispositivi richiesti. Il computer centrale salva ogni elemento ricevuto nel database e poi richiede all'utente di rinominare i vari dispositivi ed assegnarli a delle stanze (che esistono solo virtualmente nel computer).
 
 * Per ogni controllore ricevuto il computer centrale chiede inoltre all'utente di assegnare un sensore che dovrà ascoltare per regolare la propria luminosità.
 
@@ -82,7 +82,7 @@ Il database contenuto nel computer centrale è un database postgres relazionale.
 * 2 - Controller
 * 3 - Sensor
 
-`Rooms` contiene le informazioni sulle sanze inserite dagli utenti nel formato ID - Descrizione. L'ID è autoincrementante.
+`Rooms` contiene le informazioni sulle stanze inserite dagli utenti nel formato ID - Descrizione. L'ID è autoincrementante.
 
 * Es: 3 - Cucina
 
@@ -94,11 +94,11 @@ Il database contenuto nel computer centrale è un database postgres relazionale.
 * `Description`: il nome assegnato al dispositivo dall'utente
 * `Address`: L'indirizzo LoRa del dispositivo
 * `Sensor`: Chiave esterna sulla tabella `Devices`. Se `Type` è `1` o `3` il campo deve essere `NULL`, altrimenti può essere `NULL` o contenere l'`ID` di un elemento della tabella `Devices` con `Type = 2`
-* `LightValue`: ultimo valore di luminosità assegnato ad un controllore. Se `Type` è `1` o `3` questo campo deve essere `NULL`. 
+* `LightValue`: ultimo valore di luminosità assegnato ad un controllore. Se `Type` è `1` o `3` questo campo resterà sempre a `300` (Default). 
 
 `Status_log` contiene le informazioni sullo stato dei dispositivi nel tempo.
 
 * `ID` identificativo univoco autoincrementante
 * `Time` Il timestamp del momento in cui è stato fatto il controllo
-* `Value` Il valore del dispositivo al momento del controllo (valore del dimmer del controlloe oppure della fotoresistenza del sensore. Vale `-65k` se il dispositivo non è raggiungibile)
+* `Value` Il valore del dispositivo al momento del controllo (valore del dimmer del controllore oppure della fotoresistenza del sensore. Vale `65k` se il dispositivo non è raggiungibile)
 * `Device` il dispositivo controllato. Chiave esterna sulla tabella `Devices`
