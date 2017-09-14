@@ -30,13 +30,15 @@ Scaricare [postgresql](https://www.postgresql.org/download/) e creare un nuovo s
 
 Assicurarsi di avere installate le versioni aggiornate di `npm` e `NodeJS`  
 
-`Electron` il framework utilizzato per la realizzazione dell'interfaccia grafica si porta una propria versione di `NodeJS`. La libreria `serialport` deve essere compilata in riferimento alla versione di Electron utilizzata. Al momento l'ultima versione di Electron è la `1.7.6`. Il modulo `serialport` viene adeguato alla versione di Electron nella riga `8` del `package.json`:
+`Electron` il framework utilizzato per la realizzazione dell'interfaccia grafica si porta una propria versione di `NodeJS`. La libreria `serialport` deve essere compilata in riferimento alla versione di Electron utilizzata. Al momento la versione di Electron usata è la `1.6.11`. Il modulo `serialport` viene adeguato alla versione di Electron nella riga `8` del `package.json`:
 
 ```json
-	"install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.7.6 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell"
+	"install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.6.11 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell"
 ``` 
 
 dove su `target` va messa la versione di electron installata sulla macchina. Se all'avvio dell'applicazione si vede un errore di compilazione per `serialport` controllare che la versione su `target` sia la stessa della versione di electron Installata.
+
+L'ultima versione di Electron disponibile al momento è la `1.7.6` ma è molto, *molto* più lenta della `1.6.11` nella raspberry. 
 
 Navigare fino alla cartella del progetto e da li nella cartella `Raspberry-controller`. Da li digitare il comando `npm install` che provvederà ad installare tutte le dependecies di cui il progetto ha bisogno.  
 

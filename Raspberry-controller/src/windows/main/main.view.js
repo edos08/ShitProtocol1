@@ -4,6 +4,9 @@ var Dialogs = require('dialogs');
 
 var dialogs = Dialogs();
 
+var chooseSensorDialog = require('../deviceAssignation/choose_sensor_dialog.view.js');
+var chooseRoomDialog = require('../deviceAssignation/choose_room_dialog.view.js');
+
 window.onload = setUpElements;
 
 ipc.on('rooms-filled',(event,rooms) =>{
@@ -119,10 +122,10 @@ function showManangingInfos(device){
     
        "<div class =\"card card-outline-primary mb-3\" padding-bottom=15px>"
         + "<div class = \"card-header\">"
-          + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
+          + "<h3 class = \"card-title\"> " + ((device.description != null)?device.description.trim():"Dispositivo senza nome") + " </h3>"
         + "</div>"
         + "<div class = \"card-block\">"
-          + "Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
+          + "Dispositivo: " + ((device.description != null)?device.description.trim():"Dispositivo senza nome") + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
           + ((device.type == 2)?showDeviceSensorInfo(device):"")
           + ((device.type == 2)?showDeviceValueForm(device):"")
           + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"> Cambia stanza </button> </br>"
@@ -223,7 +226,7 @@ function onDeviceAssignSensorButtonClick(button){
 
 function handleValueSubmission(){
   var valueInserted = $('#lightValue').val();
-  if(valueInserted < 0 || valueInserted > 1023){
+  if(valueInserted == null || valueInserted == undefined || valueInserted == "" || valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
   }else{
     var deviceID = $('#lightValue').parent().attr('id');
@@ -231,3 +234,28 @@ function handleValueSubmission(){
   }
   return false;
 }
+
+ipc.on('open_sensor_modal',() => {
+  if($('#assignSensorModal').html() == ""){
+    $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+      $('#assignSensorModal').modal();
+      chooseSensorDialog.setUpComponents();  // important that this and the one below are different!!
+    });
+  } else {
+    $('#assignSensorModal').modal();
+    chooseSensorDialog.setUpComponents();   // important that this and the one above are different!!
+  }
+  
+})
+
+ipc.on('open_room_modal',() => {
+  if($('#assignRoomModal').html() == ""){
+    $('#assignRoomModal').load('../deviceAssignation/choose_room_dialog.html',() => {
+      $('#assignRoomModal').modal();
+      chooseRoomDialog.setUpComponents();
+    });
+  } else {
+    $('#assignRoomModal').modal();
+    chooseRoomDialog.setUpComponents();
+  }
+})

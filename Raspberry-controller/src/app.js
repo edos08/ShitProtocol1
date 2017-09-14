@@ -7,8 +7,6 @@ var dbHelper =require('./windows/main/DBHelper');
 
 let window;
 let deviceAssignationWindow;
-let chooseRoomWindow;
-let chooseSensorWindow;
 let sensorsAssignationWindow;
 
 let registrationActive = false;
@@ -128,6 +126,9 @@ function onLightChangedAction(result){
   if(result == 1){
     dbHelper.changeLightValue(currentDeviceWhichValueIsBeingChanged, currentValueThatIsBeingChanged, () => {
       displaySuccessDialog("Luminosità aggiornata correttamente");
+      dbHelper.getDeviceInfo(currentDeviceWhichValueIsBeingChanged,(device) => {
+        window.webContents.send('device-info-gathered',device);
+      });
     });
   }else{
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
@@ -181,23 +182,23 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID,() => {
     if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
-      dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
-        deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
-      }); 
+      if(selectSensorAfterwardsTrigger){
+        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+      } else {
+        dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+        }); 
+      }
     } else {
-      dbHelper.fillContentDivWithDevices(roomID,(devices) =>{
-        window.webContents.send('devices-loaded',devices,roomID)
+      console.log("ok pressed");
+      dbHelper.fillContentDivWithDevices(roomID,(roomName,devices) =>{
+        window.webContents.send('devices-loaded',roomName,devices,roomID)
       });
     }
   });
-  chooseRoomWindow.on('closed',() =>{
-      if(selectSensorAfterwardsTrigger){
-        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-      }else {
-        currentDeviceForWhichTheRoomIsBeingChosen = -1;
-      }
-  })
-  chooseRoomWindow.close();
+  if(!selectSensorAfterwardsTrigger){
+    currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  }
 
 })
 
@@ -210,17 +211,10 @@ ipc.on('sensor_assignation_ok_button_pressed',function(event,sensorID){
   currentSensorTowhichTheDeviceIsBeingConnected = sensorID;
 
   registration.setAction(onSensorSubmissionAction);
-
   dbHelper.getAddressesForControllerAndSensor(currentDeviceForWhichTheRoomIsBeingChosen,sensorID,(devAddress,sensAddress) => {
-    registration.sendSensorSubmissionPacket(devAddress,sensAddress);
+    registration.sendSensorSubmissionPacket(devAddress,sensAddress); //This will call onSensorSubmissionAction once it's done
   })
 
-  chooseSensorWindow.on('closed',() =>{
-    var deviceID = currentDeviceForWhichTheRoomIsBeingChosen;
-    currentDeviceForWhichTheRoomIsBeingChosen = -1;
-    currentRoomInWhichTheSensorsAreHeld = -1;
-    
-  });
 })
 
 function onSensorSubmissionAction(result){
@@ -230,7 +224,15 @@ function onSensorSubmissionAction(result){
         dbHelper.queryAllDevicesWithRoomAssignedButNoSensorAndShowIn((devices) => {
           sensorsAssignationWindow.webContents.send('devices-with-no-sensor-response',devices);
         }); 
-      } else {
+      } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
+        console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
+        if(selectSensorAfterwardsTrigger){
+          selectSensorAfterwardsTrigger = false;
+          dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+            deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+          });
+        }
+      }else {
         dbHelper.getDeviceInfo(controllerID,(device) => {
           window.webContents.send('device-info-gathered',device);
         });
@@ -239,10 +241,21 @@ function onSensorSubmissionAction(result){
     displaySuccessDialog("Sensore aggiornato correttamente");
     
   }else{
+    if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
+      console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
+      if(selectSensorAfterwardsTrigger){
+        selectSensorAfterwardsTrigger = false;
+        dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
+          deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
+        });
+      }
+    }
     dialog.showErrorBox("Azione non riuscita", "Il dispositivo non sembra essere raggiungibile");
   }
-  if(chooseSensorWindow != null && !chooseSensorWindow.isDestroyed())
-    chooseSensorWindow.close();
+
+  currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  currentRoomInWhichTheSensorsAreHeld = -1;
+
 }
 
 ipc.on('room_id_request',function(event){
@@ -298,32 +311,27 @@ ipc.on('rename-device',(event,deviceID,name) => {
 })
 
 function selectRoomFunction(deviceID,selectSensorAfterwards){
-    chooseRoomWindow = new BrowserWindow({
-      parent: deviceAssignationWindow,
-      modal: true,
-      width:600,
-      height: 200
-    })
-
-    var chooseRoomWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_room_dialog.html';
-    chooseRoomWindow.loadURL(chooseRoomWindowURL);
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     selectSensorAfterwardsTrigger = selectSensorAfterwards;
+    if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
+      deviceAssignationWindow.webContents.send('open_room_modal');
+    } else {
+      console.log("sending to window");
+      window.webContents.send('open_room_modal');
+    }
 }
 
 function selectSensorFunction(deviceID,roomID){
-    chooseSensorWindow = new BrowserWindow({
-      parent: deviceAssignationWindow,
-      modal: true,
-      width: 600,
-      height: 200
-    });
 
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     currentRoomInWhichTheSensorsAreHeld = roomID;
-
-    var chooseSensorWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_sensor_dialog.html';
-    chooseSensorWindow.loadURL(chooseSensorWindowURL);
+    if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
+      deviceAssignationWindow.webContents.send('open_sensor_modal');
+    } else if (sensorsAssignationWindow != null && !sensorsAssignationWindow.isDestroyed()){
+      sensorsAssignationWindow.webContents.send('open_sensor_modal');
+    } else {
+      window.webContents.send('open_sensor_modal');
+    }
 }
 
 function displaySuccessDialog(success_message){

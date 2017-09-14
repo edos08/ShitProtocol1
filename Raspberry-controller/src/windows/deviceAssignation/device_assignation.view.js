@@ -4,6 +4,10 @@ var dialogs = Dialogs();
 var remote = require('electron').remote;
 var ipc = require('electron').ipcRenderer;
 
+var chooseSensorDialog = require('./choose_sensor_dialog.view.js');
+var chooseRoomDialog = require('./choose_room_dialog.view.js');
+
+
 function setUpComponents(){
   console.log("Setting components up");
   ipc.send('devices-with-no-room-request');
@@ -40,17 +44,43 @@ function populateListItemWithDeviceInfo(device){
 }
 
 function onDeviceRenameButtonClick(button){
-  dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
-    if(name != null && name != undefined && name != "" && name != " "){
-      ipc.send('rename-device',button.parentNode.parentNode.id,name);
-    }
-  });
+    dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
+      if(name != null && name != undefined && name != "" && name != " "){
+        ipc.send('rename-device',button.parentNode.parentNode.id,name);
+      }
+    });
 }
 
 function onDeviceAssignToRoomButtonClick(button){
-  ipc.send('room_assignation_button_pressed',button.parentNode.parentNode.id);
+    ipc.send('room_assignation_button_pressed',button.parentNode.parentNode.id);
 }
 
 function onDeviceAssignSensorButtonClick(button){
-  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.parentNode.id);
+    ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
 }
+
+ipc.on('open_sensor_modal',() => {
+  if($('#assignSensorModal').html() == ""){
+    $('#assignSensorModal').load('./choose_sensor_dialog.html',() => {
+      $('#assignSensorModal').modal();
+      chooseSensorDialog.setUpComponents();
+    });
+  } else {
+    $('#assignSensorModal').modal();
+    chooseSensorDialog.setUpComponents();
+  }
+})
+
+
+ipc.on('open_room_modal',() => {
+  if($('#assignRoomModal').html() == ""){
+    $('#assignRoomModal').load('./choose_room_dialog.html',() => {
+      $('#assignRoomModal').modal();
+      chooseRoomDialog.setUpComponents();
+    });
+  } else {
+    $('#assignRoomModal').modal();
+    chooseRoomDialog.setUpComponents();
+  }
+});
+

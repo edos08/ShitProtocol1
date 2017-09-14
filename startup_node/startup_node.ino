@@ -25,7 +25,7 @@ uint16_t device_value;
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while(!Serial);
   initLoRa(NODE_ADDRESS, 8,4, 3);
   subscribeToReceivePacketEvent(handleSubmissionPacket);
@@ -281,8 +281,10 @@ void serialEvent(){
     retries = 0;
     return;
   }
-
+  Serial.flush();
   Serial.println("unrecognized");
+  Serial.flush();
+  delay(1);
 
 }
 
