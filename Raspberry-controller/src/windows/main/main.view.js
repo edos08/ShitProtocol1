@@ -121,7 +121,7 @@ function showManangingInfos(device){
     
        "<div class =\"card card-outline-primary mb-3\" padding-bottom=15px>"
         + "<div class = \"card-header\">"
-          + "<h3 class = \"card-title\"> " + device.description.trim() + " </h3>"
+          + "<h3 class = \"card-title\"> " + ((device.description != null)?device.description.trim():"Dispositivo senza nome") + " </h3>"
         + "</div>"
         + "<div class = \"card-block\">"
           + "Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
