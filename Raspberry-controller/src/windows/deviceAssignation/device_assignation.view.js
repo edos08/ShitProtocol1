@@ -68,12 +68,14 @@ ipc.on('open_sensor_modal',() => {
 
 ipc.on('open_room_modal',() => {
   console.log($('#assingRoomModal').html());
-  if($('#assignRoomModal').html() == undefined){
+  if($('#assignRoomModal').html() === undefined){
+    console.log("new");
     $('#assignRoomModal').load('./choose_room_dialog.html',() => {
       $('#assignRoomModal').modal();
       chooseRoomDialog.setUpComponents();
     });
   } else {
+    console.log("old");
     $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
   }
