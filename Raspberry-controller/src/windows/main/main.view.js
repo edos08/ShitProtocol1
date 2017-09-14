@@ -240,3 +240,10 @@ ipc.on('open_sensor_modal',() => {
     chooseSensorDialog.setUpComponents();
   });
 })
+
+ipc.on('open_room_modal',() => {
+  $('#assignSensorModal').load('../deviceAssignation/choose_room_dialog.html',() => {
+    $('#assignSensorModal').modal();
+    chooseRoomDialog.setUpComponents();
+  });
+})

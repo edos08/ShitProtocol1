@@ -30,3 +30,7 @@ function addOkButtonClickListener(){
 function cancel(){
   ipc.send('cancel');
 }
+
+module.exports = {
+  setUpComponents
+}

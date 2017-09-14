@@ -7,7 +7,6 @@ var dbHelper =require('./windows/main/DBHelper');
 
 let window;
 let deviceAssignationWindow;
-let chooseRoomWindow;
 let sensorsAssignationWindow;
 
 let registrationActive = false;
@@ -189,14 +188,11 @@ ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
       });
     }
   });
-  chooseRoomWindow.on('closed',() =>{
-      if(selectSensorAfterwardsTrigger){
-        selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
-      }else {
-        currentDeviceForWhichTheRoomIsBeingChosen = -1;
-      }
-  })
-  chooseRoomWindow.close();
+  if(selectSensorAfterwardsTrigger){
+    selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+  }else {
+    currentDeviceForWhichTheRoomIsBeingChosen = -1;
+  }
 
 })
 
@@ -293,17 +289,13 @@ ipc.on('rename-device',(event,deviceID,name) => {
 })
 
 function selectRoomFunction(deviceID,selectSensorAfterwards){
-    chooseRoomWindow = new BrowserWindow({
-      parent: deviceAssignationWindow,
-      modal: true,
-      width:600,
-      height: 200
-    })
-
-    var chooseRoomWindowURL = 'file://' + __dirname + '/windows/deviceAssignation/choose_room_dialog.html';
-    chooseRoomWindow.loadURL(chooseRoomWindowURL);
     currentDeviceForWhichTheRoomIsBeingChosen = deviceID;
     selectSensorAfterwardsTrigger = selectSensorAfterwards;
+    if(deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()){
+      deviceAssignationWindow.webContents.send('open_room_modal');
+    } else {
+      window.webContents.send('open_room_modal');
+    }
 }
 
 function selectSensorFunction(deviceID,roomID){

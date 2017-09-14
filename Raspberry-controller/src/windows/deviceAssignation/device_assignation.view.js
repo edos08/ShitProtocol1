@@ -4,7 +4,8 @@ var dialogs = Dialogs();
 var remote = require('electron').remote;
 var ipc = require('electron').ipcRenderer;
 
-var chooseSensorDialog = require('../deviceAssignation/choose_sensor_dialog.view.js');
+var chooseSensorDialog = require('./choose_sensor_dialog.view.js');
+var chooseRoomDialog = require('./choose_room_dialog.view.js');
 
 function setUpComponents(){
   console.log("Setting components up");
@@ -58,8 +59,16 @@ function onDeviceAssignSensorButtonClick(button){
 }
 
 ipc.on('open_sensor_modal',() => {
-  $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+  $('#assignSensorModal').load('./choose_sensor_dialog.html',() => {
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
+  });
+})
+
+
+ipc.on('open_room_modal',() => {
+  $('#assignSensorModal').load('./choose_room_dialog.html',() => {
+    $('#assignSensorModal').modal();
+    chooseRoomDialog.setUpComponents();
   });
 })
