@@ -23,7 +23,6 @@ function addOkButtonClickListener(){
     var roomsList = document.getElementById('rooms_list');
     var roomID = roomsList.options[roomsList.selectedIndex].value;
     ipc.send('room_assignation_ok_button_pressed',roomID);
-    console.log('ok button clicked');
   });
 }
 
