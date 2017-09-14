@@ -49,6 +49,7 @@ function onDeviceRenameButtonClick(button){
 function onDeviceAssignSensorButtonClick(button){
   
   $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
+    console.log('loaded');
     $('#assignSensorModal').modal();
     chooseSensorDialog.setUpComponents();
   });
