@@ -226,7 +226,7 @@ function onDeviceAssignSensorButtonClick(button){
 
 function handleValueSubmission(){
   var valueInserted = $('#lightValue').val();
-  if(valueInserted < 0 || valueInserted > 1023){
+  if(valueInserted === null || valueInserted === undefined || valueInserted < 0 || valueInserted > 1023){
     ipc.send('invalid-value-inserted');
   }else{
     var deviceID = $('#lightValue').parent().attr('id');
