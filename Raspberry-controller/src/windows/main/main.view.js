@@ -243,7 +243,7 @@ ipc.on('open_sensor_modal',() => {
     });
   } else {
     $('#assignSensorModal').modal();
-    chooseSensorDialog.fillDevicesListAndRoomName();   // important that this and the one above are different!!
+    chooseSensorDialog.setUpComponents();   // important that this and the one above are different!!
   }
   
 })
@@ -256,6 +256,6 @@ ipc.on('open_room_modal',() => {
     });
   } else {
     $('#assignRoomModal').modal();
-    chooseRoomDialog.fillRoomsList();
+    chooseRoomDialog.setUpComponents();
   }
 })

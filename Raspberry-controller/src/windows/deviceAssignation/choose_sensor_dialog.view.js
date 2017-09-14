@@ -2,6 +2,7 @@ var ipc = require('electron').ipcRenderer;
 
 
 function setUpComponents(){
+  $('#ok_button').unbind();
   fillDevicesListAndRoomName();
   addOkButtonClickListener();
 }
