@@ -239,11 +239,11 @@ ipc.on('open_sensor_modal',() => {
   if($('#assignSensorModal').html() == ""){
     $('#assignSensorModal').load('../deviceAssignation/choose_sensor_dialog.html',() => {
       $('#assignSensorModal').modal();
-      chooseSensorDialog.setUpComponents();
+      chooseSensorDialog.setUpComponents();  // important that this and the one below are different!!
     });
   } else {
     $('#assignSensorModal').modal();
-    chooseSensorDialog.setUpComponents();
+    chooseSensorDialog.fillDevicesListAndRoomName();   // important that this and the one above are different!!
   }
   
 })
