@@ -5,13 +5,13 @@
   "main": "src/app.js",
   "scripts": {
     "start": "electron .",
-    "install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.7.6 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell",
+    "install": "node-pre-gyp install --fallback-to-build --runtime=electron --target=1.6.11 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell",
     "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^1.6.11",
+    "electron": "1.6.11",
     "electron-rebuild": "^1.5.11",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
