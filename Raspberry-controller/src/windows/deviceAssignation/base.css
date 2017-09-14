@@ -5,6 +5,11 @@ body{
 	height: 100vh;
 }
 
+.row{
+	widht: 100%;
+}
+
 .dev-inf{
 	flex-direction: column;
+	width: 100%;
 }
