@@ -72,7 +72,7 @@ typedef struct SerialHelpers{
 static void sendHandshakeMessage(){
   Serial.write(HANDSHAKE_MESSAGE);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -81,7 +81,7 @@ static void sendHandshakeMessage(){
 static void sendRegistrationModeStartedMessage(){
   Serial.write(MESSAGE_TYPE_ENTER_REGISTRATION_MODE);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -209,7 +209,7 @@ static void sendSensorStatePacket(uint32_t address, uint16_t value){
   buffer[6] = ((value & 0x00FF) >> 0);
   Serial.write(buffer,7);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -225,7 +225,7 @@ static void sendControllerStatePacket(uint32_t address, uint16_t value){
   buffer[6] = ((value & 0x00FF) >> 0);
   Serial.write(buffer,7);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -238,7 +238,7 @@ static void sendIDCheckMessage(uint32_t ID){
   SerialHelpers::write32bitIntegerIntoBuffer(buffer,ID);
   Serial.write(buffer,5);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -247,7 +247,7 @@ static void sendIDCheckMessage(uint32_t ID){
 static void sendHandShakeEndMessage(){
   Serial.write(HANDSHAKE_END_MESSAGE);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -259,7 +259,7 @@ static void sendDevicesStreamStartMessage(){
   buffer[1] = MESSAGE_DEVICES_STREAM_START;
   Serial.write(buffer,2);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -271,7 +271,7 @@ static void sendDevicesStreamEndMessage(){
   buffer[1] = MESSAGE_DEVICES_STREAM_END;
   Serial.write(buffer,2);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -286,7 +286,7 @@ static void sendDeviceInfoPacket(uint32_t ID, uint8_t type){
   buffer[5] = type;
   Serial.write(buffer,6);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 /**
@@ -299,7 +299,7 @@ static void sendResultMessage(int result){
   buffer[1] = result;
   Serial.write(buffer,2);
   Serial.flush();
-  delay(1);
+  delay(10);
 }
 
 #endif
