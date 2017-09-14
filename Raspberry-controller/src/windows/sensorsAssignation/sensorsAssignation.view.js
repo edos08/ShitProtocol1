@@ -20,7 +20,7 @@ ipc.on('devices-with-no-sensor-response',(event,devices) => {
     }else {
       content = "Nessun dispositivo da collegare ad altre stanze";
     }
-    document.getElementById('devicesContainer').innerHTML = content;
+    $('#devicesContainer').html(content);
 })
 
 function populateListItemWithDeviceInfo(device){
