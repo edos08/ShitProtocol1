@@ -125,7 +125,7 @@ function showManangingInfos(device){
           + "<h3 class = \"card-title\"> " + ((device.description != null)?device.description.trim():"Dispositivo senza nome") + " </h3>"
         + "</div>"
         + "<div class = \"card-block\">"
-          + "Dispositivo: " + device.description + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
+          + "Dispositivo: " + ((device.description != null)?device.description.trim():"Dispositivo senza nome") + "</td> <td><button id = \"" + device.id + "\" onClick=\"onDeviceRenameButtonClick(this)\" class=\"btn btn-secondary\"> Rinomina </button></br> "
           + ((device.type == 2)?showDeviceSensorInfo(device):"")
           + ((device.type == 2)?showDeviceValueForm(device):"")
           + "<button id = \"" + device.id + "\" onClick=\"onDeviceAssignToRoomButtonClick(this)\" class=\"btn btn-secondary\"> Cambia stanza </button> </br>"
