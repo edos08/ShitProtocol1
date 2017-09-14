@@ -21,7 +21,7 @@ ipc.on('devices-with-no-room-response',(event,devices) => {
     }else {
       content = "Nessun dispositivo da collegare ad altre stanze";
     }
-    document.getElementById('devicesContainer').innerHTML = content;
+    $('#devicesContainer').html(content);
 })
 
 function populateListItemWithDeviceInfo(device){
