@@ -20,16 +20,22 @@ ipc.on('room-response',(event,rooms) => {
 function addOkButtonClickListener(){
   var okButton = document.getElementById('ok_button');
   okButton.addEventListener('click',function(){
-    var roomsList = document.getElementById('rooms_list');
-    var roomID = roomsList.options[roomsList.selectedIndex].value;
-    ipc.send('room_assignation_ok_button_pressed',roomID);
-    console.log("ok button pressed - room");
+    if(paused){
+      console.log("paused");
+    } else {
+      var roomsList = document.getElementById('rooms_list');
+      var roomID = roomsList.options[roomsList.selectedIndex].value;
+      ipc.send('room_assignation_ok_button_pressed',roomID);
+      console.log("ok button pressed - room");
+    }
   });
 }
 
 function cancel(){
   ipc.send('cancel');
 }
+
+
 
 module.exports = {
   setUpComponents

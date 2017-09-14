@@ -1,11 +1,10 @@
 var ipc = require('electron').ipcRenderer;
 
+
 function setUpComponents(){
   fillDevicesListAndRoomName();
   addOkButtonClickListener();
 }
-
-
 
 function fillDevicesListAndRoomName(){
     ipc.send('room_id_request');
@@ -37,7 +36,6 @@ ipc.on('sensors-response',(event,sensors) => {
 function cancel(){
   ipc.send('cancel');
 }
-
 
 module.exports = {
   setUpComponents

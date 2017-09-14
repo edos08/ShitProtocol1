@@ -182,9 +182,9 @@ ipc.on('room_assignation_button_pressed',function(event,deviceID){
 ipc.on('room_assignation_ok_button_pressed',function(event,roomID){
   dbHelper.assignDeviceToRoom(currentDeviceForWhichTheRoomIsBeingChosen,roomID,() => {
     if(deviceAssignationWindow && !deviceAssignationWindow.isDestroyed()){
-      console.log(selectSensorAfterwardsTrigger);
       if(selectSensorAfterwardsTrigger){
         selectSensorFunction(currentDeviceForWhichTheRoomIsBeingChosen,roomID);
+        deviceAssignationWindow.webContents.send("pause");
       } else {
         dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {
           deviceAssignationWindow.webContents.send('devices-with-no-room-response',devices);
@@ -227,6 +227,7 @@ function onSensorSubmissionAction(result){
         }); 
       } else if (deviceAssignationWindow != null && !deviceAssignationWindow.isDestroyed()) {
         console.log("response received, trigger is  " + selectSensorAfterwardsTrigger);
+        deviceAssignationWindow.webContents.send("play");
         if(selectSensorAfterwardsTrigger){
           selectSensorAfterwardsTrigger = false;
           dbHelper.queryAllDevicesWithNoRoomAssignedAndShowIn((devices) => {

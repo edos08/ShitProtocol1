@@ -7,6 +7,17 @@ var ipc = require('electron').ipcRenderer;
 var chooseSensorDialog = require('./choose_sensor_dialog.view.js');
 var chooseRoomDialog = require('./choose_room_dialog.view.js');
 
+var paused = false;
+
+ipc.on("play",() => {
+  paused = false;
+});
+
+ipc.on("pause",() => {
+  paused = true;
+})
+
+
 function setUpComponents(){
   console.log("Setting components up");
   ipc.send('devices-with-no-room-request');
@@ -43,19 +54,23 @@ function populateListItemWithDeviceInfo(device){
 }
 
 function onDeviceRenameButtonClick(button){
-  dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
-    if(name != null && name != undefined && name != "" && name != " "){
-      ipc.send('rename-device',button.parentNode.parentNode.id,name);
-    }
-  });
+  if(!paused) {
+    dialogs.prompt("Inserisci il nuovo nome per il dispositivo: ",function(name){
+      if(name != null && name != undefined && name != "" && name != " "){
+        ipc.send('rename-device',button.parentNode.parentNode.id,name);
+      }
+    });
+  }
 }
 
 function onDeviceAssignToRoomButtonClick(button){
-  ipc.send('room_assignation_button_pressed',button.parentNode.parentNode.id);
+  if(!paused)
+    ipc.send('room_assignation_button_pressed',button.parentNode.parentNode.id);
 }
 
 function onDeviceAssignSensorButtonClick(button){
-  ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
+  if(!paused)
+    ipc.send('sensor_assignation_button_pressed',button.parentNode.parentNode.id);
 }
 
 ipc.on('open_sensor_modal',() => {
@@ -81,4 +96,5 @@ ipc.on('open_room_modal',() => {
     $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
   }
-})
+});
+
