@@ -67,8 +67,14 @@ ipc.on('open_sensor_modal',() => {
 
 
 ipc.on('open_room_modal',() => {
-  $('#assignRoomModal').load('./choose_room_dialog.html',() => {
+  console.log($('#assingRoomModal').html());
+  if($('#assignRoomModal').html() == ""){
+    $('#assignRoomModal').load('./choose_room_dialog.html',() => {
+      $('#assignRoomModal').modal();
+      chooseRoomDialog.setUpComponents();
+    });
+  } else {
     $('#assignRoomModal').modal();
     chooseRoomDialog.setUpComponents();
-  });
+  }
 })
