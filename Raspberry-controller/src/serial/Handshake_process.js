@@ -2,7 +2,7 @@ var helpers = require('./SerialHelpers');
 
 var onEnd;
 
-function init(onEndHandler){
+function init(onEndHandler,onErrorHandler){
   var handlers = {
     handshakeHandler: handleHandshake,
     handshakeEndHandler: handleHandshakeEnd
@@ -10,7 +10,7 @@ function init(onEndHandler){
   onEnd = onEndHandler;
   helpers.init(handlers,() =>{
     helpers.sendResetMessage();
-  });
+  }, onErrorHandler);
 }
 
 function handleHandshake(){

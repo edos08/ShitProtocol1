@@ -137,14 +137,16 @@ var checkControllerStateHandler;
 /** Funzione da richiamare una volta che si è aperta una connessione seriale */
 var onOpenFunction;
 
+var onOpenErrorFunction; 
+
 /** Inizializza la connessione seriale
  * @param { Object } handlers gli handler da passare
  * @param { function } onOpenCallback la funzione da richiamare all'apertura della porta seriale
  */
-function init(handlers,onOpenCallback){
+function init(handlers,onOpenCallback,onOpenErrorCallback){
   connectHandlers(handlers);
   onOpenFunction = onOpenCallback;
-
+  onOpenErrorFunction = onOpenErrorCallback;
   if(port != null && port.isOpen)
       return;
 
@@ -190,6 +192,8 @@ function onPortOpened(err){
       port = null;
       if(portNumber < 20)
         openPort();
+      else 
+        onOpenErrorFunction();
       return;
   }
 

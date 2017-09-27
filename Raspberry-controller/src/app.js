@@ -23,8 +23,12 @@ let deviceIndex  = 0;
 let unreachableDevicesList = [];
 
 app.on('ready', function(){
-  handshake.init(initMain);
+  handshake.init(initMain,initErrorFallback);
 });
+
+function initErrorFallback(){
+  dialog.showErrorBox('Impossibile collegarsi al nodo','Assicurarsi che il nodo LoRa sia connesso alla Raspberry.');
+}
 
 function initMain(){
   window = new BrowserWindow({
