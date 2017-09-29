@@ -1,4 +1,4 @@
-# Giude for the content of this directory:
+# Guide for the content of this directory:
 
 * doc: contains the documentation for the LoRa Project, read it before reading and modifying the code
 * libsrc: contains the ardiuni library files needed to make the communication between the devices work. Everything is explained in the documentation
