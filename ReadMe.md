@@ -1,4 +1,4 @@
-# Giude for the content of this directory:
+# Guide for the content of this directory:
 
 * doc: contains the documentation for the LoRa Project, read it before reading and modifying the code
 * libsrc: contains the ardiuni library files needed to make the communication between the devices work. Everything is explained in the documentation
@@ -10,7 +10,7 @@
  scaricare la repository:
 
  ```bash
-sudo git clone --depth=1 https://github.com/edos08/ShitProtocol1        
+sudo git clone https://github.com/edos08/ShitProtocol1        
  ```
 
  copiare il contenuto di `ShitProtocol1/libsrc` in `/opt/arduino-1.8.3/libraries/LoRa`:    
